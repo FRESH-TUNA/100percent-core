@@ -1,0 +1,42 @@
+// 해당 프로젝트의 빌드와 작업을 정의한다.
+
+// Gradle 빌드 스크립트 자체를 위한 의존성이나 변수, Task, Plugin 등을 지정할 수 있다.
+buildscript {
+    ext {
+        springBootVersion = '2.6.2'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+//spring 구동에 필요한 핵심 플러그인
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'com.koko'
+version '1.0-SNAPSHOT'
+
+// JDK 버전
+sourceCompatibility = 1.8
+
+// 플러그인을 받아올 주소
+repositories {
+    mavenCentral()
+}
+
+//추가 플러그인
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+}
