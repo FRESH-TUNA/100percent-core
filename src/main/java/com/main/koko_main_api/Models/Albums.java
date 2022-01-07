@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Videos {
+public class Albums {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,12 +17,8 @@ public class Videos {
     @Column(length = 255, nullable = false)
     private String title;
 
-    @Column(length = 255)
-    private String address;
-
     @Builder
-    public Videos(String title, String address) {
+    public Albums(String title) {
         this.title = title;
-        this.address = address;
     }
 }

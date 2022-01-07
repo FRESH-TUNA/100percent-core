@@ -1,10 +1,10 @@
 package com.main.koko_main_api.Repositories;
 
-import com.main.koko_main_api.Models.Videos;
-import org.junit.jupiter.api.AfterAll;
+import com.main.koko_main_api.Models.Albums;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -13,25 +13,22 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
+@AutoConfigureTestDatabase
 @DataJpaTest
-public class VideosRepositoryTest {
+public class AlbumsRepositoryTest {
     @Autowired
-    private VideosRepository vr;
+    private AlbumsRepository vr;
 
     @Test
     public void test() {
         String title = "title";
-        String address = "address";
 
-        vr.save(Videos.builder()
+        vr.save(Albums.builder()
                 .title(title)
-                .address(address)
                 .build());
-        List<Videos> videosList = vr.findAll();
+        List<Albums> albumsList = vr.findAll();
 
-        Videos video = videosList.get(0);
-
-        assertThat(video.getAddress()).isEqualTo(address);
-        assertThat(video.getTitle()).isEqualTo(title);
+        Albums album = albumsList.get(0);
+        assertThat(album.getTitle()).isEqualTo(title);
     }
 }
