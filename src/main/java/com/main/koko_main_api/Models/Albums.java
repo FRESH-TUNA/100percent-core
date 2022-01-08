@@ -21,4 +21,8 @@ public class Albums {
     public Albums(String title) {
         this.title = title;
     }
+
+    public void update(String title) {
+        this.title = title;
+    }
 }
