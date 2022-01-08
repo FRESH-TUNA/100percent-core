@@ -18,17 +18,18 @@ public class AlbumsService {
     private final AlbumsRepository albumsRepository;
 
     @Transactional
-    public Long save(AlbumsSaveRequestDto requestDto) {
-        return albumsRepository.save(requestDto.toEntity()).getId();
+    public AlbumsResponseDto save(AlbumsSaveRequestDto requestDto) {
+        return this.findById(
+            albumsRepository.save(requestDto.toEntity()).getId());
     }
 
     // transaction이 끝나는순간 변경된 부분을 반영한다.
     @Transactional
-    public Long update(Long id, AlbumsUpdateRequestDto dto) {
+    public AlbumsResponseDto update(Long id, AlbumsUpdateRequestDto dto) {
         Albums album = albumsRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + id));
         album.update(dto.getTitle());
-        return id;
+        return this.findById(id);
     }
 
     @Transactional

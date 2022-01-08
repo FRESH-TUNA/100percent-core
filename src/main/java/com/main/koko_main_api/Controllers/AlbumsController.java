@@ -5,6 +5,7 @@ import com.main.koko_main_api.Dtos.AlbumsSaveRequestDto;
 import com.main.koko_main_api.Dtos.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.Services.AlbumsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,9 @@ public class AlbumsController {
         return albumsService.findAll();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/main_api/v1/albums")
-    public Long save(@RequestBody AlbumsSaveRequestDto requestDto) {
+    public AlbumsResponseDto save(@RequestBody AlbumsSaveRequestDto requestDto) {
         return albumsService.save(requestDto);
     }
 
@@ -30,10 +32,11 @@ public class AlbumsController {
     }
 
     @PutMapping("/main_api/v1/albums/{id}")
-    public Long update(@PathVariable Long id, @RequestBody AlbumsUpdateRequestDto requestDto) {
+    public AlbumsResponseDto update(@PathVariable Long id, @RequestBody AlbumsUpdateRequestDto requestDto) {
         return albumsService.update(id, requestDto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/main_api/v1/albums/{id}")
     public Long delete(@PathVariable Long id) {
         return albumsService.delete(id);

@@ -41,13 +41,11 @@ public class AlbumsControllerTest {
                 .builder().title(title).build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
 
-        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, Long.class);
+        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, AlbumsResponseDto.class);
 
         //결과 확인
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isGreaterThan(0L);
-        List<Albums> all = albumsRepository.findAll();
-        assertThat(all.get(0).getTitle()).isEqualTo(title);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(responseEntity.getBody().getTitle()).isEqualTo(title);
     }
 
     @Test
@@ -73,18 +71,17 @@ public class AlbumsControllerTest {
         AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
                 .builder().title("thisistitle").build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-        ResponseEntity<Long> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, Long.class);
+        ResponseEntity<AlbumsResponseDto> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, AlbumsResponseDto.class);
 
         //update
         String update_url = "/main_api/v1/albums/{id}";
         AlbumsUpdateRequestDto updateDto = AlbumsUpdateRequestDto.builder()
                 .title("changedTitle").build();
         HttpEntity<AlbumsUpdateRequestDto> updateRequestEntity = new HttpEntity<>(updateDto);
-        ResponseEntity<Long> updateResponseEntity = restTemplate.exchange(
-                update_url, HttpMethod.PUT, updateRequestEntity, Long.class, saveResponseEntity.getBody());
+        ResponseEntity<AlbumsResponseDto> updateResponseEntity = restTemplate.exchange(
+                update_url, HttpMethod.PUT, updateRequestEntity, AlbumsResponseDto.class, saveResponseEntity.getBody().getId());
         assertThat(updateResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        Albums album = albumsRepository.getById(updateResponseEntity.getBody());
-        assertThat(album.getTitle()).isEqualTo("changedTitle");
+        assertThat(updateResponseEntity.getBody().getTitle()).isEqualTo("changedTitle");
     }
 
     @Test
