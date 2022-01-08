@@ -86,4 +86,43 @@ public class AlbumsControllerTest {
         Albums album = albumsRepository.getById(updateResponseEntity.getBody());
         assertThat(album.getTitle()).isEqualTo("changedTitle");
     }
+
+    @Test
+    @Transactional
+    public void delete_test() throws Exception {
+        // save
+        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+                .builder().title("thisistitle").build();
+        String url = "http://localhost:" + port + "/main_api/v1/albums";
+        ResponseEntity<Long> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, Long.class);
+
+        //delete
+        String delete_url = "/main_api/v1/albums/{id}";
+        restTemplate.delete(delete_url, saveResponseEntity.getBody());
+
+        //delete 검증
+        List<Albums> albums = albumsRepository.findAll();
+        assertThat(albums.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void findAll_test() throws Exception {
+        // save
+        String url = "http://localhost:" + port + "/main_api/v1/albums";
+        AlbumsSaveRequestDto albumsSaveRequestDto1 = AlbumsSaveRequestDto
+                .builder().title("thisistitle1").build();
+        AlbumsSaveRequestDto albumsSaveRequestDto2 = AlbumsSaveRequestDto
+                .builder().title("thisistitle2").build();
+        restTemplate.postForEntity(url, albumsSaveRequestDto1, Long.class);
+        restTemplate.postForEntity(url, albumsSaveRequestDto2, Long.class);
+
+        //find test
+        ResponseEntity<List> findResponseEntity;
+        findResponseEntity = restTemplate.getForEntity(url, List.class);
+//        AlbumsResponseDto d1 = (AlbumsResponseDto) findResponseEntity.getBody().get(0);
+//        AlbumsResponseDto d2 = (AlbumsResponseDto) findResponseEntity.getBody().get(1);
+        assertThat(findResponseEntity.getBody().size()).isEqualTo(2);
+//        assertThat(d1.getTitle()).isEqualTo("thisistitle1");
+//        assertThat(d2.getTitle()).isEqualTo("thisistitle2");
+    }
 }

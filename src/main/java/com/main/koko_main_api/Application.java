@@ -2,12 +2,14 @@ package com.main.koko_main_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /*
  * @SpringBootApplication 를 통해 스프링부트의 자동설정을 진행한다.
  * @SpringBootApplication가 위치한 class부터 읽어들이므로
  * 최상단에 위치시킨다.
  */
+@EnableJpaAuditing
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
