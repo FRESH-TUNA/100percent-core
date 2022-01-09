@@ -14,6 +14,10 @@ spring:
     url: jdbc:mariadb://${KOKO_MAIN_DB_HOST}:${KOKO_MAIN_DB_PORT}/${KOKO_MAIN_DB_NAME}?characterEncoding=UTF-8&serverTimezone=UTC
     username: ${KOKO_MAIN_DB_USER}
     password: ${KOKO_MAIN_DB_PASSWORD}
+
+  data:
+    rest:
+      base-path: /main_api/v1
 ---
 spring:
   config:

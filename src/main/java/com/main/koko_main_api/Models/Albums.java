@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -21,6 +22,9 @@ public class Albums extends BaseTimeModel {
     public Albums(String title) {
         this.title = title;
     }
+
+    @OneToMany(mappedBy = "album")
+    private List<Musics> musics;
 
     public void update(String title) {
         this.title = title;
