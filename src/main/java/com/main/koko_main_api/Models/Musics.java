@@ -22,7 +22,14 @@ public class Musics extends BaseTimeModel {
     @JoinColumn(name = "albums_id")
     private Albums album;
 
-    @ManyToMany(mappedBy = "musics")
+
+//    @ManyToMany(mappedBy = "musics")
+//    private List<Composers> composers;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "composer_music",
+            joinColumns = @JoinColumn(name = "composer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<Composers> composers;
 
     @Builder
