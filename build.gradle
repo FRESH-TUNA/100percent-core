@@ -35,7 +35,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-rest'
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
