@@ -24,4 +24,9 @@ public class Musics extends BaseTimeModel {
 
     @ManyToMany(mappedBy = "musics")
     private List<Composers> composers;
+
+    @Builder
+    public Musics(String title) {
+        this.title = title;
+    }
 }
