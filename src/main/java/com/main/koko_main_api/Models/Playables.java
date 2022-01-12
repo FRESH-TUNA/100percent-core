@@ -21,17 +21,16 @@ public class Playables {
     @Min(1) @Max(15)
     private Integer level;
 
-    // easy, normal, hard, sc = 1, 2, 3, 4
-    @Column(nullable = false)
-    @Min(1) @Max(4)
-    private Integer difficulty;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "difficulty_types_id")
+    private DifficultyTypes difficultyTypes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "types_id")
     private Types type;
 
-    @Builder
-    public Playables(String title) {
-        this.title = title;
-    }
+//    @Builder
+//    public Playables(String title) {
+//        this.title = title;
+//    }
 }
