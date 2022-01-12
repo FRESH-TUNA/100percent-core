@@ -25,6 +25,9 @@ public class MusicsRepositoryTest {
     @Autowired
     private TestRestTemplate template;
 
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Test
     public void music_to_composer_test() throws Exception {
         //endpoints
@@ -104,5 +107,43 @@ public class MusicsRepositoryTest {
         JSONArray jsonArray = jsonObj.getJSONArray("composers");
         assertThat(jsonArray.getJSONObject(0).getString("name")).isEqualTo("composer1");
         assertThat(jsonArray.getJSONObject(1).getString("name")).isEqualTo("composer2");
+    }
+
+    @Test
+    public void music_to_album_test() throws Exception {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port;
+        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/main_api/v1/albums";
+
+        /*
+         * album 생성
+         */
+        String title = "TECHNIKA";
+        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+                .builder().title(title).build();
+        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
+                ALBUM_ENDPOINT, albumsSaveRequestDto, AlbumsResponseDto.class);
+
+        /*
+         * music 생성
+         */
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        // request body 생성
+        JSONObject request_body = new JSONObject();
+        request_body.put("title", "music_title");
+        request_body.put("album", ALBUM_ENDPOINT + "/1");
+
+        //요청
+        HttpEntity<String> entity = new HttpEntity<>(request_body.toString(), headers);
+        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
+
+        //검증
+        // 연관관계 생성 checking
+        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/album", String.class);
+        JSONObject jsonObj = new JSONObject(jsonResponse);
+        assertThat(jsonObj.getString("title")).isEqualTo("TECHNIKA");
     }
 }

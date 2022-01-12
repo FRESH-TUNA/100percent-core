@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Albums extends BaseTimeModel {
+public class Album extends BaseTimeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +19,7 @@ public class Albums extends BaseTimeModel {
     private String title;
 
     @Builder
-    public Albums(String title) {
+    public Album(String title) {
         this.title = title;
     }
 

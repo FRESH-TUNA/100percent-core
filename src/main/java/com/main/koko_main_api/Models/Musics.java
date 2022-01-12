@@ -20,13 +20,13 @@ public class Musics extends BaseTimeModel {
 
     @ManyToOne
     @JoinColumn(name = "albums_id")
-    private Albums album;
+    private Album album;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "composer_music",
             joinColumns = @JoinColumn(name = "composers_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "musics_id", referencedColumnName = "id"))
-    private List<Composers> composers;
+    private List<Composer> composers;
 
     @Builder
     public Musics(String title) {

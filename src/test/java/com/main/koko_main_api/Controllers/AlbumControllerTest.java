@@ -3,7 +3,7 @@ package com.main.koko_main_api.Controllers;
 import com.main.koko_main_api.Dtos.AlbumsResponseDto;
 import com.main.koko_main_api.Dtos.AlbumsSaveRequestDto;
 import com.main.koko_main_api.Dtos.AlbumsUpdateRequestDto;
-import com.main.koko_main_api.Models.Albums;
+import com.main.koko_main_api.Models.Album;
 import com.main.koko_main_api.Repositories.AlbumsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AlbumsControllerTest {
+public class AlbumControllerTest {
     @LocalServerPort
     private int port;
 
@@ -54,13 +54,12 @@ public class AlbumsControllerTest {
         AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
                 .builder().title("thisistitle").build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-
-        ResponseEntity<Long> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, Long.class);
+        ResponseEntity<AlbumsResponseDto> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, AlbumsResponseDto.class);
 
         //find test
         String find_url = "/main_api/v1/albums/{id}";
-        ResponseEntity<AlbumsResponseDto> findResponseEntity = restTemplate.getForEntity(find_url, AlbumsResponseDto.class, saveResponseEntity.getBody());
-        assertThat(findResponseEntity.getBody().getId()).isEqualTo(saveResponseEntity.getBody());
+        ResponseEntity<AlbumsResponseDto> findResponseEntity = restTemplate.getForEntity(find_url, AlbumsResponseDto.class, 1);
+        assertThat(findResponseEntity.getBody().getId()).isEqualTo(1);
         assertThat(findResponseEntity.getBody().getTitle()).isEqualTo("thisistitle");
     }
 
@@ -98,7 +97,7 @@ public class AlbumsControllerTest {
         restTemplate.delete(delete_url, saveResponseEntity.getBody());
 
         //delete 검증
-        List<Albums> albums = albumsRepository.findAll();
+        List<Album> albums = albumsRepository.findAll();
         assertThat(albums.size()).isEqualTo(0);
     }
 

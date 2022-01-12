@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Composers extends BaseTimeModel {
+public class Composer extends BaseTimeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,7 +26,7 @@ public class Composers extends BaseTimeModel {
     private List<Musics> musics;
 
     @Builder
-    public Composers(String name) {
+    public Composer(String name) {
         this.name = name;
     }
 }

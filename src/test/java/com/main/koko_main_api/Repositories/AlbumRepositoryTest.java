@@ -1,6 +1,6 @@
 package com.main.koko_main_api.Repositories;
 
-import com.main.koko_main_api.Models.Albums;
+import com.main.koko_main_api.Models.Album;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase
 @DataJpaTest
-public class AlbumsRepositoryTest {
+public class AlbumRepositoryTest {
     @Autowired
     private AlbumsRepository vr;
 
@@ -23,12 +23,12 @@ public class AlbumsRepositoryTest {
     public void test() {
         String title = "title";
 
-        vr.save(Albums.builder()
+        vr.save(Album.builder()
                 .title(title)
                 .build());
-        List<Albums> albumsList = vr.findAll();
+        List<Album> albumList = vr.findAll();
 
-        Albums album = albumsList.get(0);
+        Album album = albumList.get(0);
         assertThat(album.getTitle()).isEqualTo(title);
     }
 }

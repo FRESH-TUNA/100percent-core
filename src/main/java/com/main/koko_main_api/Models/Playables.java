@@ -1,6 +1,5 @@
 package com.main.koko_main_api.Models;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,11 +22,11 @@ public class Playables {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "difficulty_types_id")
-    private DifficultyTypes difficultyTypes;
+    private DifficultyType difficultyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "types_id")
-    private Types type;
+    private PlayType playType;
 
 //    @Builder
 //    public Playables(String title) {

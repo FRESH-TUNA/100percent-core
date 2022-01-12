@@ -1,6 +1,6 @@
 package com.main.koko_main_api.Dtos;
 
-import com.main.koko_main_api.Models.Composers;
+import com.main.koko_main_api.Models.Composer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +19,8 @@ public class ComposersSaveRequestDto {
         this.name = name;
     }
 
-    public Composers toEntity() {
-        return Composers.builder()
+    public Composer toEntity() {
+        return Composer.builder()
                 .name(name)
                 .build();
     }

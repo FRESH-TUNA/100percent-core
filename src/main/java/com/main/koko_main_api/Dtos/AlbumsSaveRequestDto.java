@@ -1,6 +1,6 @@
 package com.main.koko_main_api.Dtos;
 
-import com.main.koko_main_api.Models.Albums;
+import com.main.koko_main_api.Models.Album;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +19,8 @@ public class AlbumsSaveRequestDto {
         this.title = title;
     }
 
-    public Albums toEntity() {
-        return Albums.builder()
+    public Album toEntity() {
+        return Album.builder()
                 .title(title)
                 .build();
     }
