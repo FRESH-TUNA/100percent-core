@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Playables {
+public class Playable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,15 +22,13 @@ public class Playables {
     private Integer level;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "difficulty_types_id")
+    @JoinColumn(name = "difficulty_type_id")
     private DifficultyType difficultyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "types_id")
+    @JoinColumn(name = "play_type_id")
     private PlayType playType;
 
-//    @Builder
-//    public Playables(String title) {
-//        this.title = title;
-//    }
+    @OneToMany(mappedBy = "playable")
+    private List<Bpm> bpms;
 }

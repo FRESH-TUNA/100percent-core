@@ -1,5 +1,5 @@
 package com.main.koko_main_api.Dtos;
-import com.main.koko_main_api.Models.Musics;
+import com.main.koko_main_api.Models.Music;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ public class MusicsResponseDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public MusicsResponseDto(Musics entity) {
+    public MusicsResponseDto(Music entity) {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.createdDate = entity.getCreatedDate();

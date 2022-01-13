@@ -1,6 +1,6 @@
 package com.main.koko_main_api.Dtos;
 
-import com.main.koko_main_api.Models.Musics;
+import com.main.koko_main_api.Models.Music;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +19,8 @@ public class MusicsSaveRequestDto {
         this.title = title;
     }
 
-    public Musics toEntity() {
-        return Musics.builder()
+    public Music toEntity() {
+        return Music.builder()
                 .title(title)
                 .build();
     }

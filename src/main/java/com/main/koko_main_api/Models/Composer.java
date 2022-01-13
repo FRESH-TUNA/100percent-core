@@ -23,7 +23,7 @@ public class Composer extends BaseTimeModel {
 //            joinColumns = @JoinColumn(name = "musics_id", referencedColumnName = "id"),
 //            inverseJoinColumns = @JoinColumn(name = "composers_id", referencedColumnName = "id"))
     @ManyToMany(mappedBy = "composers")
-    private List<Musics> musics;
+    private List<Music> musics;
 
     @Builder
     public Composer(String name) {

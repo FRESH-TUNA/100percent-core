@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Musics extends BaseTimeModel {
+public class Music extends BaseTimeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,17 +19,17 @@ public class Musics extends BaseTimeModel {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "albums_id")
+    @JoinColumn(name = "album_id")
     private Album album;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "composer_music",
-            joinColumns = @JoinColumn(name = "composers_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "musics_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "composer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<Composer> composers;
 
     @Builder
-    public Musics(String title) {
+    public Music(String title) {
         this.title = title;
     }
 }
