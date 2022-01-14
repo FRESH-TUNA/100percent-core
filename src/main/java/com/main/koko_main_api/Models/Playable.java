@@ -16,6 +16,10 @@ public class Playable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "music_id")
+    private Music music;
+
     // 별의 갯수 (1~15)
     @Column(nullable = false)
     @Min(1) @Max(15)
