@@ -1,0 +1,9 @@
+package com.main.koko_main_api.Repositories;
+
+import com.main.koko_main_api.Models.PlayType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource(collectionResourceRel = "playables", path = "playables")
+public interface PlayablesRepository extends JpaRepository<PlayType, Long> {
+}

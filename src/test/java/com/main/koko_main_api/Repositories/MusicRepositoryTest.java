@@ -31,9 +31,10 @@ public class MusicRepositoryTest {
     @Test
     public void music_to_composer_test() throws Exception {
         //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port;
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
+        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
 
         //composer 생성
         ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
@@ -69,9 +70,10 @@ public class MusicRepositoryTest {
     @Test
     public void music_to_composer_once_test() throws Exception {
         //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port;
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
+        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
 
         //composer 생성
         ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
@@ -112,9 +114,10 @@ public class MusicRepositoryTest {
     @Test
     public void music_to_album_test() throws Exception {
         //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port;
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/main_api/v1/albums";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
+        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
 
         /*
          * album 생성
@@ -145,30 +148,5 @@ public class MusicRepositoryTest {
         String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/album", String.class);
         JSONObject jsonObj = new JSONObject(jsonResponse);
         assertThat(jsonObj.getString("title")).isEqualTo("TECHNIKA");
-    }
-
-    @Test
-    public void music_to_bpm_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port;
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-
-        /*
-         * music 생성
-         */
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-        JSONObject music_body = new JSONObject();
-        music_body.put("title", "music_title");
-        HttpEntity<String> entity = new HttpEntity<>(music_body.toString(), headers);
-        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
-
-        /*
-         * bpm 생성
-         */
-        JSONObject bpm_body = new JSONObject();
-        bpm_body.put("value", 100);
-        System.out.println(template.exchange(MUSIC_ENDPOINT + "/1/bpms", HttpMethod.POST, new HttpEntity<>(bpm_body.toString(), headers), String.class));
-
     }
 }
