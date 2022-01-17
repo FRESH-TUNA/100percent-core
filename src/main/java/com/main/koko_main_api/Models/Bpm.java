@@ -5,6 +5,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -17,7 +24,11 @@ public class Bpm extends BaseTimeModel {
     @Column(nullable = false)
     private Integer value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playable_id")
+    @ManyToOne
     private Playable playable;
+
+    @Builder
+    public Bpm(Integer value) {
+        this.value = value;
+    }
 }

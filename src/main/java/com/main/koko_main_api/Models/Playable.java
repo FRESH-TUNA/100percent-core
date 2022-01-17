@@ -1,12 +1,15 @@
 package com.main.koko_main_api.Models;
 
+import com.main.koko_main_api.Dtos.BpmsSaveDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -33,6 +36,17 @@ public class Playable {
     @JoinColumn(name = "play_type_id")
     private PlayType playType;
 
-    @OneToMany(mappedBy = "playable")
-    private List<Bpm> bpms;
+    @OneToMany(mappedBy = "playable", cascade = CascadeType.ALL)
+    private Set<Bpm> bpms = new HashSet<>();
+
+    /*
+     * /playables/{id}/bpms, POST
+     */
+    public void saveBpm(Bpm bpm) {
+        this.bpms.add(bpm);
+    }
+
+    //for tests
+    @Builder
+    public Playable(Integer level) { this.level = level; }
 }
