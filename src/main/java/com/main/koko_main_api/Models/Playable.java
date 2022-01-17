@@ -46,7 +46,9 @@ public class Playable {
         this.bpms.add(bpm);
     }
 
-    //for tests
     @Builder
-    public Playable(Integer level) { this.level = level; }
+    public Playable(Integer level, Set<Bpm> bpms) {
+        this.level = level;
+        this.bpms = bpms;
+    }
 }

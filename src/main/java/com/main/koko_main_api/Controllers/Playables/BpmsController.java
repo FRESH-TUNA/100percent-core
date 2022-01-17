@@ -1,6 +1,5 @@
 package com.main.koko_main_api.Controllers.Playables;
 
-import com.main.koko_main_api.Dtos.BpmsResponseDto;
 import com.main.koko_main_api.Dtos.BpmsSaveDto;
 import com.main.koko_main_api.Services.Playables.BpmsService;
 import lombok.RequiredArgsConstructor;

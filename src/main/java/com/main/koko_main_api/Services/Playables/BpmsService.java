@@ -1,6 +1,5 @@
 package com.main.koko_main_api.Services.Playables;
 
-import com.main.koko_main_api.Dtos.BpmsResponseDto;
 import com.main.koko_main_api.Dtos.BpmsSaveDto;
 import com.main.koko_main_api.Models.Playable;
 import com.main.koko_main_api.Repositories.PlayablesRepository;
