@@ -62,35 +62,29 @@ public class PlayablesControllerTest {
     }
 
     @Test
-    public void playable_to_bpm_test() throws Exception {
+    public void playable_save_test() throws Exception {
         //endpoints and headers
         String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/json");
 
         /*
-         * playable 생성
-         */
-        JSONObject playable_body = new JSONObject();
-        playable_body.put("level", 1);
-        System.out.println(template.exchange(ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(playable_body.toString(), headers), String.class));
-
-        /*
-         * bpm 생성
+         * bpm body생성
          */
         JSONObject bpm_body = new JSONObject();
         bpm_body.put("value", 100);
-
         JSONArray new_bpm_bodies = new JSONArray();
         new_bpm_bodies.put(bpm_body);
         new_bpm_bodies.put(bpm_body);
 
-        playable_body = new JSONObject();
+        /*
+         * playable 생성
+         */
+        JSONObject playable_body = new JSONObject();
+        playable_body.put("level", 1);
         playable_body.put("bpms", new_bpm_bodies);
-        System.out.println(template.exchange(ROOT_ENDPOINT + PLAYABLES_ENDPOINT + "/1/bpms",
-                HttpMethod.POST, new HttpEntity<>(bpm_body.toString(), headers), String.class));
-        System.out.println(template.optionsForAllow(ROOT_ENDPOINT + PLAYABLES_ENDPOINT + "/1/bpms"));
+        System.out.println(template.exchange(ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(playable_body.toString(), headers), String.class));
     }
 }
 

@@ -1,5 +1,6 @@
 package com.main.koko_main_api.Controllers;
 
+import com.main.koko_main_api.Dtos.PlayablesResponseDto;
 import com.main.koko_main_api.Dtos.PlayablesSaveDto;
 import com.main.koko_main_api.Services.PlayablesService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,9 @@ public class PlayablesController {
     private final PlayablesService playablesService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/playables/{id}/bpms")
-    public @ResponseBody CollectionModel<PlayablesResponseDto> save(@RequestBody PlayablesSaveDto dto) {
-
-        playablesService.save(dto);
+    @PostMapping("/playables")
+    public PlayablesResponseDto save(@RequestBody PlayablesSaveDto dto) {
+        PlayablesResponseDto responseDto = playablesService.save(dto);
+        return responseDto;
     }
 }

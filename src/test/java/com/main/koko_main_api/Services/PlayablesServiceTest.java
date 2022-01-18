@@ -1,6 +1,7 @@
 package com.main.koko_main_api.Services;
 
 import com.main.koko_main_api.Dtos.BpmsSaveDto;
+import com.main.koko_main_api.Dtos.PlayablesResponseDto;
 import com.main.koko_main_api.Dtos.PlayablesSaveDto;
 import com.main.koko_main_api.Models.Bpm;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,8 +34,12 @@ public class PlayablesServiceTest {
                 .level(2)
                 .bpms(bpms)
                 .build();
-        playablesService.save(dto);
+        PlayablesResponseDto responseDto = playablesService.save(dto);
 
 
+        // 검증
+        assertThat(responseDto.getLevel()).isEqualTo(2);
+        Iterator<Bpm> it = responseDto.getBpms().iterator();
+        assertThat(it.next().getValue()).isEqualTo(100);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Playable {
+public class Playable extends BaseTimeModel  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
