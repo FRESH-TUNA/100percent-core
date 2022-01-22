@@ -1,32 +1,26 @@
 package com.main.koko_main_api.Dtos;
+
 import com.main.koko_main_api.Models.Bpm;
+import com.main.koko_main_api.Models.Music;
 import com.main.koko_main_api.Models.Playable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-/**
- * Getter: 선언된 필드의 get메소드 생성
- * RequiredArgsConstructor: final 필드가 포함된 생성자를 생성
- */
+@Builder
 @NoArgsConstructor
-@Getter
+@AllArgsConstructor
 public class PlayablesSaveDto {
     private Integer level;
     private Set<Bpm> bpms;
-
-    @Builder
-    public PlayablesSaveDto(Integer level, Set<Bpm> bpms) {
-        this.level = level;
-        this.bpms = bpms;
-    }
+    private Music music;
 
     public Playable toEntity() {
         return Playable.builder()
-                .level(this.level)
-                .bpms(this.bpms)
-                .build();
+                .level(level)
+                .bpms(bpms)
+                .music(music).build();
     }
 }

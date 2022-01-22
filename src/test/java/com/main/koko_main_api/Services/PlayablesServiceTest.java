@@ -26,20 +26,20 @@ public class PlayablesServiceTest {
     @Autowired
     private PlayablesService playablesService;
 
-    @Test
-    public void save_test() {
-        Set<Bpm> bpms = new HashSet() {
-            { add(BpmsSaveDto.builder().value(100).build().toEntity()); }};
-        PlayablesSaveDto dto = PlayablesSaveDto.builder()
-                .level(2)
-                .bpms(bpms)
-                .build();
-        PlayablesResponseDto responseDto = playablesService.save(dto);
-
-
-        // 검증
-        assertThat(responseDto.getLevel()).isEqualTo(2);
-        Iterator<Bpm> it = responseDto.getBpms().iterator();
-        assertThat(it.next().getValue()).isEqualTo(100);
-    }
+//    @Test
+//    public void save_test() {
+//        Set<Bpm> bpms = new HashSet() {
+//            { add(BpmsSaveDto.builder().value(100).build().toEntity()); }};
+//        PlayablesSaveDto dto = PlayablesSaveDto.builder()
+//                .level(2)
+//                .bpms(bpms)
+//                .build();
+//        PlayablesResponseDto responseDto = playablesService.save(dto);
+//
+//
+//        // 검증
+//        assertThat(responseDto.getLevel()).isEqualTo(2);
+//        Iterator<Bpm> it = responseDto.getBpms().iterator();
+//        assertThat(it.next().getValue()).isEqualTo(100);
+//    }
 }

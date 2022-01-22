@@ -1,25 +1,25 @@
 package com.main.koko_main_api.Models;
 
-import com.main.koko_main_api.Dtos.BpmsSaveDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Playable extends BaseTimeModel  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")
     private Music music;
 
@@ -36,8 +36,10 @@ public class Playable extends BaseTimeModel  {
     @JoinColumn(name = "play_type_id")
     private PlayType playType;
 
+    // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
+    // @RestResource(exported = false)
     @OneToMany(mappedBy = "playable", cascade = CascadeType.ALL)
-    private Set<Bpm> bpms = new HashSet<>();
+    private Set<Bpm> bpms;
 
     /*
      * /playables/{id}/bpms, POST
@@ -46,9 +48,9 @@ public class Playable extends BaseTimeModel  {
         this.bpms.add(bpm);
     }
 
-    @Builder
-    public Playable(Integer level, Set<Bpm> bpms) {
-        this.level = level;
-        this.bpms = bpms;
-    }
+//    @Builder
+//    public Playable(Integer level, Set<Bpm> bpms) {
+//        this.level = level;
+//        this.bpms = bpms;
+//    }
 }
