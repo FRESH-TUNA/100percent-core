@@ -7,14 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayablesSaveDto {
     private Integer level;
-    private Set<Bpm> bpms;
+    private List<Bpm> bpms;
     private Music music;
 
     public Playable toEntity() {

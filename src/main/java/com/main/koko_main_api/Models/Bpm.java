@@ -7,10 +7,7 @@ import javax.persistence.*;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

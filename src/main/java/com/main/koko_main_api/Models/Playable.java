@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class Playable extends BaseTimeModel  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "music_id")
     private Music music;
 
@@ -39,7 +40,7 @@ public class Playable extends BaseTimeModel  {
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
     @OneToMany(mappedBy = "playable", cascade = CascadeType.ALL)
-    private Set<Bpm> bpms;
+    private List<Bpm> bpms;
 
     /*
      * /playables/{id}/bpms, POST
@@ -48,9 +49,10 @@ public class Playable extends BaseTimeModel  {
         this.bpms.add(bpm);
     }
 
-//    @Builder
-//    public Playable(Integer level, Set<Bpm> bpms) {
-//        this.level = level;
-//        this.bpms = bpms;
-//    }
+    @Builder
+    public Playable(Integer level, List<Bpm> bpms, Music music) {
+        this.level = level;
+        this.bpms = bpms;
+        this.music = music;
+    }
 }

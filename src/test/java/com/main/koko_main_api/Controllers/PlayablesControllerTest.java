@@ -104,6 +104,50 @@ public class PlayablesControllerTest {
 //        System.out.println(template.getForObject(
 //                (String) result.getJSONObject("_links").getJSONObject("self").get("href"), String.class));
     }
+
+    @Test
+    public void get_playable_test() throws Exception {
+        //endpoints and headers
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        /*
+         * music 생성
+         */
+        JSONObject music_body = new JSONObject();
+        music_body.put("title", "music example");
+        String music_uri = new JSONObject(template.exchange(
+                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
+                        new HttpEntity<>(music_body.toString(), headers), String.class)
+                .getBody()).getJSONObject("_links")
+                .getJSONObject("self").getString("href");
+        /*
+         * bpm body생성
+         */
+        JSONObject bpm_body = new JSONObject();
+        bpm_body.put("value", 100);
+        JSONArray new_bpm_bodies = new JSONArray();
+        new_bpm_bodies.put(bpm_body);
+        new_bpm_bodies.put(bpm_body);
+
+        /*
+         * playable 생성
+         */
+        JSONObject playable_body = new JSONObject();
+        playable_body.put("level", 1);
+        playable_body.put("music", music_uri);
+        playable_body.put("bpms", new_bpm_bodies);
+
+        JSONObject new_playable = new JSONObject(template.exchange(
+                ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(playable_body.toString(), headers),
+                String.class).getBody());
+        String new_link = new_playable.getJSONObject("_links")
+                .getJSONObject("self").getString("href");
+
+        System.out.println(template.getForObject(new_link, String.class));
+    }
 }
 
 

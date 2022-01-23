@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.net.URI;
-import java.util.Set;
+import java.util.List;
 
 // https://stackoverflow.com/questions/37186417/resolving-entity-uri-in-custom-controller-spring-hateoas
 
@@ -18,6 +18,6 @@ import java.util.Set;
 @Getter
 public class PlayablesSaveRequestDto{
     private Integer level;
-    private Set<Bpm> bpms;
+    private List<Bpm> bpms;
     private URI music;
 }

@@ -1,8 +1,10 @@
 package com.main.koko_main_api.Services;
+
 import com.main.koko_main_api.Dtos.PlayablesResponseDto;
 import com.main.koko_main_api.Dtos.PlayablesSaveDto;
 import com.main.koko_main_api.Dtos.PlayablesSaveRequestDto;
 import com.main.koko_main_api.Models.Music;
+import com.main.koko_main_api.Models.Playable;
 import com.main.koko_main_api.Repositories.MusicsRepository;
 import com.main.koko_main_api.Repositories.PlayablesRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,13 @@ public class PlayablesService {
 
         return new PlayablesResponseDto(
                 playablesRepository.save(saveDto.toEntity()));
+    }
+
+    public PlayablesResponseDto findById(Long id) {
+        Playable p = playablesRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(
+                        "해당 게시글이 없습니다. id= " + id));
+
+        return new PlayablesResponseDto(p);
     }
 }
