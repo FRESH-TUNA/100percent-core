@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 public class PlayablesResponseDto extends RepresentationModel<PlayablesResponseDto> {

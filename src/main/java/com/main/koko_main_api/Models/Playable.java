@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -39,7 +37,7 @@ public class Playable extends BaseTimeModel  {
 
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
-    @OneToMany(mappedBy = "playable", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "playable", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bpm> bpms;
 
     /*

@@ -8,6 +8,7 @@ import com.main.koko_main_api.Repositories.MusicsRepository;
 import com.main.koko_main_api.Services.PlayablesService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,15 @@ public class PlayablesController {
     //level: 1
     //bpms: []
     //나머지는 링크로 받는다.
+
+    /*
+     * autowired를 통해 다른 스프링에 등록된 bean(service)를 주입할수 있다.
+     */
+//    @Autowired
+//    public PlayablesController(PlayablesService service) {
+//        this.playablesService = service;
+//    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/main_api/v1/playables")
     public PlayablesResponseDto save(@RequestBody PlayablesSaveRequestDto dto) {

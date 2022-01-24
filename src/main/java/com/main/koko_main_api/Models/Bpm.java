@@ -22,6 +22,7 @@ public class Bpm extends BaseTimeModel {
     private Integer value;
 
     @ManyToOne
+    @JoinColumn(name = "playable_id")
     private Playable playable;
 
     @Builder

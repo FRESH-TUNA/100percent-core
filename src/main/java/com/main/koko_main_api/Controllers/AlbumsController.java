@@ -5,6 +5,7 @@ import com.main.koko_main_api.Dtos.AlbumsSaveRequestDto;
 import com.main.koko_main_api.Dtos.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.Services.AlbumsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
