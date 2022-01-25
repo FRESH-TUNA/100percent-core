@@ -14,13 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PlayablesSaveDto {
     private Integer level;
-    private List<Bpm> bpms;
     private Music music;
 
     public Playable toEntity() {
         return Playable.builder()
                 .level(level)
-                .bpms(bpms)
                 .music(music).build();
     }
 }

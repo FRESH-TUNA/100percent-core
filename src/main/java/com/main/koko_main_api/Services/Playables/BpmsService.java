@@ -13,10 +13,10 @@ import javax.transaction.Transactional;
 public class BpmsService {
     private final PlayablesRepository playablesRepository;
 
-    @Transactional
-    public void save(Long playable_id, BpmsSaveDto dto) {
-        Playable playable = playablesRepository.findById(playable_id).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + playable_id));
-        playable.saveBpm(dto.toEntity());
-    }
+//    @Transactional
+//    public void save(Long playable_id, BpmsSaveDto dto) {
+//        Playable playable = playablesRepository.findById(playable_id).orElseThrow(
+//                () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + playable_id));
+//        playable.saveBpm(dto.toEntity());
+//    }
 }

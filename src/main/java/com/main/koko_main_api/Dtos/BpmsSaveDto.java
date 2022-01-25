@@ -1,5 +1,6 @@
 package com.main.koko_main_api.Dtos;
 import com.main.koko_main_api.Models.Bpm;
+import com.main.koko_main_api.Models.Playable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +14,16 @@ import lombok.NoArgsConstructor;
 public class BpmsSaveDto {
     private Integer value;
 
+
     @Builder
     public BpmsSaveDto(Integer value) {
         this.value = value;
     }
 
-    public Bpm toEntity() {
+    public Bpm toEntity(Playable playable) {
         return Bpm.builder()
                 .value(value)
+                .playable(playable)
                 .build();
     }
 }

@@ -47,52 +47,12 @@ public class PlayablesServiceTest {
     }
 
     @Test
-    public void save_test() {
-        /*
-         * bpm body 준비
-         */
-        List<Bpm> bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build().toEntity()); }};
-
-        /*
-         * music 생성
-         */
-        Music music = Music.builder().title("music").build();
-        music = musicsRepository.save(music);
-        Link music_link = entityLinks.linkToItemResource(
-                MusicsRepository.class, music.getId());
-
-        /*
-         * playable 생성
-         */
-        PlayablesSaveRequestDto dto = PlayablesSaveRequestDto.builder()
-                .level(2)
-                .bpms(bpms)
-                .music(music_link.toUri())
-                .build();
-        PlayablesResponseDto responseDto = playablesService.save(dto);
-
-        // playable 검증
-        assertThat(responseDto.getLevel()).isEqualTo(2);
-        Iterator<Bpm> it = responseDto.getBpms().iterator();
-        assertThat(it.next().getValue()).isEqualTo(100);
-        assertThat(responseDto.getMusic().getTitle()).isEqualTo("music");
-
-
-        /*
-         * bpm 생성 검증
-         */
-        List<Bpm> new_bpms = bpmsRepository.findAll();
-        assertThat(new_bpms.get(0).getPlayable().getId()).isEqualTo(responseDto.getId());
-    }
-
-    @Test
     public void save_and_findById_test() {
         /*
          * bpm body 준비
          */
-        List<Bpm> bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build().toEntity()); }};
+        List<BpmsSaveDto> bpms = new ArrayList() {
+            { add(BpmsSaveDto.builder().value(100).build()); }};
 
         /*
          * music 생성

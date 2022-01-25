@@ -1,6 +1,6 @@
 package com.main.koko_main_api.Dtos;
 
-import com.main.koko_main_api.Models.Bpm;
+import com.main.koko_main_api.Models.Playable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -18,6 +18,6 @@ import java.util.List;
 @Getter
 public class PlayablesSaveRequestDto{
     private Integer level;
-    private List<Bpm> bpms;
+    private List<BpmsSaveDto> bpms;
     private URI music;
 }

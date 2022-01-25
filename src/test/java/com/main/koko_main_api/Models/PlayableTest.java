@@ -22,12 +22,12 @@ public class PlayableTest {
     @Autowired
     private PlayablesRepository pr;
 
-    @Test
-    public void playable_add_bpm_test() {
-        Playable play = PlayablesSaveDto.builder().level(2).build().toEntity();
-        play.saveBpm(BpmsSaveDto.builder().value(100).build().toEntity());
-        Iterator<Bpm> it = pr.save(play).getBpms().iterator();
-
-        assertThat(it.next().getValue()).isEqualTo(100);
-    }
+//    @Test
+//    public void playable_add_bpm_test() {
+//        Playable play = PlayablesSaveDto.builder().level(2).build().toEntity();
+//        play.saveBpm(BpmsSaveDto.builder().value(100).build().toEntity());
+//        Iterator<Bpm> it = pr.save(play).getBpms().iterator();
+//
+//        assertThat(it.next().getValue()).isEqualTo(100);
+//    }
 }

@@ -26,7 +26,8 @@ public class Bpm extends BaseTimeModel {
     private Playable playable;
 
     @Builder
-    public Bpm(Integer value) {
+    public Bpm(Integer value, Playable playable) {
+        this.playable = playable;
         this.value = value;
     }
 }

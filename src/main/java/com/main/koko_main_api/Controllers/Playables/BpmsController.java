@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class BpmsController {
     private final BpmsService bpmsService;
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/playables/{id}/bpms")
-    public void save(@PathVariable Long playable_id, @RequestBody BpmsSaveDto dto) {
-        bpmsService.save(playable_id, dto);
-    }
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PostMapping("/playables/{id}/bpms")
+//    public void save(@PathVariable Long playable_id, @RequestBody BpmsSaveDto dto) {
+//        bpmsService.save(playable_id, dto);
+//    }
 }
