@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 @Transactional
-public class PlayablesControllerTest {
+public class PlayableControllerTest {
     @LocalServerPort
     private int port;
 
@@ -90,6 +90,18 @@ public class PlayablesControllerTest {
         new_playable_bpms = new_playable.getJSONArray("bpms");
         assertThat(new_playable_bpms.getJSONObject(0).getInt("value")).isEqualTo(100);
         assertThat(new_playable_bpms.getJSONObject(1).getInt("value")).isEqualTo(101);
+    }
+
+    @Test
+    public void findAll() throws Exception {
+        //endpoints and headers
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        JSONObject playables = new JSONObject(
+                template.getForObject(ROOT_ENDPOINT + "/playables", String.class));
+        System.out.println(playables.toString());
     }
 }
 
