@@ -1,6 +1,5 @@
 package com.main.koko_main_api.domains;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,10 +48,17 @@ public class Playable extends BaseTimeModel  {
 //    public void addBpm(Bpm bpm) {
 //        this.bpms.add(bpm);
 //    }
+
+    /*
+     * for new Playable
+     */
     public void add_bpms_for_save_request(List<Bpm> bpms) {
         this.bpms = bpms;
     }
 
+    /*
+     * for new Playable
+     */
     @Builder
     public Playable(Long id, Integer level, Music music) {
         this.id = id;
