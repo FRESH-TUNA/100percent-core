@@ -38,14 +38,14 @@ public class PlayableController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/playables")
     public PlayableDetailResponsePayload save(@RequestBody PlayableSavePayload payload) {
-        PlayableDetailResponseEntityDto entityDto = playableService.save(payload);
-        return detailAssembler.toModel(entityDto);
+        PlayableDetailResponseEntityDto response = playableService.save(payload);
+        return detailAssembler.toModel(response);
     }
 
     @GetMapping("/main_api/v1/playables/{id}")
-    public ResponseEntity<PlayableDetailResponseEntityDto> findById(@PathVariable Long id) {
+    public PlayableDetailResponsePayload findById(@PathVariable Long id) {
         PlayableDetailResponseEntityDto response = playableService.findById(id);
-        return ResponseEntity.ok(response);
+        return detailAssembler.toModel(response);
     }
 
     @GetMapping("/main_api/v1/playables")

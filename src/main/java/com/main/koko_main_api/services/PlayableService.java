@@ -40,6 +40,9 @@ public class PlayableService extends URIToID {
         Playable playable = playablesRepository.save(saveDto.toEntity());
         List<Bpm> bpms = bpmsRepository.saveAll(dto.getBpms().stream().map(
                 bpm -> bpm.toEntity(playable)).collect(Collectors.toList()));
+        /*
+         * update 쿼리가 발생한다.
+         */
         playable.add_bpms_for_save_request(bpms);
 
         return new PlayableDetailResponseEntityDto(playable);

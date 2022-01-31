@@ -1,0 +1,129 @@
+{
+  "_embedded": {
+    "playableListResponsePayloads": [
+      {
+        "createdDate": "2022-01-31T21:56:47.963117",
+        "music": {
+          "id": 1,
+          "title": "music example"
+        },
+        "level": 1,
+        "_links": {
+          "music": {
+            "href": "http://localhost:51004/main_api/v1/musics/1"
+          },
+          "self": {
+            "href": "http://localhost:51004/main_api/v1/playables/1"
+          }
+        },
+        "modifiedDate": "2022-01-31T21:56:47.988823",
+        "bpms": [
+          {
+            "id": 1,
+            "value": 100
+          },
+          {
+            "id": 2,
+            "value": 101
+          }
+        ],
+        "id": 1
+      },
+      {
+        "createdDate": "2022-01-31T22:04:26.612992",
+        "music": {
+          "id": 2,
+          "title": "music example"
+        },
+        "level": 1,
+        "_links": {
+          "music": {
+            "href": "http://localhost:51004/main_api/v1/musics/2"
+          },
+          "self": {
+            "href": "http://localhost:51004/main_api/v1/playables/2"
+          }
+        },
+        "modifiedDate": "2022-01-31T22:04:26.639048",
+        "bpms": [
+          {
+            "id": 3,
+            "value": 100
+          },
+          {
+            "id": 4,
+            "value": 101
+          }
+        ],
+        "id": 2
+      },
+      {
+        "createdDate": "2022-01-31T22:20:59.562649",
+        "music": {
+          "id": 3,
+          "title": "music example"
+        },
+        "level": 1,
+        "_links": {
+          "music": {
+            "href": "http://localhost:51004/main_api/v1/musics/3"
+          },
+          "self": {
+            "href": "http://localhost:51004/main_api/v1/playables/3"
+          }
+        },
+        "modifiedDate": "2022-01-31T22:20:59.585941",
+        "bpms": [
+          {
+            "id": 5,
+            "value": 100
+          },
+          {
+            "id": 6,
+            "value": 101
+          }
+        ],
+        "id": 3
+      },
+      {
+        "createdDate": "2022-01-31T22:22:10.845504",
+        "music": {
+          "id": 4,
+          "title": "music example"
+        },
+        "level": 1,
+        "_links": {
+          "music": {
+            "href": "http://localhost:51004/main_api/v1/musics/4"
+          },
+          "self": {
+            "href": "http://localhost:51004/main_api/v1/playables/4"
+          }
+        },
+        "modifiedDate": "2022-01-31T22:22:10.870075",
+        "bpms": [
+          {
+            "id": 7,
+            "value": 100
+          },
+          {
+            "id": 8,
+            "value": 101
+          }
+        ],
+        "id": 4
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:51004/main_api/v1/playables?page=0&size=20"
+    }
+  },
+  "page": {
+    "number": 0,
+    "size": 20,
+    "totalPages": 1,
+    "totalElements": 4
+  }
+}

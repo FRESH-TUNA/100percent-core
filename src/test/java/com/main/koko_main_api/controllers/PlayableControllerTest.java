@@ -1,8 +1,11 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.domains.Bpm;
+import com.main.koko_main_api.repositories.BpmsRepository;
+import com.main.koko_main_api.repositories.MusicsRepository;
+import com.main.koko_main_api.repositories.PlayablesRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
+
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,23 +25,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
 @Transactional
 public class PlayableControllerTest {
     @LocalServerPort
     private int port;
-
     @Autowired
     private TestRestTemplate template;
+    @Autowired
+    private BpmsRepository bpmsRepository;
+    @Autowired
+    private MusicsRepository musicsRepository;
+    @Autowired
+    private PlayablesRepository playablesRepository;
 
     private static String MUSICS_ENDPOINT="/musics";
     private static String PLAYABLES_ENDPOINT="/playables";
 
 
-//    aftereach 를 통해 후처리를 할수 있다.
-//    @AfterEach
+    //aftereach 를 통해 후처리를 할수 있다.
+//    @AfterAll
 //    public void clear_db() {
 //        this.bpmsRepository.deleteAll();
+//        this.playablesRepository.deleteAll();
+//        this.musicsRepository.deleteAll();
 //    }
 
     @Test
@@ -81,7 +91,7 @@ public class PlayableControllerTest {
         /*
          * 생성된 데이터 검증
          */
-        //System.out.println(new_playable);
+        System.out.println(new_playable);
         JSONArray new_playable_bpms = new_playable.getJSONArray("bpms");
         assertThat(new_playable_bpms.getJSONObject(0).getInt("value")).isEqualTo(100);
         assertThat(new_playable_bpms.getJSONObject(1).getInt("value")).isEqualTo(101);
@@ -90,7 +100,6 @@ public class PlayableControllerTest {
         /*
          * findbyId 검증
          */
-        //System.out.println(new_playable);
         String new_playable_link = new_playable.getJSONObject("_links")
                 .getJSONObject("self").getString("href");
         new_playable = new JSONObject(template.getForObject(new_playable_link, String.class));
@@ -108,7 +117,8 @@ public class PlayableControllerTest {
 
         JSONObject playables = new JSONObject(
                 template.getForObject(ROOT_ENDPOINT + "/playables", String.class));
-        System.out.println(playables.toString());
+        System.out.println(playables);
+        assertThat(playables.getJSONObject("page").getInt("totalElements")).isEqualTo(1);
     }
 }
 
