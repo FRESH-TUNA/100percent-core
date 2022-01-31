@@ -1,6 +1,6 @@
-package com.main.koko_main_api.dtos;
+package com.main.koko_main_api.entityDtos.album;
 
-import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.domains.Album;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Getter
-public class MusicsSaveRequestDto {
+public class AlbumsSaveRequestDto {
     private String title;
 
     @Builder
-    public MusicsSaveRequestDto(String title) {
+    public AlbumsSaveRequestDto(String title) {
         this.title = title;
     }
 
-    public Music toEntity() {
-        return Music.builder()
+    public Album toEntity() {
+        return Album.builder()
                 .title(title)
                 .build();
     }

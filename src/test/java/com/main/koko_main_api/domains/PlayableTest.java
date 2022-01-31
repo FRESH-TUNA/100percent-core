@@ -1,7 +1,7 @@
 package com.main.koko_main_api.domains;
 
-import com.main.koko_main_api.dtos.playable.PlayableSaveObject;
-import com.main.koko_main_api.dtos.playable.bpm.BpmsSaveDto;
+import com.main.koko_main_api.entityDtos.playable.PlayableSaveEntityDto;
+import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
 import com.main.koko_main_api.repositories.BpmsRepository;
 import com.main.koko_main_api.repositories.PlayablesRepository;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class PlayableTest {
 
     @Test
     public void playable_to_bpm_test() {
-        Playable play = PlayableSaveObject.builder().level(2).build().toEntity();
+        Playable play = PlayableSaveEntityDto.builder().level(2).build().toEntity();
         play = pr.save(play);
 
         /*bpm*/

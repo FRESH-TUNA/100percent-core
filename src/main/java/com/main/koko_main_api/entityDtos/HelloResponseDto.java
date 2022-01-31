@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos;
+package com.main.koko_main_api.entityDtos;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

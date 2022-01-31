@@ -1,34 +1,41 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.dtos.playable.bpm.BpmsSaveDto;
-import com.main.koko_main_api.dtos.playable.PlayableDetailResponse;
-import com.main.koko_main_api.dtos.playable.PlayableSavePayload;
+import com.main.koko_main_api.domains.Bpm;
+import com.main.koko_main_api.domains.Playable;
+import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
+import com.main.koko_main_api.entityDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.BpmsRepository;
 import com.main.koko_main_api.repositories.MusicsRepository;
 import com.main.koko_main_api.repositories.PlayablesRepository;
-import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
-import org.springframework.hateoas.Link;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
+/*
+ * 참고자료
+ * https://tecoble.techcourse.co.kr/post/2021-08-15-pageable/
+ */
 @ActiveProfiles(profiles = "test")
 @ExtendWith(MockitoExtension.class)
-@Transactional
 public class PlayableServiceTest {
 
     @InjectMocks
@@ -41,56 +48,142 @@ public class PlayableServiceTest {
     private BpmsRepository bpmsRepository;
 
     @Mock
-    private RepositoryEntityLinks entityLinks;
-
-    @Mock
     private PlayablesRepository playablesRepository;
 
-    @Mock
-    private UriToIDService uriToIDService;
-
-//    aftereach 를 통해 후처리를 할수 있다.
-//    @AfterEach
-//    public void clear_db() {
-//        this.bpmsRepository.deleteAll();
-//    }
-
     @Test
-    public void save_and_findById_test() {
+    public void save_test() throws URISyntaxException {
         /*
-         * bpm body 준비
+         * data mocking
          */
         List<BpmsSaveDto> bpms = new ArrayList() {
             { add(BpmsSaveDto.builder().value(100).build());
               add(BpmsSaveDto.builder().value(150).build());}};
-
-        /*
-         * music 생성
-         */
-        Music music = Music.builder().title("music").build();
-        music = musicsRepository.save(music);
-        Link music_link = entityLinks.linkToItemResource(
-                MusicsRepository.class, music.getId());
-
-        /*
-         * playable 생성
-         */
-        PlayableSavePayload dto = PlayableSavePayload.builder()
+        Music saved_music = Music.builder().title("music").id(1L).build();
+        URI music_link = new URI("http://localhost/musics/1");
+        PlayableSavePayload playableSavePayload = PlayableSavePayload.builder()
                 .level(2)
                 .bpms(bpms)
-                .music(music_link.toUri()).build();
-        PlayableDetailResponse result = playableService.save(dto);
+                .music(music_link).build();
+        Playable playable = Playable.builder()
+                .level(2)
+                .id(1L)
+                .music(saved_music)
+                .build();
+        List<Bpm> _bpms = bpms.stream().map(
+                bpm -> bpm.toEntity(playable)).collect(Collectors.toList());
 
-        assertThat(result.getLevel()).isEqualTo(2);
-        assertThat(result.getBpms().size()).isEqualTo(2);
-        assertThat(result.getMusic().getTitle()).isEqualTo("music");
+        when(musicsRepository.findById(1L)).thenReturn(Optional.of(saved_music));
+        when(playablesRepository.save(any())).thenReturn(playable);
+        when(bpmsRepository.saveAll(any())).thenReturn(_bpms);
 
         /*
-        * Playable get 테스트
+         * when
          */
-        result = playableService.findById(result.getId());
+        PlayableDetailResponseEntityDto result = playableService.save(playableSavePayload);
+
+        /*
+         * then
+         */
         assertThat(result.getLevel()).isEqualTo(2);
         assertThat(result.getBpms().size()).isEqualTo(2);
+        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
+        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
         assertThat(result.getMusic().getTitle()).isEqualTo("music");
+    }
+
+    @Test
+    public void findById_test() {
+        /*
+         * data mocking
+         */
+        List<BpmsSaveDto> bpms = new ArrayList() {
+            { add(BpmsSaveDto.builder().value(100).build());
+                add(BpmsSaveDto.builder().value(150).build());}};
+        Music saved_music = Music.builder().title("music").id(1L).build();
+        Playable playable = Playable.builder()
+                .level(2)
+                .id(1L)
+                .music(saved_music)
+                .build();
+        playable.add_bpms_for_save_request(bpms.stream()
+                .map(bpm -> bpm.toEntity(playable))
+                .collect(Collectors.toList()));
+
+
+        when(playablesRepository.findById(1L)).thenReturn(Optional.of(playable));
+
+        /*
+         * when
+         */
+        PlayableDetailResponseEntityDto result = playableService.findById(1L);
+
+        /*
+         * then
+         */
+        assertThat(result.getLevel()).isEqualTo(2);
+        assertThat(result.getBpms().size()).isEqualTo(2);
+        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
+        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
+        assertThat(result.getMusic().getTitle()).isEqualTo("music");
+    }
+
+    @Test
+    public void findAll_test() {
+        /*
+         * data and method mocking
+         */
+        List<BpmsSaveDto> playable1_bpms = new ArrayList() {
+            { add(BpmsSaveDto.builder().value(100).build());
+                add(BpmsSaveDto.builder().value(150).build());}};
+        List<BpmsSaveDto> playable2_bpms = new ArrayList() {
+            { add(BpmsSaveDto.builder().value(100).build());
+                add(BpmsSaveDto.builder().value(150).build());}};
+
+        Music saved_music_1 = Music.builder().title("music1").id(1L).build();
+        Music saved_music_2 = Music.builder().title("music2").id(2L).build();
+
+        Playable playable1 = Playable.builder()
+                .level(2)
+                .id(1L)
+                .music(saved_music_1)
+                .build();
+        Playable playable2 = Playable.builder()
+                .level(3)
+                .id(2L)
+                .music(saved_music_2)
+                .build();
+
+        playable1.add_bpms_for_save_request(playable1_bpms.stream()
+                .map(bpm -> bpm.toEntity(playable1))
+                .collect(Collectors.toList()));
+        playable2.add_bpms_for_save_request(playable2_bpms.stream()
+                .map(bpm -> bpm.toEntity(playable2))
+                .collect(Collectors.toList()));
+
+        Page<Playable> page = new PageImpl<>(
+                new ArrayList<Playable>() {{ add(playable1); add(playable2); }});
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(playablesRepository.findAll(pageable)).thenReturn(page);
+
+        /*
+         * when
+         */
+        Page<PlayableListResponseEntityDto> results = playableService.findAll(pageable);
+
+        List<PlayableListResponseEntityDto> results_list = results.getContent();
+        PlayableListResponseEntityDto playable1_res = results_list.get(0),
+                playable2_res = results_list.get(1);
+
+        /*
+         * then
+         */
+        assertThat(results.getNumber()).isEqualTo(0);
+        assertThat(results.getSize()).isEqualTo(2);
+        assertThat(results.getTotalElements()).isEqualTo(2);
+        assertThat(results.getTotalPages()).isEqualTo(1);
+
+        assertThat(playable1_res.getBpms().size()).isEqualTo(2);
+        assertThat(playable2_res.getBpms().size()).isEqualTo(2);
     }
 }

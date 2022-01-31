@@ -1,8 +1,8 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.dtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsResponseDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.services.AlbumsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

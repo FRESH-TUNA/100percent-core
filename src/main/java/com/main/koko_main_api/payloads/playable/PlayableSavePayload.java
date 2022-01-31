@@ -1,6 +1,6 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.payloads.playable;
 
-import com.main.koko_main_api.dtos.playable.bpm.BpmsSaveDto;
+import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 

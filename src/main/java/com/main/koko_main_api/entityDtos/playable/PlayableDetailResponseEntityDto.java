@@ -1,16 +1,18 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.entityDtos.playable;
 
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.dtos.playable.bpm.BpmsResponseDto;
-import com.main.koko_main_api.dtos.playable.music.MusicResponseDto;
+import com.main.koko_main_api.entityDtos.playable.bpm.BpmsResponseDto;
+import com.main.koko_main_api.entityDtos.playable.music.MusicResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @Getter
-public class PlayableListResponseObject {
+public class PlayableDetailResponseEntityDto {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
@@ -18,7 +20,7 @@ public class PlayableListResponseObject {
     private MusicResponseDto music;
     private List<BpmsResponseDto> bpms;
 
-    public PlayableListResponseObject(Playable p)  {
+    public PlayableDetailResponseEntityDto(Playable p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();

@@ -49,9 +49,13 @@ public class Playable extends BaseTimeModel  {
 //    public void addBpm(Bpm bpm) {
 //        this.bpms.add(bpm);
 //    }
+    public void add_bpms_for_save_request(List<Bpm> bpms) {
+        this.bpms = bpms;
+    }
 
     @Builder
-    public Playable(Integer level, Music music) {
+    public Playable(Long id, Integer level, Music music) {
+        this.id = id;
         this.level = level;
         this.music = music;
     }

@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos.album;
+package com.main.koko_main_api.entityDtos.album;
 
 import lombok.Builder;
 import lombok.Getter;

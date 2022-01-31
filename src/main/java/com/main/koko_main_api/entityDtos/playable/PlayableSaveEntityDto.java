@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.entityDtos.playable;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayableSaveObject {
+public class PlayableSaveEntityDto {
     private Integer level;
     private Music music;
 

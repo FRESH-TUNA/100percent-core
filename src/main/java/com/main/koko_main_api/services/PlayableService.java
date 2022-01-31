@@ -1,60 +1,60 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.dtos.playable.PlayableDetailResponse;
-import com.main.koko_main_api.dtos.playable.PlayableListResponseObject;
-import com.main.koko_main_api.dtos.playable.PlayableSaveObject;
-import com.main.koko_main_api.dtos.playable.PlayableSavePayload;
+import com.main.koko_main_api.domains.Bpm;
+import com.main.koko_main_api.entityDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.entityDtos.playable.PlayableSaveEntityDto;
+import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.repositories.BpmsRepository;
 import com.main.koko_main_api.repositories.MusicsRepository;
 import com.main.koko_main_api.repositories.PlayablesRepository;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PlayableService {
+public class PlayableService extends URIToID {
     private final PlayablesRepository playablesRepository;
     private final MusicsRepository musicsRepository;
     private final BpmsRepository bpmsRepository;
-    private final UriToIDService uriToIDService;
-    private final RepositoryEntityLinks entityLinks;
 
     @Transactional
-    public PlayableDetailResponse save(PlayableSavePayload dto) {
-        Long music_id = uriToIDService.convert(dto.getMusic());
+    public PlayableDetailResponseEntityDto save(PlayableSavePayload dto) {
+        Long music_id = this.convertURItoID(dto.getMusic());
         Music music = musicsRepository.findById(music_id).orElseThrow(
                 () -> new IllegalArgumentException(
-                        "해당 게시글이 없습니다. id= " + dto.getMusic()));
-        PlayableSaveObject saveDto = PlayableSaveObject
+                        "해당 게시글이 없습니다. id= " + music_id));
+        PlayableSaveEntityDto saveDto = PlayableSaveEntityDto
                 .builder().music(music).level(dto.getLevel()).build();
 
         Playable playable = playablesRepository.save(saveDto.toEntity());
-        bpmsRepository.saveAll(dto.getBpms().stream().map(
+        List<Bpm> bpms = bpmsRepository.saveAll(dto.getBpms().stream().map(
                 bpm -> bpm.toEntity(playable)).collect(Collectors.toList()));
+        playable.add_bpms_for_save_request(bpms);
 
-
-        return new PlayableDetailResponse(playable, entityLinks);
+        return new PlayableDetailResponseEntityDto(playable);
     }
 
-    public PlayableDetailResponse findById(Long id) {
+    public PlayableDetailResponseEntityDto findById(Long id) {
         Playable p = playablesRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(
                         "해당 게시글이 없습니다. id= " + id));
 
-        return new PlayableDetailResponse(p, entityLinks);
+        return new PlayableDetailResponseEntityDto(p);
     }
 
-    public Page<PlayableListResponseObject> findAll(Pageable pageable) {
+    public Page<PlayableListResponseEntityDto> findAll(Pageable pageable) {
         return playablesRepository.findAll(pageable).map(
-                p -> new PlayableListResponseObject(p));
+                p -> new PlayableListResponseEntityDto(p));
     }
 }

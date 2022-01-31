@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos;
+package com.main.koko_main_api.entityDtos;
 import com.main.koko_main_api.domains.Music;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

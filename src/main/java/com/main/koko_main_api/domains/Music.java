@@ -29,7 +29,8 @@ public class Music extends BaseTimeModel {
     private List<Composer> composers;
 
     @Builder
-    public Music(String title) {
+    public Music(String title, Long id) {
         this.title = title;
+        this.id = id;
     }
 }

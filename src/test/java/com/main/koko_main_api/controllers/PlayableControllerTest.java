@@ -33,6 +33,13 @@ public class PlayableControllerTest {
     private static String MUSICS_ENDPOINT="/musics";
     private static String PLAYABLES_ENDPOINT="/playables";
 
+
+//    aftereach 를 통해 후처리를 할수 있다.
+//    @AfterEach
+//    public void clear_db() {
+//        this.bpmsRepository.deleteAll();
+//    }
+
     @Test
     public void save_and_findById_test() throws Exception {
         //endpoints and headers

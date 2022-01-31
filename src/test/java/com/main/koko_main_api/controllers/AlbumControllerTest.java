@@ -1,8 +1,8 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.dtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsResponseDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.repositories.AlbumsRepository;
 import org.junit.jupiter.api.Test;

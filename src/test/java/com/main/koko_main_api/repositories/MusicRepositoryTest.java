@@ -1,8 +1,8 @@
 package com.main.koko_main_api.repositories;
 
-import com.main.koko_main_api.dtos.*;
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.entityDtos.*;
+import com.main.koko_main_api.entityDtos.album.AlbumsResponseDto;
+import com.main.koko_main_api.entityDtos.album.AlbumsSaveRequestDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
