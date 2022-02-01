@@ -6,7 +6,9 @@ import com.main.koko_main_api.repositories.PlayablesRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,16 +18,13 @@ import org.springframework.http.*;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-//https://www.baeldung.com/spring-data-rest-relationships
 
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
 public class PlayableControllerTest {
     @LocalServerPort
     private int port;
@@ -41,14 +40,17 @@ public class PlayableControllerTest {
     private static String MUSICS_ENDPOINT="/musics";
     private static String PLAYABLES_ENDPOINT="/playables";
 
-
-    //aftereach 를 통해 후처리를 할수 있다.
-//    @AfterAll
-//    public void clear_db() {
-//        this.bpmsRepository.deleteAll();
-//        this.playablesRepository.deleteAll();
-//        this.musicsRepository.deleteAll();
-//    }
+    /*
+     * aftereach 를 통해 후처리를 할수 있다.
+     * resttemplate을 이용한 테스트의 경우 @Transactional을
+     * 사용해도 별도의 쓰레드에서 테스트가 실행되어 사용할수 없다.
+     */
+    @AfterEach
+    public void clear_db() {
+        this.bpmsRepository.deleteAll();
+        this.playablesRepository.deleteAll();
+        this.musicsRepository.deleteAll();
+    }
 
     @Test
     public void save_and_findById_test() throws Exception {
@@ -110,16 +112,49 @@ public class PlayableControllerTest {
 
     @Test
     public void findAll() throws Exception {
-        //endpoints and headers
+        /*
+         * given
+         */
         String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/json");
 
+        JSONObject music_body = new JSONObject();
+        music_body.put("title", "music example");
+        String music_uri = new JSONObject(template.exchange(
+                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
+                        new HttpEntity<>(music_body.toString(), headers), String.class)
+                .getBody()).getJSONObject("_links")
+                .getJSONObject("self").getString("href");
+
+        JSONObject playable_body = new JSONObject();
+        playable_body.put("level", 1);
+        playable_body.put("music", music_uri);
+
+        // 데이터의 갯수는 2
+        int playable_counts = 2;
+        while(playable_counts-- > 0) {
+            template.exchange(
+                    ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
+                    new HttpEntity<>(playable_body.toString(), headers),
+                    String.class);
+        }
+
+        /*
+         * when
+         */
         JSONObject playables = new JSONObject(
                 template.getForObject(ROOT_ENDPOINT + "/playables", String.class));
+
+        /*
+         * then
+         */
+        int totalElements = playables.getJSONObject("page").getInt("totalElements");
+        JSONArray _embedded_playables = playables.getJSONObject("_embedded")
+                        .getJSONArray("playables");
         System.out.println(playables);
-        assertThat(playables.getJSONObject("page").getInt("totalElements")).isEqualTo(1);
+        assertThat(totalElements).isEqualTo(2);
+        assertThat(_embedded_playables.length()).isEqualTo(2);
+
     }
 }
-
-

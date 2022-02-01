@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -51,9 +52,11 @@ public class Playable extends BaseTimeModel  {
 
     /*
      * for new Playable
+     * 실제 쿼리가 들어가지는 않지만 객체의 양방향 연결을 위해 사용한다.
      */
     public void add_bpms_for_save_request(List<Bpm> bpms) {
-        this.bpms = bpms;
+        Iterator<Bpm> it = bpms.iterator();
+        while(it.hasNext()) this.bpms.add(it.next());
     }
 
     /*
