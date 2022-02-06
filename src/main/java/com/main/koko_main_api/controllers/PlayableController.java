@@ -1,9 +1,9 @@
 package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.assemblers.playable.PlayableDetailResponseAssembler;
-import com.main.koko_main_api.entityDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.assemblers.playable.PlayableListResponseAssembler;
-import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableDetailResponsePayload;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 
@@ -49,8 +49,11 @@ public class PlayableController {
     }
 
     @GetMapping("/main_api/v1/playables")
-    public ResponseEntity<PagedModel<PlayableListResponsePayload>> findAll(Pageable pageable) {
-        Page<PlayableListResponseEntityDto> playables = playableService.findAll(pageable);
+    public ResponseEntity<PagedModel<PlayableListResponsePayload>> findAll(
+            Pageable pageable,
+            @RequestParam(value="play_type") String play_type) {
+        Page<PlayableListResponseEntityDto> playables =
+                playableService.findAll(pageable, play_type);
         return ResponseEntity.ok(pageAssembler.toModel(playables, listAssembler));
     }
 }

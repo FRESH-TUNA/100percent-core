@@ -1,4 +1,4 @@
-package com.main.koko_main_api.repositories;
+package com.main.koko_main_api.repositories.album;
 
 import com.main.koko_main_api.domains.Album;
 import org.springframework.data.jpa.repository.JpaRepository;

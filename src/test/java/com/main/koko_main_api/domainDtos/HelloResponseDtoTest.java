@@ -1,4 +1,4 @@
-package com.main.koko_main_api.entityDtos;
+package com.main.koko_main_api.domainDtos;
 
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;

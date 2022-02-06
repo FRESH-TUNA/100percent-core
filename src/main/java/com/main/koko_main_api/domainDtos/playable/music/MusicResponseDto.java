@@ -1,4 +1,4 @@
-package com.main.koko_main_api.entityDtos.playable.music;
+package com.main.koko_main_api.domainDtos.playable.music;
 
 import com.main.koko_main_api.domains.Music;
 import lombok.Getter;

@@ -1,8 +1,8 @@
-package com.main.koko_main_api.entityDtos.playable;
+package com.main.koko_main_api.domainDtos.playable;
 
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.entityDtos.playable.bpm.BpmsResponseDto;
-import com.main.koko_main_api.entityDtos.playable.music.MusicResponseDto;
+import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.music.MusicResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,7 @@ public class PlayableDetailResponseEntityDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicResponseDto music;
-    private List<BpmsResponseDto> bpms;
+    private List<PlayableBpmResponseEntityDto> bpms;
 
     public PlayableDetailResponseEntityDto(Playable p)  {
         id = p.getId();
@@ -27,7 +27,7 @@ public class PlayableDetailResponseEntityDto {
         modifiedDate = p.getModifiedDate();
         music = new MusicResponseDto(p.getMusic());
         bpms = p.getBpms().stream()
-                .map(bpm -> new BpmsResponseDto(bpm))
+                .map(bpm -> new PlayableBpmResponseEntityDto(bpm))
                 .collect(Collectors.toList());
     }
 }

@@ -1,4 +1,4 @@
-package com.main.koko_main_api.entityDtos.playable;
+package com.main.koko_main_api.domainDtos.playable;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;

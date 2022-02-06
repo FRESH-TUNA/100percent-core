@@ -1,4 +1,4 @@
-package com.main.koko_main_api.entityDtos.playable.bpm;
+package com.main.koko_main_api.domainDtos.playable.bpm;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Playable;
 import lombok.Builder;
@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Getter
-public class BpmsSaveDto {
+public class PlayableBpmSaveEntityDto {
     private Integer value;
 
 
     @Builder
-    public BpmsSaveDto(Integer value) {
+    public PlayableBpmSaveEntityDto(Integer value) {
         this.value = value;
     }
 

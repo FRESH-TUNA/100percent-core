@@ -1,6 +1,7 @@
 package com.main.koko_main_api.repositories;
 
 import com.main.koko_main_api.domains.Album;
+import com.main.koko_main_api.repositories.album.AlbumsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

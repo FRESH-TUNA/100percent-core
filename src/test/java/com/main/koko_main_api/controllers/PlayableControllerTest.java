@@ -155,6 +155,5 @@ public class PlayableControllerTest {
         System.out.println(playables);
         assertThat(totalElements).isEqualTo(2);
         assertThat(_embedded_playables.length()).isEqualTo(2);
-
     }
 }

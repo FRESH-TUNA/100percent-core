@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+//https://www.baeldung.com/rest-api-search-language-spring-data-querydsl
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class Playable extends BaseTimeModel  {
     private Music music;
 
     // 별의 갯수 (1~15)
-    @Column(nullable = false)
+    @Column
     @Min(1) @Max(15)
     private Integer level;
 
@@ -53,6 +55,7 @@ public class Playable extends BaseTimeModel  {
     /*
      * for new Playable
      * 실제 쿼리가 들어가지는 않지만 객체의 양방향 연결을 위해 사용한다.
+     * 또한 객체 address를 바꾸지 않아서 필요없는 update쿼리를 막는다.
      */
     public void add_bpms_for_save_request(List<Bpm> bpms) {
         Iterator<Bpm> it = bpms.iterator();
@@ -60,12 +63,17 @@ public class Playable extends BaseTimeModel  {
     }
 
     /*
-     * for new Playable
+     * for new Playable and Test purpose
      */
     @Builder
-    public Playable(Long id, Integer level, Music music) {
+    public Playable(Long id, Music music,
+                    Integer level,
+                    DifficultyType difficultyType,
+                    PlayType playType) {
         this.id = id;
-        this.level = level;
         this.music = music;
+        this.level = level;
+        this.difficultyType = difficultyType;
+        this.playType = playType;
     }
 }

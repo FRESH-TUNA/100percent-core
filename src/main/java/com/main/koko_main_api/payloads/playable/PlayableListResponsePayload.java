@@ -1,8 +1,8 @@
 package com.main.koko_main_api.payloads.playable;
 
-import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
-import com.main.koko_main_api.entityDtos.playable.bpm.BpmsResponseDto;
-import com.main.koko_main_api.entityDtos.playable.music.MusicResponseDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.music.MusicResponseDto;
 import lombok.Getter;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -23,7 +23,7 @@ public class PlayableListResponsePayload extends RepresentationModel<PlayableLis
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicResponseDto music;
-    private List<BpmsResponseDto> bpms;
+    private List<PlayableBpmResponseEntityDto> bpms;
 
     public PlayableListResponsePayload(PlayableListResponseEntityDto p)  {
         id = p.getId();

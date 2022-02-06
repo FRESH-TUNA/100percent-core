@@ -1,4 +1,4 @@
-package com.main.koko_main_api.entityDtos.playable.bpm;
+package com.main.koko_main_api.domainDtos.playable.bpm;
 
 import com.main.koko_main_api.domains.Bpm;
 import lombok.Getter;
@@ -6,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class BpmsResponseDto {
+public class PlayableBpmResponseEntityDto {
     private Long id;
     private Integer value;
 
-    public BpmsResponseDto(Bpm entity) {
+    public PlayableBpmResponseEntityDto(Bpm entity) {
         this.id = entity.getId();
         this.value = entity.getValue();
     }

@@ -1,6 +1,6 @@
 package com.main.koko_main_api.domains;
 
-import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
+import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ public class PlayableTest {
          */
         Playable playable = new Playable();
 
-        List<BpmsSaveDto> BpmSaveDtos = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build());
-              add(BpmsSaveDto.builder().value(150).build()); }};
+        List<PlayableBpmSaveEntityDto> BpmSaveDtos = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+              add(PlayableBpmSaveEntityDto.builder().value(150).build()); }};
 
         List<Bpm> bpms = BpmSaveDtos.stream().map(
                 bpm -> bpm.toEntity(playable)).collect(Collectors.toList());

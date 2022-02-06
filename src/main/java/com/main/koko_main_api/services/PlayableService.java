@@ -1,9 +1,9 @@
 package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Bpm;
-import com.main.koko_main_api.entityDtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
-import com.main.koko_main_api.entityDtos.playable.PlayableSaveEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableSaveEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
@@ -56,7 +56,7 @@ public class PlayableService extends URIToID {
         return new PlayableDetailResponseEntityDto(p);
     }
 
-    public Page<PlayableListResponseEntityDto> findAll(Pageable pageable) {
+    public Page<PlayableListResponseEntityDto> findAll(Pageable pageable, String play_type) {
         return playablesRepository.findAll(pageable).map(
                 p -> new PlayableListResponseEntityDto(p));
     }

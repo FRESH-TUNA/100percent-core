@@ -1,7 +1,7 @@
 package com.main.koko_main_api.assemblers.playable;
 
 import com.main.koko_main_api.controllers.PlayableController;
-import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableListResponsePayload;
 import com.main.koko_main_api.repositories.MusicsRepository;
 import org.springframework.beans.factory.annotation.Autowired;

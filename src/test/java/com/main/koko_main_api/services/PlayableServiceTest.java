@@ -2,9 +2,9 @@ package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.entityDtos.playable.PlayableListResponseEntityDto;
-import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
-import com.main.koko_main_api.entityDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.BpmsRepository;
@@ -55,9 +55,9 @@ public class PlayableServiceTest {
         /*
          * data mocking
          */
-        List<BpmsSaveDto> bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build());
-              add(BpmsSaveDto.builder().value(150).build());}};
+        List<PlayableBpmSaveEntityDto> bpms = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+              add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
         URI music_link = new URI("http://localhost/musics/1");
         PlayableSavePayload playableSavePayload = PlayableSavePayload.builder()
@@ -96,9 +96,9 @@ public class PlayableServiceTest {
         /*
          * data mocking
          */
-        List<BpmsSaveDto> bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build());
-                add(BpmsSaveDto.builder().value(150).build());}};
+        List<PlayableBpmSaveEntityDto> bpms = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
         Playable playable = Playable.builder()
                 .level(2)
@@ -132,12 +132,12 @@ public class PlayableServiceTest {
         /*
          * data and method mocking
          */
-        List<BpmsSaveDto> playable1_bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build());
-                add(BpmsSaveDto.builder().value(150).build());}};
-        List<BpmsSaveDto> playable2_bpms = new ArrayList() {
-            { add(BpmsSaveDto.builder().value(100).build());
-                add(BpmsSaveDto.builder().value(150).build());}};
+        List<PlayableBpmSaveEntityDto> playable1_bpms = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
+        List<PlayableBpmSaveEntityDto> playable2_bpms = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
 
         Music saved_music_1 = Music.builder().title("music1").id(1L).build();
         Music saved_music_2 = Music.builder().title("music2").id(2L).build();

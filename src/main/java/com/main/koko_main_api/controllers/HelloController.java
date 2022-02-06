@@ -1,6 +1,6 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.entityDtos.HelloResponseDto;
+import com.main.koko_main_api.domainDtos.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

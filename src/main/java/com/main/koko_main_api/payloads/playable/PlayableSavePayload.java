@@ -1,6 +1,6 @@
 package com.main.koko_main_api.payloads.playable;
 
-import com.main.koko_main_api.entityDtos.playable.bpm.BpmsSaveDto;
+import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -18,6 +18,6 @@ import java.util.List;
 @Getter
 public class PlayableSavePayload {
     private Integer level;
-    private List<BpmsSaveDto> bpms;
+    private List<PlayableBpmSaveEntityDto> bpms;
     private URI music;
 }

@@ -1,10 +1,10 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.entityDtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.entityDtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.entityDtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.domainDtos.album.AlbumsResponseDto;
+import com.main.koko_main_api.domainDtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.domainDtos.album.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.domains.Album;
-import com.main.koko_main_api.repositories.AlbumsRepository;
+import com.main.koko_main_api.repositories.album.AlbumsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
