@@ -4,6 +4,7 @@ import com.main.koko_main_api.domainDtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.domainDtos.album.AlbumsSaveRequestDto;
 import com.main.koko_main_api.domainDtos.album.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.domains.Album;
+import com.main.koko_main_api.repositories.album.AlbumCustomRepository;
 import com.main.koko_main_api.repositories.album.AlbumsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AlbumsService {
-    private final AlbumsRepository albumsRepository;
+    //private final AlbumsRepository albumsRepository;
+    private final AlbumCustomRepository albumsRepository;
 
     @Transactional
     public AlbumsResponseDto save(AlbumsSaveRequestDto requestDto) {

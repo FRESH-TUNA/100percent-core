@@ -1,6 +1,7 @@
 package com.main.koko_main_api.repositories.album;
 
 import com.main.koko_main_api.domains.Album;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -9,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 public class AlbumCustomRepositoryCriteriaImpl implements AlbumCustomRepository{
     @PersistenceContext
@@ -32,11 +34,11 @@ public class AlbumCustomRepositoryCriteriaImpl implements AlbumCustomRepository{
         cq.select(m);
 
         // querying
-        em.createQuery(cq).getResultList();
+        return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public Album find(Long id) {
+    public Optional<Album> findById(Long id) {
         // 쿼리 빌더 받아오기
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -51,8 +53,36 @@ public class AlbumCustomRepositoryCriteriaImpl implements AlbumCustomRepository{
 
         //SELECT and WHERE
         cq.select(m).where(id_equal);
-
+        
         // querying
-        em.createQuery(cq).getResultList().get(0);
+        List<Album> album = em.createQuery(cq).getResultList();
+
+        if(album.isEmpty()) return Optional.empty();
+        return Optional.of(album.get(0));
+    }
+
+    @Override
+    public Album save(Album album) {
+        em.persist(album);
+        return album;
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        // querying
+        em.remove(findById(id));
+    }
+
+    @Transactional
+    @Override
+    public void deleteAll() {
+        // querying
+        //
+    }
+
+    @Override
+    public void flush() {
+
     }
 }
