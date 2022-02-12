@@ -2,14 +2,13 @@ package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
 import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.repositories.BpmsRepository;
-import com.main.koko_main_api.repositories.MusicsRepository;
-import com.main.koko_main_api.repositories.PlayablesRepository;
+import com.main.koko_main_api.repositories.BpmRepository;
+import com.main.koko_main_api.repositories.MusicRepository;
+import com.main.koko_main_api.repositories.playable.PlayableRepository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,13 +41,13 @@ public class PlayableServiceTest {
     private PlayableService playableService;
 
     @Mock
-    private MusicsRepository musicsRepository;
+    private MusicRepository musicRepository;
 
     @Mock
-    private BpmsRepository bpmsRepository;
+    private BpmRepository bpmRepository;
 
     @Mock
-    private PlayablesRepository playablesRepository;
+    private PlayableRepository playableRepository;
 
     @Test
     public void save_test() throws URISyntaxException {
@@ -72,9 +71,9 @@ public class PlayableServiceTest {
         List<Bpm> _bpms = bpms.stream().map(
                 bpm -> bpm.toEntity(playable)).collect(Collectors.toList());
 
-        when(musicsRepository.findById(1L)).thenReturn(Optional.of(saved_music));
-        when(playablesRepository.save(any())).thenReturn(playable);
-        when(bpmsRepository.saveAll(any())).thenReturn(_bpms);
+        when(musicRepository.findById(1L)).thenReturn(Optional.of(saved_music));
+        when(playableRepository.save(any())).thenReturn(playable);
+        when(bpmRepository.saveAll(any())).thenReturn(_bpms);
 
         /*
          * when
@@ -110,7 +109,7 @@ public class PlayableServiceTest {
                 .collect(Collectors.toList()));
 
 
-        when(playablesRepository.findById(1L)).thenReturn(Optional.of(playable));
+        when(playableRepository.findById(1L)).thenReturn(Optional.of(playable));
 
         /*
          * when
@@ -164,7 +163,7 @@ public class PlayableServiceTest {
                 new ArrayList<Playable>() {{ add(playable1); add(playable2); }});
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(playablesRepository.findAll(pageable)).thenReturn(page);
+        when(playableRepository.findAll(pageable)).thenReturn(page);
 
         /*
          * when

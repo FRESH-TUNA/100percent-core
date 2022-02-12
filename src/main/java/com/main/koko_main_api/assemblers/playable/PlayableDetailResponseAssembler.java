@@ -3,7 +3,7 @@ package com.main.koko_main_api.assemblers.playable;
 import com.main.koko_main_api.controllers.PlayableController;
 import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableDetailResponsePayload;
-import com.main.koko_main_api.repositories.MusicsRepository;
+import com.main.koko_main_api.repositories.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -32,7 +32,7 @@ public class PlayableDetailResponseAssembler implements
         payload.add(linkTo(methodOn(PlayableController.class
         ).findById(payload.getId())).withSelfRel());
         payload.add(linkHelper.linkToItemResource(
-                MusicsRepository.class, payload.getMusic().getId()));
+                MusicRepository.class, payload.getMusic().getId()));
         return payload;
     }
 }

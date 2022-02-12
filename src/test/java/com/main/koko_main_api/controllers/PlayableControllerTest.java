@@ -1,8 +1,8 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.repositories.BpmsRepository;
-import com.main.koko_main_api.repositories.MusicsRepository;
-import com.main.koko_main_api.repositories.PlayablesRepository;
+import com.main.koko_main_api.repositories.BpmRepository;
+import com.main.koko_main_api.repositories.MusicRepository;
+import com.main.koko_main_api.repositories.playable.PlayableRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,11 +31,11 @@ public class PlayableControllerTest {
     @Autowired
     private TestRestTemplate template;
     @Autowired
-    private BpmsRepository bpmsRepository;
+    private BpmRepository bpmRepository;
     @Autowired
-    private MusicsRepository musicsRepository;
+    private MusicRepository musicRepository;
     @Autowired
-    private PlayablesRepository playablesRepository;
+    private PlayableRepository playableRepository;
 
     private static String MUSICS_ENDPOINT="/musics";
     private static String PLAYABLES_ENDPOINT="/playables";
@@ -47,9 +47,9 @@ public class PlayableControllerTest {
      */
     @AfterEach
     public void clear_db() {
-        this.bpmsRepository.deleteAll();
-        this.playablesRepository.deleteAll();
-        this.musicsRepository.deleteAll();
+        this.bpmRepository.deleteAll();
+        this.playableRepository.deleteAll();
+        this.musicRepository.deleteAll();
     }
 
     @Test
