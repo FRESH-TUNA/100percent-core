@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,8 +37,43 @@ public class PlayableSearchRepositoryTest {
     @Autowired
     private BpmRepository bpmRepository;
 
-    @Autowired
-    private PlayableSearchRepository playableSearchRepository;
+    @Test
+    void findById() {
+        /*
+         * given
+         */
+        Music music = Music.builder().title("music").build();
+        musicRepository.save(music);
+
+        // id가 주입된다.
+        //System.out.println(music.getId());
+
+        Playable playable = Playable.builder().level(2).music(music).build();
+        playableRepository.save(playable);
+
+        List<PlayableBpmSaveEntityDto> bpm_datas = new ArrayList() {
+            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
+                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
+        List<Bpm> bpms = new ArrayList<>();
+        bpms.add(bpm_datas.get(0).toEntity(playable));
+        bpms.add(bpm_datas.get(1).toEntity(playable));
+        bpmRepository.saveAll(bpms);
+        playable.add_bpms_for_save_request(bpms);
+
+        /*
+         * when
+         */
+        Optional<Playable> p = playableRepository.findById(playable.getId());
+        playable = p.get();
+
+        /*
+         * then
+         */
+        assertThat(playable.getLevel()).isEqualTo(2);
+        assertThat(playable.getMusic().getTitle()).isEqualTo("music");
+        assertThat(playable.getBpms().size()).isEqualTo(2);
+        assertThat(playable.getBpms().get(0).getValue()).isEqualTo(100);
+    }
 
     @Test
     void findAll() {
@@ -46,16 +82,16 @@ public class PlayableSearchRepositoryTest {
          */
         final int N_PLAYABLES = 5;
 
-        Music music = Music.builder().title("music").id(1L).build();
-        music = musicRepository.save(music);
+        Music music = Music.builder().title("music").build();
+        musicRepository.save(music);
 
         List<Playable> playables = new ArrayList<>();
         for(int i = 0; i < N_PLAYABLES; ++i) {
             playables.add(Playable.builder()
-                    .level(2).id(1L).music(music).build());
+                    .level(2).music(music).build());
         }
+        playableRepository.saveAll(playables);
 
-        playables = playableRepository.saveAll(playables);
         for(Playable p : playables) {
             List<PlayableBpmSaveEntityDto> bpm_datas = new ArrayList() {
                 { add(PlayableBpmSaveEntityDto.builder().value(100).build());
@@ -69,7 +105,7 @@ public class PlayableSearchRepositoryTest {
         /*
          * when
          */
-        playables = playableSearchRepository.findAll();
+        playables = playableRepository.findAll();
 
         /*
          * then
@@ -79,9 +115,5 @@ public class PlayableSearchRepositoryTest {
         assertThat(playables.get(0).getMusic().getTitle()).isEqualTo("music");
         assertThat(playables.get(0).getBpms().size()).isEqualTo(2);
         assertThat(playables.get(0).getBpms().get(0).getValue()).isEqualTo(100);
-    }
-
-    @Test
-    void findById() {
     }
 }

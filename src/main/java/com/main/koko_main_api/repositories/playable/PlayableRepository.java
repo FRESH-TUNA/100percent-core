@@ -4,9 +4,9 @@ import com.main.koko_main_api.domains.Playable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-//@RepositoryRestResource(collectionResourceRel = "playables", path = "playables")
-public interface PlayableRepository extends JpaRepository<Playable, Long> {
+/*
+ * PlayableSearchRepository 에사 findbyuid, findall을 재정의 한다.
+ */
+public interface PlayableRepository extends JpaRepository<Playable, Long>, PlayableSearchRepository<Playable, Long> {
 
-//    @RestResource(exported = false)
-//    Playable save(Playable playable);
 }

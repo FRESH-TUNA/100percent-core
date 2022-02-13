@@ -3,16 +3,13 @@ package com.main.koko_main_api.repositories.playable;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.domains.QPlayable;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +21,7 @@ import java.util.Optional;
  */
 @Repository
 public class PlayableSearchRepositoryImpl
-        extends QuerydslRepositorySupport implements PlayableSearchRepository {
+        extends QuerydslRepositorySupport implements PlayableSearchRepository<Playable, Long> {
 
     private final JPAQueryFactory queryFactory;
 
@@ -54,6 +51,17 @@ public class PlayableSearchRepositoryImpl
 
     @Override
     public Optional<Playable> findById(Long id) {
-        return Optional.empty();
+        QPlayable playable = QPlayable.playable;
+        List<Playable> playables = queryFactory
+                .selectDistinct(playable)
+                .from(playable).where(playable.id.eq(id))
+                .leftJoin(playable.music).fetchJoin()
+                .leftJoin(playable.bpms).fetchJoin()
+                .leftJoin(playable.playType).fetchJoin()
+                .leftJoin(playable.difficultyType).fetchJoin()
+                .fetch();
+
+        if(playables.size() == 0) return Optional.empty();
+        else return Optional.of(playables.get(0));
     }
 }
