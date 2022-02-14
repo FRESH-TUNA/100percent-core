@@ -99,6 +99,6 @@ public class PlayableSearchRepositoryImpl
      * filters
      */
     private BooleanExpression playTypeEq(Long id) {
-        return id != null ? QPlayable.playable.playType.id.eq(id);
+        return id != null ? QPlayable.playable.playType.id.eq(id) : null;
     }
 }
