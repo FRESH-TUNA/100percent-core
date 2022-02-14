@@ -1,13 +1,15 @@
 package com.main.koko_main_api.repositories.playable;
 
+import com.main.koko_main_api.controllers.Playables.PlayableParams;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.domains.QPlayable;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,28 +22,35 @@ import java.util.Optional;
  * https://jojoldu.tistory.com/372
  */
 @Repository
-public class PlayableSearchRepositoryImpl
-        extends QuerydslRepositorySupport implements PlayableSearchRepository<Playable, Long> {
+public class PlayableSearchRepositoryImpl implements PlayableSearchRepository<Playable, Long> {
 
     private final JPAQueryFactory queryFactory;
 
     public PlayableSearchRepositoryImpl(JPAQueryFactory queryFactory) {
-        super(Playable.class);
         this.queryFactory = queryFactory;
     }
 
     @Override
     public List<Playable> findAll() {
+        return findAll_base_query().fetch();
+    }
+
+    public List<Playable> findAll(PlayableParams params) {
+        return findAll_base_query()
+                .where(
+                        playTypeEq(params.getPlay_type())
+                )
+                .fetch();
+    }
+
+    private JPAQuery<Playable> findAll_base_query() {
         QPlayable playable = QPlayable.playable;
-        List<Playable> playables = queryFactory
+        return queryFactory
                 .selectDistinct(playable).from(playable)
                 .leftJoin(playable.music).fetchJoin()
                 .leftJoin(playable.bpms).fetchJoin()
                 .leftJoin(playable.playType).fetchJoin()
-                .leftJoin(playable.difficultyType).fetchJoin()
-                .fetch();
-
-        return playables;
+                .leftJoin(playable.difficultyType).fetchJoin();
     }
 
     @Override
@@ -63,5 +72,9 @@ public class PlayableSearchRepositoryImpl
 
         if(playables.size() == 0) return Optional.empty();
         else return Optional.of(playables.get(0));
+    }
+
+    private BooleanExpression playTypeEq(Long id) {
+        return id != null ? QPlayable.playable.playType.id.eq(id);
     }
 }

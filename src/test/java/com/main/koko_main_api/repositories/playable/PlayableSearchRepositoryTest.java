@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,9 +46,6 @@ public class PlayableSearchRepositoryTest {
         Music music = Music.builder().title("music").build();
         musicRepository.save(music);
 
-        // id가 주입된다.
-        //System.out.println(music.getId());
-
         Playable playable = Playable.builder().level(2).music(music).build();
         playableRepository.save(playable);
 
@@ -59,6 +57,9 @@ public class PlayableSearchRepositoryTest {
         bpms.add(bpm_datas.get(1).toEntity(playable));
         bpmRepository.saveAll(bpms);
         playable.add_bpms_for_save_request(bpms);
+
+        //clear 하고 동작됨
+        //entityManager.clear();
 
         /*
          * when
