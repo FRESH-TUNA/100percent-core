@@ -1,6 +1,6 @@
 package com.main.koko_main_api.repositories.playable;
 
-import com.querydsl.core.types.Predicate;
+import com.main.koko_main_api.controllers.Playables.PlayableParams;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,7 +10,9 @@ import java.util.Optional;
 public interface PlayableSearchRepository<T, ID> {
     List<T> findAll();
 
-    Page<T> findAll(Pageable pageable, Predicate predicate);
+    List<T> findAll(PlayableParams params);
+
+    Page<T> findAll(Pageable pageable, PlayableParams params);
 
     Optional<T> findById(ID id);
 }
