@@ -3,7 +3,7 @@ package com.main.koko_main_api.assemblers.playable;
 import com.main.koko_main_api.controllers.PlayableController;
 import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableDetailResponsePayload;
-import com.main.koko_main_api.repositories.MusicRepository;
+import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.server.RepresentationModelAssembler;

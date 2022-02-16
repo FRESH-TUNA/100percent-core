@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,8 @@ import java.util.Optional;
  * https://jojoldu.tistory.com/372
  * https://jessyt.tistory.com/55
  */
-@Repository
+
+//@Repository
 public class PlayableSearchRepositoryImpl
         extends QuerydslRepositorySupport
         implements PlayableSearchRepository<Playable, Long> {
@@ -51,7 +51,8 @@ public class PlayableSearchRepositoryImpl
     private JPAQuery<Playable> findAll_filter_apply(JPAQuery<Playable> findAll_base, PlayableParams params) {
         return findAll_base
                 .where(
-                        playTypeEq(params.getPlay_type())
+                        playTypeEq(params.getPlay_type()),
+                        difficultyTypeEq(params.getDifficulty_type())
                 );
     }
 
@@ -100,5 +101,8 @@ public class PlayableSearchRepositoryImpl
      */
     private BooleanExpression playTypeEq(Long id) {
         return id != null ? QPlayable.playable.playType.id.eq(id) : null;
+    }
+    private BooleanExpression difficultyTypeEq(Long id) {
+        return id != null ? QPlayable.playable.difficultyType.id.eq(id) : null;
     }
 }

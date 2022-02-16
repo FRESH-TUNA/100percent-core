@@ -1,5 +1,6 @@
 package com.main.koko_main_api.domains;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,4 +16,9 @@ public class PlayType {
 
     @Column(length = 50, nullable = false)
     private String title;
+
+    @Builder
+    public PlayType(String title) {
+        this.title = title;
+    }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class PlayableParams {
     private Long play_type;
+    private Long difficulty_type;
 
     @Override
     public String toString(){
@@ -13,7 +14,9 @@ public class PlayableParams {
     }
 
     @Builder
-    public PlayableParams(Long play_type) {
+    public PlayableParams(Long play_type, Long difficulty_type) {
+
         this.play_type = play_type;
+        this.difficulty_type = difficulty_type;
     }
 }

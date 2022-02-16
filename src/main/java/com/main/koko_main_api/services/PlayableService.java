@@ -8,7 +8,7 @@ import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.repositories.BpmRepository;
-import com.main.koko_main_api.repositories.MusicRepository;
+import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.playable.PlayableRepository;
 
 import com.main.koko_main_api.repositories.playable.PlayableSearchRepository;

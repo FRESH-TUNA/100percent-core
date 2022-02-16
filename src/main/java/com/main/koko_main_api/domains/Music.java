@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,6 +28,11 @@ public class Music extends BaseTimeModel {
             joinColumns = @JoinColumn(name = "composer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<Composer> composers;
+
+    // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
+    // @RestResource(exported = false)
+    @OneToMany(mappedBy = "music")
+    private List<Playable> playables = new ArrayList<>();
 
     @Builder
     public Music(String title, Long id) {

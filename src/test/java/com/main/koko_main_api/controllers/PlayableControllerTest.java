@@ -1,7 +1,7 @@
 package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.repositories.BpmRepository;
-import com.main.koko_main_api.repositories.MusicRepository;
+import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.playable.PlayableRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
