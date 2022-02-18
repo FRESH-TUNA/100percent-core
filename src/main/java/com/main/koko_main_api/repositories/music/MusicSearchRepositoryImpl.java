@@ -5,6 +5,7 @@ import com.main.koko_main_api.domains.Music;
 
 import com.main.koko_main_api.domains.QMusic;
 
+import com.main.koko_main_api.domains.QPlayable;
 import com.main.koko_main_api.repositories.playable.PlayableSearchRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -25,10 +26,9 @@ import java.util.Optional;
  * https://jessyt.tistory.com/55
  */
 
-//@Repository
 public class MusicSearchRepositoryImpl
         extends QuerydslRepositorySupport
-        implements PlayableSearchRepository<Music, Long> {
+        implements MusicSearchRepository<Music, Long> {
 
     private final JPAQueryFactory queryFactory;
 
@@ -42,10 +42,14 @@ public class MusicSearchRepositoryImpl
      */
     private JPAQuery<Music> findAll_base_query() {
         QMusic music = QMusic.music;
+        QPlayable playable = QPlayable.playable;
+
         return queryFactory
                 .selectDistinct(music).from(music)
                 .leftJoin(music.album).fetchJoin()
-                .leftJoin(music.playables).fetchJoin();
+                .leftJoin(music.playables, playable).fetchJoin()
+                .leftJoin(playable.playType).fetchJoin()
+                .leftJoin(playable.difficultyType).fetchJoin();
     }
 
     /*
@@ -60,7 +64,7 @@ public class MusicSearchRepositoryImpl
 
     @Override
     public List<Music> findAll() {
-        return null;
+        return findAll_base_query().fetch();
     }
 
     @Override
