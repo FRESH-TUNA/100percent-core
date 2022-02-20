@@ -7,18 +7,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class MusicListResponseEntityDto {
+public class MusicListDto {
     private Long id;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private MusicAlbumResponseEntityDto album;
-    private List<MusicPlayablesResponseEntityDto> playables;
+    private MusicAlbumDto album;
+    private List<MusicPlayablesDto> playables;
 
-    public MusicListResponseEntityDto(Music m, List<MusicPlayablesResponseEntityDto> playables)  {
+    public MusicListDto(Music m, List<MusicPlayablesDto> playables)  {
         id = m.getId();
         createdDate = m.getCreatedDate();
         modifiedDate = m.getModifiedDate();
-        album = new MusicAlbumResponseEntityDto(m.getAlbum());
+        album = new MusicAlbumDto(m.getAlbum());
         this.playables = playables;
     }
 }

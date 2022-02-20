@@ -2,9 +2,8 @@ package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.dtos.music.MusicListResponseEntityDto;
-import com.main.koko_main_api.dtos.music.MusicPlayablesResponseEntityDto;
-import com.main.koko_main_api.dtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.dtos.music.MusicListDto;
+import com.main.koko_main_api.dtos.music.MusicPlayablesDto;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +20,20 @@ import java.util.List;
 public class MusicService {
     private final MusicRepository musicRepository;
 
-    public Page<MusicListResponseEntityDto> findAll(Pageable pageable, MusicRequestParams params) {
+    public Page<MusicListDto> findAll(Pageable pageable, MusicRequestParams params) {
         String filter = params.getFilter();
         if(filter.equals("difficulty")) return difficultyFindAll(pageable, params);
         return pagedfindAll(pageable, params);
     }
 
-    private Page<MusicListResponseEntityDto> difficultyFindAll(Pageable pageable, MusicRequestParams params) {
+    private Page<MusicListDto> difficultyFindAll(Pageable pageable, MusicRequestParams params) {
         Long play_type_id = params.getPlay_type();
         Long difficulty_type_id = params.getDifficulty_type();
         List<Music> musics = musicRepository.findAll(params);
-        List<MusicListResponseEntityDto> musicListResponseEntityDtos = new ArrayList<>();
+        List<MusicListDto> musicListDtos = new ArrayList<>();
 
         for(Music m : musics) {
-            List<MusicPlayablesResponseEntityDto> filtered_playables = new ArrayList<>();
+            List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
             List<Playable> playables = m.getPlayables();
 
             // play_type, difficulty filtering
@@ -42,51 +41,51 @@ public class MusicService {
                 for(Playable playable : playables) {
                     if(playable.getPlayType().getId().equals(play_type_id) &&
                         playable.getDifficultyType().getId().equals(difficulty_type_id)) {
-                        filtered_playables.add(new MusicPlayablesResponseEntityDto(playable));
+                        filtered_playables.add(new MusicPlayablesDto(playable));
                     }
                 }
             }
             else {
                 for(Playable playable : playables) {
                     if(playable.getDifficultyType().getId().equals(difficulty_type_id)) {
-                        filtered_playables.add(new MusicPlayablesResponseEntityDto(playable));
+                        filtered_playables.add(new MusicPlayablesDto(playable));
                     }
                 }
             }
 
             if(!filtered_playables.isEmpty())
-                musicListResponseEntityDtos.add(new MusicListResponseEntityDto(m, filtered_playables));
+                musicListDtos.add(new MusicListDto(m, filtered_playables));
         }
 
-        return new PageImpl<>(musicListResponseEntityDtos, pageable, musicListResponseEntityDtos.size());
+        return new PageImpl<>(musicListDtos, pageable, musicListDtos.size());
     }
 
-    private Page<MusicListResponseEntityDto> pagedfindAll(Pageable pageable, MusicRequestParams params) {
+    private Page<MusicListDto> pagedfindAll(Pageable pageable, MusicRequestParams params) {
         Long play_type_id = params.getPlay_type();
         List<Music> musics = musicRepository.findAll(pageable, params).getContent();
 
-        List<MusicListResponseEntityDto> musicListResponseEntityDtos = new ArrayList<>();
+        List<MusicListDto> musicListDtos = new ArrayList<>();
         for(Music m : musics) {
-            List<MusicPlayablesResponseEntityDto> filtered_playables = new ArrayList<>();
+            List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
             List<Playable> playables = m.getPlayables();
 
             // play_type filtering
             if(play_type_id != null) {
                 for(Playable playable : playables) {
                     if(playable.getPlayType().getId().equals(play_type_id)) {
-                        filtered_playables.add(new MusicPlayablesResponseEntityDto(playable));
+                        filtered_playables.add(new MusicPlayablesDto(playable));
                     }
                 }
             }
             else {
                 for(Playable playable : playables) {
-                    filtered_playables.add(new MusicPlayablesResponseEntityDto(playable));
+                    filtered_playables.add(new MusicPlayablesDto(playable));
                 }
             }
 
-            musicListResponseEntityDtos.add(new MusicListResponseEntityDto(m, filtered_playables));
+            musicListDtos.add(new MusicListDto(m, filtered_playables));
         }
 
-        return new PageImpl<>(musicListResponseEntityDtos, pageable, musicListResponseEntityDtos.size());
+        return new PageImpl<>(musicListDtos, pageable, musicListDtos.size());
     }
 }
