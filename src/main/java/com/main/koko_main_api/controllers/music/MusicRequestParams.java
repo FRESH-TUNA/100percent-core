@@ -1,12 +1,15 @@
-package com.main.koko_main_api.controllers.Playables;
+package com.main.koko_main_api.controllers.music;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PlayableParams {
+public class MusicRequestParams {
+    private String filter;
     private Long play_type;
     private Long difficulty_type;
+    private Long album;
+
 
     @Override
     public String toString(){
@@ -14,9 +17,10 @@ public class PlayableParams {
     }
 
     @Builder
-    public PlayableParams(Long play_type, Long difficulty_type) {
-
+    public MusicRequestParams(String filter, Long play_type, Long difficulty_type, Long album) {
+        this.filter = filter;
         this.play_type = play_type;
         this.difficulty_type = difficulty_type;
+        this.album = album;
     }
 }

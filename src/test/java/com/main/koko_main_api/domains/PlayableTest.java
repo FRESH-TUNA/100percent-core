@@ -1,6 +1,6 @@
 package com.main.koko_main_api.domains;
 
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

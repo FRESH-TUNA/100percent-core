@@ -1,8 +1,8 @@
 package com.main.koko_main_api.payloads.playable;
 
-import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmResponseEntityDto;
-import com.main.koko_main_api.domainDtos.playable.music.MusicResponseDto;
+import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.music.MusicResponseDto;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 

@@ -1,9 +1,9 @@
 package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.assemblers.playable.PlayableDetailResponseAssembler;
-import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.assemblers.playable.PlayableListResponseAssembler;
-import com.main.koko_main_api.domainDtos.playable.PlayableListResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableDetailResponsePayload;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 

@@ -1,11 +1,10 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.domainDtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.domainDtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.domainDtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.dtos.album.AlbumsUpdateRequestDto;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.repositories.album.AlbumCustomRepository;
-import com.main.koko_main_api.repositories.album.AlbumsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.main.koko_main_api.repositories.playable;
 
-import com.main.koko_main_api.controllers.Playables.PlayableParams;
+import com.main.koko_main_api.controllers.playable.PlayableParams;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.domains.QPlayable;
 import com.querydsl.core.types.dsl.BooleanExpression;

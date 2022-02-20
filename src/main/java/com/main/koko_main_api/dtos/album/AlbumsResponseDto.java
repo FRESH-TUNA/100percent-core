@@ -1,5 +1,6 @@
-package com.main.koko_main_api.domainDtos;
-import com.main.koko_main_api.domains.Composer;
+package com.main.koko_main_api.dtos.album;
+
+import com.main.koko_main_api.domains.Album;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -7,15 +8,15 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
-public class ComposersResponseDto {
+public class AlbumsResponseDto {
     private Long id;
-    private String name;
+    private String title;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public ComposersResponseDto(Composer entity) {
+    public AlbumsResponseDto(Album entity) {
         this.id = entity.getId();
-        this.name = entity.getName();
+        this.title = entity.getTitle();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();
     }

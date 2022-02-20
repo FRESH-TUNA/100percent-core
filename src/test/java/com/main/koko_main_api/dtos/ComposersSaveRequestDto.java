@@ -1,4 +1,4 @@
-package com.main.koko_main_api.domainDtos;
+package com.main.koko_main_api.dtos;
 
 import com.main.koko_main_api.domains.Composer;
 import lombok.Builder;

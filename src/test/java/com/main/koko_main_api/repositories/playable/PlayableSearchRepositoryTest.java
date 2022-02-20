@@ -1,8 +1,8 @@
 package com.main.koko_main_api.repositories.playable;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
-import com.main.koko_main_api.controllers.Playables.PlayableParams;
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.controllers.playable.PlayableParams;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.PlayType;
@@ -183,11 +183,5 @@ public class PlayableSearchRepositoryTest {
         assertThat(playables.get(0).getMusic().getTitle()).isEqualTo("music");
         assertThat(playables.get(0).getBpms().size()).isEqualTo(2);
         assertThat(playables.get(0).getBpms().get(0).getValue()).isEqualTo(100);
-
     }
-
-//    public List<Playable> findAll(PlayableParams params) {
-//        return findAll_filter_apply(findAll_base_query(), params)
-//                .fetch();
-//    }
 }

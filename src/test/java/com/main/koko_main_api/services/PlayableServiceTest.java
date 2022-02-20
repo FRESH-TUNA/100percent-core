@@ -2,8 +2,8 @@ package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
-import com.main.koko_main_api.domainDtos.playable.PlayableDetailResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.BpmRepository;

@@ -1,8 +1,8 @@
-package com.main.koko_main_api.domainDtos.playable;
+package com.main.koko_main_api.dtos.playable;
 
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmResponseEntityDto;
-import com.main.koko_main_api.domainDtos.playable.music.MusicResponseDto;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmResponseEntityDto;
+import com.main.koko_main_api.dtos.playable.music.MusicResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

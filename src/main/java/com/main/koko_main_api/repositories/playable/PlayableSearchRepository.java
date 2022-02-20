@@ -1,6 +1,6 @@
 package com.main.koko_main_api.repositories.playable;
 
-import com.main.koko_main_api.controllers.Playables.PlayableParams;
+import com.main.koko_main_api.controllers.playable.PlayableParams;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,7 +1,7 @@
 package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
-import com.main.koko_main_api.domainDtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.PlayType;
@@ -41,7 +41,7 @@ class MusicSearchRepositoryTest {
     private PlayTypesRepository playTypesRepository;
 
     @Test
-    void findAll() {
+    void findAll_test() {
         /*
          * given
          */

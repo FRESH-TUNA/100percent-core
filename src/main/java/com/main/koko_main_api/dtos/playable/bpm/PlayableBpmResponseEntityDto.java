@@ -1,4 +1,4 @@
-package com.main.koko_main_api.domainDtos.playable.bpm;
+package com.main.koko_main_api.dtos.playable.bpm;
 
 import com.main.koko_main_api.domains.Bpm;
 import lombok.Getter;

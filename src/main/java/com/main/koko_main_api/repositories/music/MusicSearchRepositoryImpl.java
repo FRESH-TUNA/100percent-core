@@ -1,12 +1,11 @@
 package com.main.koko_main_api.repositories.music;
 
-import com.main.koko_main_api.controllers.Playables.PlayableParams;
+import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Music;
 
 import com.main.koko_main_api.domains.QMusic;
-
 import com.main.koko_main_api.domains.QPlayable;
-import com.main.koko_main_api.repositories.playable.PlayableSearchRepository;
+
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,6 +23,8 @@ import java.util.Optional;
  * https://joanne.tistory.com/270
  * https://jojoldu.tistory.com/372
  * https://jessyt.tistory.com/55
+ * https://www.inflearn.com/questions/15876
+ * https://stackoverflow.com/questions/60071473/querydsl-filter-on-left-join-with-subquery
  */
 
 public class MusicSearchRepositoryImpl
@@ -38,9 +39,18 @@ public class MusicSearchRepositoryImpl
     }
 
     /*
-     * helper methods
+     * filters
      */
-    private JPAQuery<Music> findAll_base_query() {
+    private BooleanExpression albumEq(Long id) {
+        return id != null ? QMusic.music.album.id.eq(id) : null;
+    }
+
+    /*
+     * main methods
+     */
+
+    @Override
+    public List<Music> findAll(MusicRequestParams params) {
         QMusic music = QMusic.music;
         QPlayable playable = QPlayable.playable;
 
@@ -49,32 +59,26 @@ public class MusicSearchRepositoryImpl
                 .leftJoin(music.album).fetchJoin()
                 .leftJoin(music.playables, playable).fetchJoin()
                 .leftJoin(playable.playType).fetchJoin()
-                .leftJoin(playable.difficultyType).fetchJoin();
-    }
-
-    /*
-     * filters
-     */
-//    private BooleanExpression playTypeEq(Long id) {
-//        return id != null ? QPlayable.playable.playType.id.eq(id) : null;
-//    }
-//    private BooleanExpression difficultyTypeEq(Long id) {
-//        return id != null ? QPlayable.playable.difficultyType.id.eq(id) : null;
-//    }
-
-    @Override
-    public List<Music> findAll() {
-        return findAll_base_query().fetch();
+                .leftJoin(playable.difficultyType).fetchJoin()
+                .fetch();
     }
 
     @Override
-    public List<Music> findAll(PlayableParams params) {
-        return null;
-    }
+    public Page<Music> findAll(Pageable pageable, MusicRequestParams params) {
+        Long album_id = params.getAlbum();
+        QMusic music = QMusic.music;
+        QPlayable playable = QPlayable.playable;
 
-    @Override
-    public Page<Music> findAll(Pageable pageable, PlayableParams params) {
-        return null;
+        JPAQuery<Music> query = queryFactory
+                .selectDistinct(music).from(music)
+                .leftJoin(music.album).fetchJoin()
+                .leftJoin(music.playables, playable).fetchJoin()
+                .leftJoin(playable.playType).fetchJoin()
+                .leftJoin(playable.difficultyType).fetchJoin()
+                .where(albumEq(album_id));
+
+        List<Music> musics = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(musics, pageable, musics.size());
     }
 
     @Override
