@@ -19,7 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * model메소드를 직접 구현한다?!
  */
 @Component
-public class PlayableDetailResponseAssembler implements
+public class PlayableDetailPayloadAssembler implements
         RepresentationModelAssembler<PlayableDetailResponseEntityDto, PlayableDetailPayload> {
 
     @Autowired

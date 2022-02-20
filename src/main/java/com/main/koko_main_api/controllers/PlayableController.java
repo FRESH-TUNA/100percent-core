@@ -1,8 +1,8 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.assemblers.playable.PlayableDetailResponseAssembler;
+import com.main.koko_main_api.assemblers.playable.PlayableDetailPayloadAssembler;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.assemblers.playable.PlayableListResponseAssembler;
+import com.main.koko_main_api.assemblers.playable.PlayableListPayloadAssembler;
 import com.main.koko_main_api.dtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableDetailPayload;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PlayableController {
     private final PagedResourcesAssembler<PlayableListResponseEntityDto> pageAssembler;
-    private final PlayableListResponseAssembler listAssembler;
-    private final PlayableDetailResponseAssembler detailAssembler;
+    private final PlayableListPayloadAssembler listAssembler;
+    private final PlayableDetailPayloadAssembler detailAssembler;
     private final PlayableService playableService;
     /*
      * autowired를 통해 다른 스프링에 등록된 bean(service)를 주입할수 있다.
