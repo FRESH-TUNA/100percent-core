@@ -2,7 +2,7 @@ package com.main.koko_main_api.assemblers.playable;
 
 import com.main.koko_main_api.controllers.PlayableController;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.payloads.playable.PlayableDetailResponsePayload;
+import com.main.koko_main_api.payloads.playable.PlayableDetailPayload;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -20,14 +20,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class PlayableDetailResponseAssembler implements
-        RepresentationModelAssembler<PlayableDetailResponseEntityDto, PlayableDetailResponsePayload> {
+        RepresentationModelAssembler<PlayableDetailResponseEntityDto, PlayableDetailPayload> {
 
     @Autowired
     private RepositoryEntityLinks linkHelper;
 
     @Override
-    public PlayableDetailResponsePayload toModel(PlayableDetailResponseEntityDto p) {
-        PlayableDetailResponsePayload payload = new PlayableDetailResponsePayload(p);
+    public PlayableDetailPayload toModel(PlayableDetailResponseEntityDto p) {
+        PlayableDetailPayload payload = new PlayableDetailPayload(p);
         /* add link */
         payload.add(linkTo(methodOn(PlayableController.class
         ).findById(payload.getId())).withSelfRel());

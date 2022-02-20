@@ -12,7 +12,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Getter
-public class PlayableDetailResponsePayload extends RepresentationModel<PlayableDetailResponsePayload> {
+public class PlayableDetailPayload extends RepresentationModel<PlayableDetailPayload> {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
@@ -20,7 +20,7 @@ public class PlayableDetailResponsePayload extends RepresentationModel<PlayableD
     private MusicResponseDto music;
     private List<PlayableBpmResponseEntityDto> bpms;
 
-    public PlayableDetailResponsePayload(PlayableDetailResponseEntityDto p)  {
+    public PlayableDetailPayload(PlayableDetailResponseEntityDto p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();

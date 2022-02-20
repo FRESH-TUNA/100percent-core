@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Getter
 @Relation(collectionRelation = "playables")
-public class PlayableListResponsePayload extends RepresentationModel<PlayableListResponsePayload> {
+public class PlayableListPayload extends RepresentationModel<PlayableListPayload> {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
@@ -25,7 +25,7 @@ public class PlayableListResponsePayload extends RepresentationModel<PlayableLis
     private MusicResponseDto music;
     private List<PlayableBpmResponseEntityDto> bpms;
 
-    public PlayableListResponsePayload(PlayableListResponseEntityDto p)  {
+    public PlayableListPayload(PlayableListResponseEntityDto p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();
