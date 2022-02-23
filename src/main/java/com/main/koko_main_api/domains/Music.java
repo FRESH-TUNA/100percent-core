@@ -41,8 +41,9 @@ public class Music extends BaseTimeModel {
     }
 
     @Builder
-    public Music(String title, Long id) {
+    public Music(String title, Album album, Long id) {
         this.title = title;
+        this.album = album;
         this.id = id;
     }
 }

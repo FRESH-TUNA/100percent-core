@@ -1,4 +1,4 @@
-package com.main.koko_main_api.repositories;
+package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.dtos.*;
 import com.main.koko_main_api.dtos.album.AlbumsResponseDto;

@@ -10,7 +10,6 @@ public class MusicRequestParams {
     private Long difficulty_type;
     private Long album;
 
-
     @Override
     public String toString(){
         return "PlayableParams [play_type = " + play_type + "]";

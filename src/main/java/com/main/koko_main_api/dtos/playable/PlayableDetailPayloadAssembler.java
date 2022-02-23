@@ -1,4 +1,4 @@
-package com.main.koko_main_api.assemblers.playable;
+package com.main.koko_main_api.dtos.playable;
 
 import com.main.koko_main_api.controllers.PlayableController;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;

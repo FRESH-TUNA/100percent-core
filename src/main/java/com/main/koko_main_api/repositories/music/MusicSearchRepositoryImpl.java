@@ -1,6 +1,5 @@
 package com.main.koko_main_api.repositories.music;
 
-import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Music;
 
 import com.main.koko_main_api.domains.QMusic;
@@ -48,9 +47,8 @@ public class MusicSearchRepositoryImpl
     /*
      * main methods
      */
-
     @Override
-    public List<Music> findAll(MusicRequestParams params) {
+    public List<Music> findAll() {
         QMusic music = QMusic.music;
         QPlayable playable = QPlayable.playable;
 
@@ -64,8 +62,7 @@ public class MusicSearchRepositoryImpl
     }
 
     @Override
-    public Page<Music> findAll(Pageable pageable, MusicRequestParams params) {
-        Long album_id = params.getAlbum();
+    public Page<Music> findAll(Pageable pageable, Long album_id) {
         QMusic music = QMusic.music;
         QPlayable playable = QPlayable.playable;
 
@@ -77,8 +74,15 @@ public class MusicSearchRepositoryImpl
                 .leftJoin(playable.difficultyType).fetchJoin()
                 .where(albumEq(album_id));
 
+        JPAQuery<Long> count_query = queryFactory
+                .select(music.count())
+                .from(music)
+                .where(albumEq(album_id));
+
+        // count query all
+        Long music_counts = count_query.fetchOne();
         List<Music> musics = getQuerydsl().applyPagination(pageable, query).fetch();
-        return new PageImpl<>(musics, pageable, musics.size());
+        return new PageImpl<>(musics, pageable, music_counts);
     }
 
     @Override
