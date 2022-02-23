@@ -21,16 +21,15 @@ public class Bpm extends BaseTimeModel {
     private Integer value;
 
     @ManyToOne
-    @JoinColumn(name = "playable_id")
-    private Playable playable;
+    @JoinColumn(name = "music_id")
+    private Music music;
 
     /*
      * 양방향 연관관계는 양쪽 다 데이터를 넣어주는것이 좋다.
      */
     @Builder
-    public Bpm(Integer value, Playable playable) {
-        this.playable = playable;
-//        this.playable.getBpms().add(this);
+    public Bpm(Integer value, Music music) {
+        this.music = music;
         this.value = value;
     }
 }

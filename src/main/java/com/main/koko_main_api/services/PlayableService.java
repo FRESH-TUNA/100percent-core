@@ -41,12 +41,6 @@ public class PlayableService extends URIToID {
 
         Playable playable = playableRepository.save(saveDto.toEntity());
 
-        if(dto.getBpms() != null) {
-            List<Bpm> bpms = bpmRepository.saveAll(dto.getBpms().stream().map(
-                    bpm -> bpm.toEntity(playable)).collect(Collectors.toList()));
-            playable.add_bpms_for_save_request(bpms);
-        }
-
         return new PlayableDetailResponseEntityDto(playable);
     }
 

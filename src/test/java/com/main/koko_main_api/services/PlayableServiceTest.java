@@ -2,7 +2,7 @@ package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Playable;
-import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.dtos.music.MusicBpmSaveEntityDto;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
@@ -54,9 +54,9 @@ public class PlayableServiceTest {
         /*
          * data mocking
          */
-        List<PlayableBpmSaveEntityDto> bpms = new ArrayList() {
-            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-              add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
+        List<MusicBpmSaveEntityDto> bpms = new ArrayList() {
+            { add(MusicBpmSaveEntityDto.builder().value(100).build());
+              add(MusicBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
         URI music_link = new URI("http://localhost/musics/1");
         PlayableSavePayload playableSavePayload = PlayableSavePayload.builder()
@@ -68,12 +68,12 @@ public class PlayableServiceTest {
                 .id(1L)
                 .music(saved_music)
                 .build();
-        List<Bpm> _bpms = bpms.stream().map(
-                bpm -> bpm.toEntity(playable)).collect(Collectors.toList());
+//        List<Bpm> _bpms = bpms.stream().map(
+//                bpm -> bpm.toEntity(playable)).collect(Collectors.toList());
 
         when(musicRepository.findById(1L)).thenReturn(Optional.of(saved_music));
         when(playableRepository.save(any())).thenReturn(playable);
-        when(bpmRepository.saveAll(any())).thenReturn(_bpms);
+//        when(bpmRepository.saveAll(any())).thenReturn(_bpms);
 
         /*
          * when
@@ -84,9 +84,9 @@ public class PlayableServiceTest {
          * then
          */
         assertThat(result.getLevel()).isEqualTo(2);
-        assertThat(result.getBpms().size()).isEqualTo(2);
-        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
-        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
+//        assertThat(result.getBpms().size()).isEqualTo(2);
+//        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
+//        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
         assertThat(result.getMusic().getTitle()).isEqualTo("music");
     }
 
@@ -95,18 +95,18 @@ public class PlayableServiceTest {
         /*
          * data mocking
          */
-        List<PlayableBpmSaveEntityDto> bpms = new ArrayList() {
-            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
+        List<MusicBpmSaveEntityDto> bpms = new ArrayList() {
+            { add(MusicBpmSaveEntityDto.builder().value(100).build());
+                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
         Playable playable = Playable.builder()
                 .level(2)
                 .id(1L)
                 .music(saved_music)
                 .build();
-        playable.add_bpms_for_save_request(bpms.stream()
-                .map(bpm -> bpm.toEntity(playable))
-                .collect(Collectors.toList()));
+//        playable.add_bpms_for_save_request(bpms.stream()
+//                .map(bpm -> bpm.toEntity(playable))
+//                .collect(Collectors.toList()));
 
 
         when(playableRepository.findById(1L)).thenReturn(Optional.of(playable));
@@ -120,9 +120,9 @@ public class PlayableServiceTest {
          * then
          */
         assertThat(result.getLevel()).isEqualTo(2);
-        assertThat(result.getBpms().size()).isEqualTo(2);
-        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
-        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
+//        assertThat(result.getBpms().size()).isEqualTo(2);
+//        assertThat(result.getBpms().get(0).getValue()).isEqualTo(100);
+//        assertThat(result.getBpms().get(1).getValue()).isEqualTo(150);
         assertThat(result.getMusic().getTitle()).isEqualTo("music");
     }
 
@@ -131,12 +131,12 @@ public class PlayableServiceTest {
         /*
          * data and method mocking
          */
-        List<PlayableBpmSaveEntityDto> playable1_bpms = new ArrayList() {
-            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
-        List<PlayableBpmSaveEntityDto> playable2_bpms = new ArrayList() {
-            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
+        List<MusicBpmSaveEntityDto> playable1_bpms = new ArrayList() {
+            { add(MusicBpmSaveEntityDto.builder().value(100).build());
+                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+        List<MusicBpmSaveEntityDto> playable2_bpms = new ArrayList() {
+            { add(MusicBpmSaveEntityDto.builder().value(100).build());
+                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
 
         Music saved_music_1 = Music.builder().title("music1").id(1L).build();
         Music saved_music_2 = Music.builder().title("music2").id(2L).build();
@@ -152,12 +152,12 @@ public class PlayableServiceTest {
                 .music(saved_music_2)
                 .build();
 
-        playable1.add_bpms_for_save_request(playable1_bpms.stream()
-                .map(bpm -> bpm.toEntity(playable1))
-                .collect(Collectors.toList()));
-        playable2.add_bpms_for_save_request(playable2_bpms.stream()
-                .map(bpm -> bpm.toEntity(playable2))
-                .collect(Collectors.toList()));
+//        playable1.add_bpms_for_save_request(playable1_bpms.stream()
+//                .map(bpm -> bpm.toEntity(playable1))
+//                .collect(Collectors.toList()));
+//        playable2.add_bpms_for_save_request(playable2_bpms.stream()
+//                .map(bpm -> bpm.toEntity(playable2))
+//                .collect(Collectors.toList()));
 
         Page<Playable> page = new PageImpl<>(
                 new ArrayList<Playable>() {{ add(playable1); add(playable2); }});

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -36,8 +37,23 @@ public class Music extends BaseTimeModel {
     @OneToMany(mappedBy = "music")
     private List<Playable> playables = new ArrayList<>();
 
+    // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
+    // @RestResource(exported = false)
+    @OneToMany(mappedBy = "music")
+    private List<Bpm> bpms = new ArrayList<>();
+
     public void add_playable(Playable playable) {
         this.playables.add(playable);
+    }
+
+    /*
+     * for new music
+     * 실제 쿼리가 들어가지는 않지만 객체의 양방향 연결을 위해 사용한다.
+     * 또한 객체 address를 바꾸지 않아서 필요없는 update쿼리를 막는다.
+     */
+    public void add_bpms_for_save_request(List<Bpm> bpms) {
+        Iterator<Bpm> it = bpms.iterator();
+        while(it.hasNext()) this.bpms.add(it.next());
     }
 
     @Builder

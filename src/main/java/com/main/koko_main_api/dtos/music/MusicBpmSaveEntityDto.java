@@ -1,5 +1,6 @@
-package com.main.koko_main_api.dtos.playable.bpm;
+package com.main.koko_main_api.dtos.music;
 import com.main.koko_main_api.domains.Bpm;
+import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,19 +12,18 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Getter
-public class PlayableBpmSaveEntityDto {
+public class MusicBpmSaveEntityDto {
     private Integer value;
 
-
     @Builder
-    public PlayableBpmSaveEntityDto(Integer value) {
+    public MusicBpmSaveEntityDto(Integer value) {
         this.value = value;
     }
 
-    public Bpm toEntity(Playable playable) {
+    public Bpm toEntity(Music music) {
         return Bpm.builder()
                 .value(value)
-                .playable(playable)
+                .music(music)
                 .build();
     }
 }

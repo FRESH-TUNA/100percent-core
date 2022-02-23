@@ -2,8 +2,6 @@ package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.domains.*;
-import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
-import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.PlayTypesRepository;
 import com.main.koko_main_api.repositories.album.AlbumsRepository;
 import com.main.koko_main_api.repositories.playable.PlayableRepository;
@@ -20,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,10 +84,52 @@ class MusicSearchRepositoryTest {
         Page<Music> All_musics = musicRepository.findAll(pageable, null);
         Page<Music> FIVE_KEY_musics = musicRepository.findAll(pageable, ALBUM_A.getId());
         Page<Music> SIX_KEY_musics = musicRepository.findAll(pageable, ALBUM_B.getId());
-        
+
         assertThat(All_musics.getNumberOfElements()).isEqualTo(ALBUM_A_N_MUSICS + ALBUM_B_N_MUSICS);
         assertThat(FIVE_KEY_musics.getNumberOfElements()).isEqualTo(ALBUM_A_N_MUSICS);
         assertThat(SIX_KEY_musics.getNumberOfElements()).isEqualTo(ALBUM_B_N_MUSICS);
         assertThat(FIVE_KEY_musics.getContent().get(0).getPlayables().size()).isEqualTo(2);
+    }
+
+    @Test
+    void test_findAll() {
+        /*
+         * given
+         */
+        final int MUSIC_COUNTS = 5;
+
+        // Album
+        Album album = Album.builder().title("album").build();
+        albumsRepository.save(album);
+
+        // Music
+        List<Music> musics = new ArrayList<>();
+        for(int i = 0; i < MUSIC_COUNTS; ++i)
+            musics.add(Music.builder().title("music").album(album).build());
+        musicRepository.saveAll(musics);
+
+        //Playtype
+        PlayType playType = PlayType.builder().title("5K").build();
+        playTypesRepository.save(playType);
+
+        // Playables
+        List<Playable> playables = new ArrayList<>();
+        for(int i = 0; i < MUSIC_COUNTS; ++i) {
+            Music music = musics.get(i);
+            Playable playable1 = Playable.builder().level(2).music(music).playType(playType).build();
+            Playable playable2 = Playable.builder().level(10).music(music).playType(playType).build();
+            playables.add(Playable.builder().level(2).music(music).build());
+            music.add_playable(playable1);
+            music.add_playable(playable2);
+        }
+        playableRepository.saveAll(playables);
+
+        /*
+         * when
+         */
+        List<Music> All_musics = musicRepository.findAll();
+        assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS);
+        assertThat(All_musics.get(0).getAlbum().getTitle()).isEqualTo("album");
+        assertThat(All_musics.get(0).getPlayables().size()).isEqualTo(2);
     }
 }

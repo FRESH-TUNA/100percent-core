@@ -1,6 +1,7 @@
 package com.main.koko_main_api.dtos.music;
 
 import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.dtos.music.bpm.MusicAlbumDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

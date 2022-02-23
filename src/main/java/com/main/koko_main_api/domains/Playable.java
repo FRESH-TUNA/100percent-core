@@ -15,7 +15,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Playable extends BaseTimeModel  {
     @Id
@@ -39,28 +38,6 @@ public class Playable extends BaseTimeModel  {
     @JoinColumn(name = "play_type_id")
     private PlayType playType;
 
-    // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
-    // @RestResource(exported = false)
-    @OneToMany(mappedBy = "playable")
-    private List<Bpm> bpms = new ArrayList<>();
-
-    /*
-     * /playables/{id}/bpms, POST
-     */
-    // 연관관계의 주인이 아니기 때문에 무시될것 같다.
-//    public void addBpm(Bpm bpm) {
-//        this.bpms.add(bpm);
-//    }
-
-    /*
-     * for new Playable
-     * 실제 쿼리가 들어가지는 않지만 객체의 양방향 연결을 위해 사용한다.
-     * 또한 객체 address를 바꾸지 않아서 필요없는 update쿼리를 막는다.
-     */
-    public void add_bpms_for_save_request(List<Bpm> bpms) {
-        Iterator<Bpm> it = bpms.iterator();
-        while(it.hasNext()) this.bpms.add(it.next());
-    }
 
     /*
      * for new Playable and Test purpose

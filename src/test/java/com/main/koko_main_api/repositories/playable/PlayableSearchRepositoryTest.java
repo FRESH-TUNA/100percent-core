@@ -2,7 +2,7 @@ package com.main.koko_main_api.repositories.playable;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.controllers.playable.PlayableParams;
-import com.main.koko_main_api.dtos.playable.bpm.PlayableBpmSaveEntityDto;
+import com.main.koko_main_api.dtos.music.MusicBpmSaveEntityDto;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.PlayType;
@@ -57,14 +57,14 @@ public class PlayableSearchRepositoryTest {
         playableRepository.save(playable);
 
         // bpm
-        List<PlayableBpmSaveEntityDto> bpm_datas = new ArrayList() {
-            { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
-        List<Bpm> bpms = new ArrayList<>();
-        bpms.add(bpm_datas.get(0).toEntity(playable));
-        bpms.add(bpm_datas.get(1).toEntity(playable));
-        bpmRepository.saveAll(bpms);
-        playable.add_bpms_for_save_request(bpms);
+//        List<MusicBpmSaveEntityDto> bpm_datas = new ArrayList() {
+//            { add(MusicBpmSaveEntityDto.builder().value(100).build());
+//                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+//        List<Bpm> bpms = new ArrayList<>();
+//        bpms.add(bpm_datas.get(0).toEntity(playable));
+//        bpms.add(bpm_datas.get(1).toEntity(playable));
+//        bpmRepository.saveAll(bpms);
+//        playable.add_bpms_for_save_request(bpms);
 
 
         /*
@@ -78,8 +78,6 @@ public class PlayableSearchRepositoryTest {
          */
         assertThat(playable.getLevel()).isEqualTo(2);
         assertThat(playable.getMusic().getTitle()).isEqualTo("music");
-        assertThat(playable.getBpms().size()).isEqualTo(2);
-        assertThat(playable.getBpms().get(0).getValue()).isEqualTo(100);
     }
 
     @Test
@@ -112,16 +110,16 @@ public class PlayableSearchRepositoryTest {
         }
         playableRepository.saveAll(playables);
 
-        // bpms
-        for(Playable p : playables) {
-            List<PlayableBpmSaveEntityDto> bpm_datas = new ArrayList() {
-                { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                    add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
-            List<Bpm> bpms = bpm_datas.stream().map(
-                    bpm -> bpm.toEntity(p)).collect(Collectors.toList());
-            bpmRepository.saveAll(bpms);
-            p.add_bpms_for_save_request(bpms);
-        }
+//        // bpms
+//        for(Playable p : playables) {
+//            List<MusicBpmSaveEntityDto> bpm_datas = new ArrayList() {
+//                { add(MusicBpmSaveEntityDto.builder().value(100).build());
+//                    add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+//            List<Bpm> bpms = bpm_datas.stream().map(
+//                    bpm -> bpm.toEntity(p)).collect(Collectors.toList());
+//            bpmRepository.saveAll(bpms);
+//            p.add_bpms_for_save_request(bpms);
+//        }
 
         /*
          * when
@@ -160,15 +158,15 @@ public class PlayableSearchRepositoryTest {
         }
         playableRepository.saveAll(playables);
 
-        for(Playable p : playables) {
-            List<PlayableBpmSaveEntityDto> bpm_datas = new ArrayList() {
-                { add(PlayableBpmSaveEntityDto.builder().value(100).build());
-                    add(PlayableBpmSaveEntityDto.builder().value(150).build());}};
-            List<Bpm> bpms = bpm_datas.stream().map(
-                    bpm -> bpm.toEntity(p)).collect(Collectors.toList());
-            bpmRepository.saveAll(bpms);
-            p.add_bpms_for_save_request(bpms);
-        }
+//        for(Playable p : playables) {
+//            List<MusicBpmSaveEntityDto> bpm_datas = new ArrayList() {
+//                { add(MusicBpmSaveEntityDto.builder().value(100).build());
+//                    add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+//            List<Bpm> bpms = bpm_datas.stream().map(
+//                    bpm -> bpm.toEntity(p)).collect(Collectors.toList());
+//            bpmRepository.saveAll(bpms);
+//            p.add_bpms_for_save_request(bpms);
+//        }
 
         /*
          * when
@@ -181,7 +179,5 @@ public class PlayableSearchRepositoryTest {
         assertThat(playables.size()).isEqualTo(N_PLAYABLES);
         assertThat(playables.get(0).getLevel()).isEqualTo(2);
         assertThat(playables.get(0).getMusic().getTitle()).isEqualTo("music");
-        assertThat(playables.get(0).getBpms().size()).isEqualTo(2);
-        assertThat(playables.get(0).getBpms().get(0).getValue()).isEqualTo(100);
     }
 }

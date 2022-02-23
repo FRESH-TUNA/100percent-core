@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -81,6 +82,7 @@ public class MusicSearchRepositoryImpl
 
         // count query all
         Long music_counts = count_query.fetchOne();
+        if(pageable == null) pageable = PageRequest.of(0, 5);
         List<Music> musics = getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<>(musics, pageable, music_counts);
     }

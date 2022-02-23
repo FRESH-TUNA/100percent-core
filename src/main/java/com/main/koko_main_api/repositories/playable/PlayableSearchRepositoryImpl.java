@@ -43,7 +43,6 @@ public class PlayableSearchRepositoryImpl
         return queryFactory
                 .selectDistinct(playable).from(playable)
                 .leftJoin(playable.music).fetchJoin()
-                .leftJoin(playable.bpms).fetchJoin()
                 .leftJoin(playable.playType).fetchJoin()
                 .leftJoin(playable.difficultyType).fetchJoin();
     }
@@ -87,7 +86,6 @@ public class PlayableSearchRepositoryImpl
                 .selectDistinct(playable)
                 .from(playable).where(playable.id.eq(id))
                 .leftJoin(playable.music).fetchJoin()
-                .leftJoin(playable.bpms).fetchJoin()
                 .leftJoin(playable.playType).fetchJoin()
                 .leftJoin(playable.difficultyType).fetchJoin()
                 .fetch();
