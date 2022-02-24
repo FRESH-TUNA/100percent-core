@@ -3,8 +3,9 @@ package com.main.koko_main_api.dtos.music;
 import com.main.koko_main_api.domains.DifficultyType;
 import com.main.koko_main_api.domains.PlayType;
 import com.main.koko_main_api.domains.Playable;
+import lombok.Getter;
 
-
+@Getter
 public class MusicPlayablesDto {
     private Long id;
     private Integer level;
