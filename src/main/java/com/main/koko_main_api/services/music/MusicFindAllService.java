@@ -24,6 +24,7 @@ public class MusicFindAllService {
     public Page<MusicListDto> call(Pageable pageable, MusicRequestParams params) {
         String filter = params.getFilter();
         if(filter.equals("difficulty")) return difficultyFindAll(params);
+        if(filter.equals("level")) return levelFindAll(params);
         else return pagedfindAll(pageable, params);
     }
 
@@ -37,8 +38,6 @@ public class MusicFindAllService {
         List<Music> musics = musicRepository.findAll();
         List<MusicListDto> musicListDtos = new ArrayList<>();
 
-        System.out.println(difficulty_type_id);
-
         for(Music m : musics) {
             List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
             List<Playable> playables = m.getPlayables();
@@ -47,6 +46,36 @@ public class MusicFindAllService {
             for(Playable playable : playables) {
                 if(playable.getPlayType().getId().equals(play_type_id) &&
                         playable.getDifficultyType().getId().equals(difficulty_type_id)) {
+                    filtered_playables.add(new MusicPlayablesDto(playable));
+                }
+            }
+
+            if(!filtered_playables.isEmpty())
+                musicListDtos.add(new MusicListDto(m, filtered_playables));
+        }
+
+        int list_size = musicListDtos.size();
+        return new PageImpl<>(musicListDtos, PageRequest.of(0, list_size), list_size);
+    }
+
+    /*
+     * playable/playtype + level 기준 필터링
+     * 1개의 page로 된 response를 반환한다.
+     */
+    private Page<MusicListDto> levelFindAll(MusicRequestParams params) {
+        Long play_type_id = params.getPlay_type();
+        Integer level = params.getLevel();
+        List<Music> musics = musicRepository.findAll();
+        List<MusicListDto> musicListDtos = new ArrayList<>();
+
+        for(Music m : musics) {
+            List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
+            List<Playable> playables = m.getPlayables();
+
+            // play_type, difficulty filtering
+            for(Playable playable : playables) {
+                if(playable.getPlayType().getId().equals(play_type_id) &&
+                        playable.getLevel().equals(level)) {
                     filtered_playables.add(new MusicPlayablesDto(playable));
                 }
             }

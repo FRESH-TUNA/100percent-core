@@ -9,6 +9,7 @@ public class MusicRequestParams {
     private Long play_type;
     private Long difficulty_type;
     private Long album;
+    private Integer level;
 
     @Override
     public String toString(){
@@ -16,10 +17,11 @@ public class MusicRequestParams {
     }
 
     @Builder
-    public MusicRequestParams(String filter, Long play_type, Long difficulty_type, Long album) {
+    public MusicRequestParams(String filter, Long play_type, Long difficulty_type, Long album, Integer level) {
         this.filter = filter;
         this.play_type = play_type;
         this.difficulty_type = difficulty_type;
         this.album = album;
+        this.level = level;
     }
 }
