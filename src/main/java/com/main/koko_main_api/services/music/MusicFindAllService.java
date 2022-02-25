@@ -37,6 +37,8 @@ public class MusicFindAllService {
         List<Music> musics = musicRepository.findAll();
         List<MusicListDto> musicListDtos = new ArrayList<>();
 
+        System.out.println(difficulty_type_id);
+
         for(Music m : musics) {
             List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
             List<Playable> playables = m.getPlayables();

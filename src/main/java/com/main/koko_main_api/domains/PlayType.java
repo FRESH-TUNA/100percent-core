@@ -18,7 +18,8 @@ public class PlayType {
     private String title;
 
     @Builder
-    public PlayType(String title) {
+    public PlayType(Long id, String title) {
+        this.id = id;
         this.title = title;
     }
 }
