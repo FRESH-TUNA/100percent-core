@@ -1,13 +1,9 @@
-package com.main.koko_main_api.payloads.playable;
+package com.main.koko_main_api.dtos.playable;
 
-import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.dtos.music.MusicBpmEntityDto;
-import com.main.koko_main_api.dtos.playable.PlayableMusicEntityDto;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 

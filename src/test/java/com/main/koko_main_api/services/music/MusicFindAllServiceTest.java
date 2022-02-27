@@ -2,10 +2,9 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.*;
-import com.main.koko_main_api.dtos.music.MusicListDto;
+import com.main.koko_main_api.dtos.music.MusicDto;
 
 import com.main.koko_main_api.repositories.music.MusicRepository;
-import com.main.koko_main_api.services.PlayableService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -73,8 +72,8 @@ public class MusicFindAllServiceTest {
                 .play_type(five_key.getId())
                 .difficulty_type(normal_type.getId())
                 .filter("difficulty").build();
-        Page<MusicListDto> nomral_result = musicFindAllService.call(null, normal_params);
-        Page<MusicListDto> hard_result = musicFindAllService.call(null, hard_params);
+        Page<MusicDto> nomral_result = musicFindAllService.call(null, normal_params);
+        Page<MusicDto> hard_result = musicFindAllService.call(null, hard_params);
 
         /*
          * then
@@ -123,8 +122,8 @@ public class MusicFindAllServiceTest {
                 .play_type(five_key.getId())
                 .level(easy_level)
                 .filter("level").build();
-        Page<MusicListDto> nomral_result = musicFindAllService.call(null, normal_params);
-        Page<MusicListDto> hard_result = musicFindAllService.call(null, hard_params);
+        Page<MusicDto> nomral_result = musicFindAllService.call(null, normal_params);
+        Page<MusicDto> hard_result = musicFindAllService.call(null, hard_params);
 
         /*
          * then

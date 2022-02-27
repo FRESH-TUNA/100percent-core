@@ -4,10 +4,10 @@ import com.main.koko_main_api.dtos.playable.PlayableDetailPayloadAssembler;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.dtos.playable.PlayableListPayloadAssembler;
 import com.main.koko_main_api.dtos.playable.PlayableListResponseEntityDto;
-import com.main.koko_main_api.payloads.playable.PlayableDetailPayload;
-import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
+import com.main.koko_main_api.dtos.playable.PlayableDetailPayload;
+import com.main.koko_main_api.dtos.playable.PlayableSavePayload;
 
-import com.main.koko_main_api.payloads.playable.PlayableListPayload;
+import com.main.koko_main_api.dtos.playable.PlayableListPayload;
 import com.main.koko_main_api.services.PlayableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package com.main.koko_main_api.repositories;
 
 import com.main.koko_main_api.domains.Album;
-import com.main.koko_main_api.repositories.album.AlbumsRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 public class AlbumRepositoryTest {
     @Autowired
-    private AlbumsRepository vr;
+    private AlbumRepository vr;
 
     @Test
     public void test() {

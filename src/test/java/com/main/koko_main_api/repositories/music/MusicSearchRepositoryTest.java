@@ -3,7 +3,7 @@ package com.main.koko_main_api.repositories.music;
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.repositories.PlayTypesRepository;
-import com.main.koko_main_api.repositories.album.AlbumsRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.playable.PlayableRepository;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MusicSearchRepositoryTest {
     @Autowired
-    private AlbumsRepository albumsRepository;
+    private AlbumRepository albumRepository;
 
     @Autowired
     private PlayableRepository playableRepository;
@@ -49,8 +49,8 @@ class MusicSearchRepositoryTest {
         // Album
         Album ALBUM_A = Album.builder().title("ALBUM_A").build();
         Album ALBUM_B = Album.builder().title("ALBUM_B").build();
-        albumsRepository.save(ALBUM_A);
-        albumsRepository.save(ALBUM_B);
+        albumRepository.save(ALBUM_A);
+        albumRepository.save(ALBUM_B);
 
         // Music
         List<Music> musics = new ArrayList<>();
@@ -100,7 +100,7 @@ class MusicSearchRepositoryTest {
 
         // Album
         Album album = Album.builder().title("album").build();
-        albumsRepository.save(album);
+        albumRepository.save(album);
 
         // Music
         List<Music> musics = new ArrayList<>();

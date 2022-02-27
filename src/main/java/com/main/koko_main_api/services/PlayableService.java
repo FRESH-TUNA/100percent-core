@@ -1,10 +1,9 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
 import com.main.koko_main_api.dtos.playable.PlayableListResponseEntityDto;
 import com.main.koko_main_api.dtos.playable.PlayableSaveEntityDto;
-import com.main.koko_main_api.payloads.playable.PlayableSavePayload;
+import com.main.koko_main_api.dtos.playable.PlayableSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.repositories.BpmRepository;
@@ -19,8 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
