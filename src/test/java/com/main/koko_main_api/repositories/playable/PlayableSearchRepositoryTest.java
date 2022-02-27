@@ -2,8 +2,6 @@ package com.main.koko_main_api.repositories.playable;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.controllers.playable.PlayableParams;
-import com.main.koko_main_api.dtos.music.MusicBpmSaveEntityDto;
-import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.PlayType;
 import com.main.koko_main_api.domains.Playable;
@@ -22,7 +20,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

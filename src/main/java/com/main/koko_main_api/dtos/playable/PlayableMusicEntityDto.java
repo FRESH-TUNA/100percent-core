@@ -1,7 +1,7 @@
 package com.main.koko_main_api.dtos.playable;
 
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.dtos.music.MusicBpmEntityDto;
+import com.main.koko_main_api.dtos.music.bpm.MusicBpmEntityDto;
 import lombok.Getter;
 
 import java.util.List;

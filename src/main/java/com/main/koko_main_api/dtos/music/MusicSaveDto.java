@@ -1,29 +1,20 @@
 package com.main.koko_main_api.dtos.music;
-import com.main.koko_main_api.domains.Album;
-import com.main.koko_main_api.domains.Composer;
-import com.main.koko_main_api.domains.Music;
 
-import lombok.Builder;
+import com.main.koko_main_api.dtos.music.bpm.MusicBpmsSavePayloadDto;
+import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 
+import java.net.URI;
 import java.util.List;
 
+// https://stackoverflow.com/questions/37186417/resolving-entity-uri-in-custom-controller-spring-hateoas
+
+@AllArgsConstructor
 @Getter
 public class MusicSaveDto {
     private String title;
-    private Album album;
-    private List<Composer> composers;
-
-    public Music toEntity() {
-        return Music.builder()
-                .title(title)
-                .album(album).build();
-    }
-
-    @Builder
-    public MusicSaveDto(String title, Album album, List<Composer> composers) {
-        this.title = title;
-        this.album = album;
-        this.composers = composers;
-    }
+    private URI album;
+    private List<URI> composers;
+    private List<MusicBpmsSavePayloadDto> bpms;
 }

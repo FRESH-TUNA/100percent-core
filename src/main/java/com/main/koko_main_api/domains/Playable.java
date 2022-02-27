@@ -1,15 +1,12 @@
 package com.main.koko_main_api.domains;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
 
 //https://www.baeldung.com/rest-api-search-language-spring-data-querydsl
 

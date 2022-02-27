@@ -4,7 +4,7 @@ import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Playable;
 import com.main.koko_main_api.dtos.music.MusicDto;
-import com.main.koko_main_api.dtos.music.MusicPlayablesDto;
+import com.main.koko_main_api.dtos.music.playables.MusicPlayablesDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

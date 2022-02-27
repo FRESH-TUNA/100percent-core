@@ -30,7 +30,7 @@ public class Music extends BaseTimeModel {
     @JoinTable(name = "composer_music",
             joinColumns = @JoinColumn(name = "composer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
-    private List<Composer> composers;
+    private List<Composer> composers = new ArrayList<>();
 
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
@@ -47,19 +47,27 @@ public class Music extends BaseTimeModel {
     }
 
     /*
+     * methods
+     */
+    /*
      * for new music
      * 실제 쿼리가 들어가지는 않지만 객체의 양방향 연결을 위해 사용한다.
      * 또한 객체 address를 바꾸지 않아서 필요없는 update쿼리를 막는다.
      */
-    public void add_bpms_for_save_request(List<Bpm> bpms) {
+    public void add_bpms(List<Bpm> bpms) {
         Iterator<Bpm> it = bpms.iterator();
         while(it.hasNext()) this.bpms.add(it.next());
     }
 
+    public void set_composers_for_save(List<Composer> composers) {
+        this.composers = composers;
+    }
+
     @Builder
-    public Music(String title, Album album, Long id) {
+    public Music(String title, Album album, Long id, List<Composer> composers) {
         this.title = title;
         this.album = album;
         this.id = id;
+        this.composers = composers;
     }
 }
