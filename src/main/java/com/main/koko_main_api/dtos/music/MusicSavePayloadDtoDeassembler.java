@@ -25,7 +25,7 @@ public class MusicSavePayloadDtoDeassembler
     @Override
     public MusicSaveDto toEntityDto(MusicSavePayloadDto musicSavePayloadDto) {
         Album album = null;
-        List<Composer> composers = null;
+        List<Composer> composers = new ArrayList<>();
         String title = musicSavePayloadDto.getTitle();
         List<Long> composer_ids = new ArrayList<>();
 
@@ -39,7 +39,8 @@ public class MusicSavePayloadDtoDeassembler
 
         for(URI composer_uri : musicSavePayloadDto.getComposers())
             composer_ids.add(convertURItoID(composer_uri));
-        composers = composerRepository.findAllById(composer_ids);
+        if(composer_ids.size() > 0)
+            composers = composerRepository.findAllById(composer_ids);
 
         return MusicSaveDto.builder()
                 .title(title).album(album).composers(composers).build();
