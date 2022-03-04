@@ -2,15 +2,14 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.*;
-import com.main.koko_main_api.dtos.music.MusicDto;
 
+import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -22,13 +21,14 @@ import static org.mockito.Mockito.when;
 /*
  * 참고자료
  * https://tecoble.techcourse.co.kr/post/2021-08-15-pageable/
+ * test complete
  */
 @ActiveProfiles(profiles = "test")
 @ExtendWith(MockitoExtension.class)
 
-public class MusicFindAllServiceTest {
+public class MusicFilterFindAllServiceTest {
     @InjectMocks
-    private MusicFindAllService musicFindAllService;
+    private MusicFilterFindAllService musicFilterFindAllService;
 
     @Mock
     private MusicRepository musicRepository;
@@ -72,16 +72,16 @@ public class MusicFindAllServiceTest {
                 .play_type(five_key.getId())
                 .difficulty_type(normal_type.getId())
                 .filter("difficulty").build();
-        Page<MusicDto> nomral_result = musicFindAllService.call(null, normal_params);
-        Page<MusicDto> hard_result = musicFindAllService.call(null, hard_params);
+        List<MusicEntityToServiceDto> nomral_result = musicFilterFindAllService.call(normal_params);
+        List<MusicEntityToServiceDto> hard_result = musicFilterFindAllService.call(hard_params);
 
         /*
          * then
          */
-        assertThat(nomral_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
-        assertThat(nomral_result.getContent().get(0).getPlayables().get(0).getDifficultyType().getName()).isEqualTo("normal");
-        assertThat(hard_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
-        assertThat(hard_result.getContent().get(0).getPlayables().get(0).getDifficultyType().getName()).isEqualTo("hard");
+        assertThat(nomral_result.get(0).getPlayables().size()).isEqualTo(1);
+        assertThat(nomral_result.get(0).getPlayables().get(0).getDifficultyType().getName()).isEqualTo("normal");
+        assertThat(hard_result.get(0).getPlayables().size()).isEqualTo(1);
+        assertThat(hard_result.get(0).getPlayables().get(0).getDifficultyType().getName()).isEqualTo("hard");
     }
 
     @Test
@@ -122,15 +122,15 @@ public class MusicFindAllServiceTest {
                 .play_type(five_key.getId())
                 .level(easy_level)
                 .filter("level").build();
-        Page<MusicDto> nomral_result = musicFindAllService.call(null, normal_params);
-        Page<MusicDto> hard_result = musicFindAllService.call(null, hard_params);
+        List<MusicEntityToServiceDto> nomral_result = musicFilterFindAllService.call(normal_params);
+        List<MusicEntityToServiceDto> hard_result = musicFilterFindAllService.call(hard_params);
 
         /*
          * then
          */
-        assertThat(nomral_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
-        assertThat(nomral_result.getContent().get(0).getPlayables().get(0).getLevel()).isEqualTo(easy_level);
-        assertThat(hard_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
-        assertThat(hard_result.getContent().get(0).getPlayables().get(0).getLevel()).isEqualTo(hard_level);
+        assertThat(nomral_result.get(0).getPlayables().size()).isEqualTo(1);
+        assertThat(nomral_result.get(0).getPlayables().get(0).getLevel()).isEqualTo(easy_level);
+        assertThat(hard_result.get(0).getPlayables().size()).isEqualTo(1);
+        assertThat(hard_result.get(0).getPlayables().get(0).getLevel()).isEqualTo(hard_level);
     }
 }

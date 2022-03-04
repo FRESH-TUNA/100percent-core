@@ -2,6 +2,7 @@ package com.main.koko_main_api.controllers.music;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.MusicDto;
+import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
 import com.main.koko_main_api.dtos.music.MusicSaveDto;
 
 import com.main.koko_main_api.services.music.MusicService;
@@ -24,9 +25,12 @@ public class MusicController {
         return musicService.save(payload);
     }
 
+    /*
+     * 개발중
+     */
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path="/main_api/v1/musics/{id}")
     public MusicDto findById(Long id) {
-        return new MusicDto(new Music());
+        return new MusicDto(new MusicEntityToServiceDto(new Music()));
     }
 }

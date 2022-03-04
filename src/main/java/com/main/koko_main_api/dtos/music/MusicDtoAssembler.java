@@ -24,13 +24,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class MusicDtoAssembler implements
-        RepresentationModelAssembler<Music, MusicDto> {
+        RepresentationModelAssembler<MusicEntityToServiceDto, MusicDto> {
 
     @Autowired
     private RepositoryEntityLinks linkHelper;
 
     @Override
-    public MusicDto toModel(Music m) {
+    public MusicDto toModel(MusicEntityToServiceDto m) {
         MusicDto payload = new MusicDto(m);
 
         // add self links
