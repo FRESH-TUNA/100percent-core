@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.dtos.pattern;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.bpm.MusicBpmEntityDto;
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class PlayableMusicEntityDto {
+public class PatternMusicEntityDto {
     private Long id;
     private String title;
     private List<MusicBpmEntityDto> bpms;
 
-    public PlayableMusicEntityDto(Music music) {
+    public PatternMusicEntityDto(Music music) {
         this.id = music.getId();
         this.title = music.getTitle();
         this.bpms = music.getBpms().stream()

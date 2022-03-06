@@ -2,10 +2,12 @@ package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.domains.*;
+import com.main.koko_main_api.repositories.DifficultyTypeRepository;
 import com.main.koko_main_api.repositories.PlayTypesRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
-import com.main.koko_main_api.repositories.playable.PlayableRepository;
+import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
+import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -30,13 +32,16 @@ class MusicSearchRepositoryTest {
     private AlbumRepository albumRepository;
 
     @Autowired
-    private PlayableRepository playableRepository;
+    private PatternRepository patternRepository;
 
     @Autowired
     private MusicRepository musicRepository;
 
     @Autowired
     private PlayTypesRepository playTypesRepository;
+
+    @Autowired
+    private DifficultyTypeRepository difficultyTypeRepository;
 
     @Test
     void test_findAll_pageable_album_id() {
@@ -66,16 +71,16 @@ class MusicSearchRepositoryTest {
         }
 
         // Playables
-        List<Playable> playables = new ArrayList<>();
+        List<Pattern> patterns = new ArrayList<>();
         for(int i = 0; i < ALBUM_A_N_MUSICS + ALBUM_B_N_MUSICS; ++i) {
             Music music = musics.get(i);
-            Playable playable1 = Playable.builder().level(2).music(music).build();
-            Playable playable2 = Playable.builder().level(10).music(music).build();
-            playables.add(Playable.builder().level(2).music(music).build());
-            music.add_playable(playable1);
-            music.add_playable(playable2);
+            Pattern pattern1 = Pattern.builder().level(2).music(music).build();
+            Pattern pattern2 = Pattern.builder().level(10).music(music).build();
+            patterns.add(Pattern.builder().level(2).music(music).build());
+            music.add_playable(pattern1);
+            music.add_playable(pattern2);
         }
-        playableRepository.saveAll(playables);
+        patternRepository.saveAll(patterns);
 
         /*
          * when
@@ -88,7 +93,7 @@ class MusicSearchRepositoryTest {
         assertThat(All_musics.getNumberOfElements()).isEqualTo(ALBUM_A_N_MUSICS + ALBUM_B_N_MUSICS);
         assertThat(FIVE_KEY_musics.getNumberOfElements()).isEqualTo(ALBUM_A_N_MUSICS);
         assertThat(SIX_KEY_musics.getNumberOfElements()).isEqualTo(ALBUM_B_N_MUSICS);
-        assertThat(FIVE_KEY_musics.getContent().get(0).getPlayables().size()).isEqualTo(2);
+        assertThat(FIVE_KEY_musics.getContent().get(0).getPatterns().size()).isEqualTo(2);
     }
 
     @Test
@@ -113,16 +118,16 @@ class MusicSearchRepositoryTest {
         playTypesRepository.save(playType);
 
         // Playables
-        List<Playable> playables = new ArrayList<>();
+        List<Pattern> patterns = new ArrayList<>();
         for(int i = 0; i < MUSIC_COUNTS; ++i) {
             Music music = musics.get(i);
-            Playable playable1 = Playable.builder().level(2).music(music).playType(playType).build();
-            Playable playable2 = Playable.builder().level(10).music(music).playType(playType).build();
-            playables.add(Playable.builder().level(2).music(music).build());
-            music.add_playable(playable1);
-            music.add_playable(playable2);
+            Pattern pattern1 = Pattern.builder().level(2).music(music).playType(playType).build();
+            Pattern pattern2 = Pattern.builder().level(10).music(music).playType(playType).build();
+            patterns.add(Pattern.builder().level(2).music(music).build());
+            music.add_playable(pattern1);
+            music.add_playable(pattern2);
         }
-        playableRepository.saveAll(playables);
+        patternRepository.saveAll(patterns);
 
         /*
          * when
@@ -130,6 +135,54 @@ class MusicSearchRepositoryTest {
         List<Music> All_musics = musicRepository.findAll();
         assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS);
         assertThat(All_musics.get(0).getAlbum().getTitle()).isEqualTo("album");
-        assertThat(All_musics.get(0).getPlayables().size()).isEqualTo(2);
+        assertThat(All_musics.get(0).getPatterns().size()).isEqualTo(2);
+    }
+
+    @Test
+    void test_findAll_custom() {
+        /*
+         * given
+         */
+        final int MUSIC_COUNTS = 5;
+
+        // Album
+        Album album = Album.builder().title("album").build();
+        albumRepository.save(album);
+
+        // Music
+        List<Music> musics = new ArrayList<>();
+        for(int i = 0; i < MUSIC_COUNTS; ++i)
+            musics.add(Music.builder().title("music").album(album).build());
+        musicRepository.saveAll(musics);
+
+        //Playtype
+        PlayType playType = PlayType.builder().title("5K").build();
+        playTypesRepository.save(playType);
+        PlayType playType2 = PlayType.builder().title("6K").build();
+        playTypesRepository.save(playType2);
+
+        // Playables
+        List<Pattern> patterns = new ArrayList<>();
+        for(int i = 0; i < MUSIC_COUNTS; ++i) {
+            Music music = musics.get(i);
+            Pattern pattern1 = Pattern.builder().level(2).music(music).playType(playType).build();
+            Pattern pattern2 = Pattern.builder().level(10).music(music).playType(playType2).build();
+
+            patterns.add(pattern1);
+            patterns.add(pattern2);
+
+            music.add_playable(pattern1);
+            music.add_playable(pattern2);
+        }
+        patternRepository.saveAll(patterns);
+
+        /*
+         * when
+         */
+        QMusic m = QMusic.music;
+        List<Tuple> All_musics = musicRepository.findAll_custom(playType.getId());
+        assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS*2);
+        assertThat(All_musics.get(0).get(m.playables).size()).isEqualTo(1);
+//        assertThat(All_musics.get(0).getPlayables().size()).isEqualTo(1);
     }
 }

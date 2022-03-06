@@ -1,4 +1,4 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.dtos.pattern;
 
 import com.main.koko_main_api.dtos.music.bpm.MusicBpmSaveEntityDto;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class PlayableSavePayload {
+public class PatternSavePayload {
     private Integer level;
     private List<MusicBpmSaveEntityDto> bpms;
     private URI music;

@@ -1,6 +1,6 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.dtos.pattern;
 
-import com.main.koko_main_api.controllers.PlayableController;
+import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -17,18 +17,19 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * model메소드를 직접 구현한다?!
  */
 @Component
-public class PlayableDetailPayloadAssembler implements
-        RepresentationModelAssembler<PlayableDetailResponseEntityDto, PlayableDetailPayload> {
+public class PatternListPayloadAssembler implements
+        RepresentationModelAssembler<PatternListResponseEntityDto, PatternListPayload> {
 
     @Autowired
     private RepositoryEntityLinks linkHelper;
 
     @Override
-    public PlayableDetailPayload toModel(PlayableDetailResponseEntityDto p) {
-        PlayableDetailPayload payload = new PlayableDetailPayload(p);
+    public PatternListPayload toModel(PatternListResponseEntityDto p) {
+        PatternListPayload payload = new PatternListPayload(p);
+
         /* add link */
-        payload.add(linkTo(methodOn(PlayableController.class
-        ).findById(payload.getId())).withSelfRel());
+        payload.add(linkTo(methodOn(PatternController.class
+            ).findById(payload.getId())).withSelfRel());
         payload.add(linkHelper.linkToItemResource(
                 MusicRepository.class, payload.getMusic().getId()));
         return payload;

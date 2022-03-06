@@ -1,8 +1,7 @@
 package com.main.koko_main_api.dtos.music;
 
-import com.main.koko_main_api.controllers.PlayableController;
+import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.controllers.music.MusicController;
-import com.main.koko_main_api.domains.Music;
 
 import com.main.koko_main_api.dtos.music.playables.MusicPlayablesDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
@@ -48,7 +47,7 @@ public class MusicDtoAssembler implements
 
     private void add_link_to_playables(List<MusicPlayablesDto> dtos) {
         for(MusicPlayablesDto dto : dtos)
-            dto.add(linkTo(methodOn(PlayableController.class
+            dto.add(linkTo(methodOn(PatternController.class
                 ).findById(dto.getId())).withSelfRel());
     }
 }

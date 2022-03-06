@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Playable extends BaseTimeModel  {
+public class Pattern extends BaseTimeModel  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,10 +40,10 @@ public class Playable extends BaseTimeModel  {
      * for new Playable and Test purpose
      */
     @Builder
-    public Playable(Long id, Music music,
-                    Integer level,
-                    DifficultyType difficultyType,
-                    PlayType playType) {
+    public Pattern(Long id, Music music,
+                   Integer level,
+                   DifficultyType difficultyType,
+                   PlayType playType) {
         this.id = id;
         this.music = music;
         this.level = level;

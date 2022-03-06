@@ -48,14 +48,14 @@ public class MusicFilterFindAllServiceTest {
 
         for(int i = 0; i < MUSIC_LENGTH; ++i) {
             Music music = Music.builder().album(album).build();
-            Playable playable_hard_type = Playable.builder()
+            Pattern pattern_hard_type = Pattern.builder()
                     .id(playable_id++).difficultyType(hard_type)
                     .music(music).playType(five_key).build();
-            Playable playable_normal_type = Playable.builder()
+            Pattern pattern_normal_type = Pattern.builder()
                     .id(playable_id++).difficultyType(normal_type)
                     .music(music).playType(five_key).build();
-            music.add_playable(playable_hard_type);
-            music.add_playable(playable_normal_type);
+            music.add_playable(pattern_hard_type);
+            music.add_playable(pattern_normal_type);
             musics.add(music);
         }
 
@@ -98,10 +98,10 @@ public class MusicFilterFindAllServiceTest {
 
         for(int i = 0; i < MUSIC_LENGTH; ++i) {
             Music music = Music.builder().album(album).build();
-            Playable hard = Playable.builder()
+            Pattern hard = Pattern.builder()
                     .id(playable_id++).level(hard_level)
                     .music(music).playType(five_key).build();
-            Playable easy = Playable.builder()
+            Pattern easy = Pattern.builder()
                     .id(playable_id++).level(easy_level)
                     .music(music).playType(five_key).build();
             music.add_playable(hard);

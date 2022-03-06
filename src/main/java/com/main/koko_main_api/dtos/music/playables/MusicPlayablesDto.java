@@ -1,8 +1,8 @@
 package com.main.koko_main_api.dtos.music.playables;
 
 import com.main.koko_main_api.domains.DifficultyType;
+import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.domains.PlayType;
-import com.main.koko_main_api.domains.Playable;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -13,7 +13,7 @@ public class MusicPlayablesDto extends RepresentationModel<MusicPlayablesDto> {
     private DifficultyType difficultyType;
     private PlayType playType;
 
-    public MusicPlayablesDto(Playable p) {
+    public MusicPlayablesDto(Pattern p) {
         this.id = p.getId();
         this.level = p.getLevel();
         this.difficultyType = p.getDifficultyType();

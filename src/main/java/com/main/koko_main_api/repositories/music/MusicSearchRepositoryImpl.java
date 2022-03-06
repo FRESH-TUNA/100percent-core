@@ -1,9 +1,6 @@
 package com.main.koko_main_api.repositories.music;
 
-import com.main.koko_main_api.domains.Music;
-
-import com.main.koko_main_api.domains.QMusic;
-import com.main.koko_main_api.domains.QPlayable;
+import com.main.koko_main_api.domains.*;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;

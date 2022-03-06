@@ -2,7 +2,7 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.domains.Playable;
+import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.*;
 import com.main.koko_main_api.dtos.music.playables.MusicPlayablesDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
@@ -56,12 +56,12 @@ public class MusicService {
 
         for(Music m : musics) {
             List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
-            List<Playable> playables = m.getPlayables();
+            List<Pattern> patterns = m.getPatterns();
 
             // play_type filtering
-            for(Playable playable : playables)
-                if(playable.getPlayType().getId().equals(play_type_id))
-                    filtered_playables.add(new MusicPlayablesDto(playable));
+            for(Pattern pattern : patterns)
+                if(pattern.getPlayType().getId().equals(play_type_id))
+                    filtered_playables.add(new MusicPlayablesDto(pattern));
 
             musicEntityToServiceDtos.add(new MusicEntityToServiceDto(m, filtered_playables));
         }

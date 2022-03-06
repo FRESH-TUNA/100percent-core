@@ -2,7 +2,7 @@ package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
-import com.main.koko_main_api.repositories.playable.PlayableRepository;
+import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles(profiles = "test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PlayableControllerTest {
+public class PatternControllerTest {
     @LocalServerPort
     private int port;
     @Autowired
@@ -35,7 +35,7 @@ public class PlayableControllerTest {
     @Autowired
     private MusicRepository musicRepository;
     @Autowired
-    private PlayableRepository playableRepository;
+    private PatternRepository patternRepository;
 
     private static String MUSICS_ENDPOINT="/musics";
     private static String PLAYABLES_ENDPOINT="/playables";
@@ -48,7 +48,7 @@ public class PlayableControllerTest {
     @AfterEach
     public void clear_db() {
         this.bpmRepository.deleteAll();
-        this.playableRepository.deleteAll();
+        this.patternRepository.deleteAll();
         this.musicRepository.deleteAll();
     }
 

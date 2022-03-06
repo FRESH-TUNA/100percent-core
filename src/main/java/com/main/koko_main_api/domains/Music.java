@@ -35,15 +35,15 @@ public class Music extends BaseTimeModel {
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
     @OneToMany(mappedBy = "music")
-    private List<Playable> playables = new ArrayList<>();
+    private List<Pattern> patterns = new ArrayList<>();
 
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
     @OneToMany(mappedBy = "music")
     private List<Bpm> bpms = new ArrayList<>();
 
-    public void add_playable(Playable playable) {
-        this.playables.add(playable);
+    public void add_playable(Pattern pattern) {
+        this.patterns.add(pattern);
     }
 
     /*

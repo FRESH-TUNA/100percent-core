@@ -1,13 +1,13 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.domains.Playable;
+import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.bpm.MusicBpmSaveEntityDto;
-import com.main.koko_main_api.dtos.playable.PlayableDetailResponseEntityDto;
-import com.main.koko_main_api.dtos.playable.PlayableSavePayload;
+import com.main.koko_main_api.dtos.pattern.PatternDetailResponseEntityDto;
+import com.main.koko_main_api.dtos.pattern.PatternSavePayload;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
-import com.main.koko_main_api.repositories.playable.PlayableRepository;
+import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,10 +33,10 @@ import static org.mockito.Mockito.when;
  */
 @ActiveProfiles(profiles = "test")
 @ExtendWith(MockitoExtension.class)
-public class PlayableServiceTest {
+public class PatternServiceTest {
 
     @InjectMocks
-    private PlayableService playableService;
+    private PatternService patternService;
 
     @Mock
     private MusicRepository musicRepository;
@@ -45,7 +45,7 @@ public class PlayableServiceTest {
     private BpmRepository bpmRepository;
 
     @Mock
-    private PlayableRepository playableRepository;
+    private PatternRepository patternRepository;
 
     @Test
     public void save_test() throws URISyntaxException {
@@ -57,11 +57,11 @@ public class PlayableServiceTest {
               add(MusicBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
         URI music_link = new URI("http://localhost/musics/1");
-        PlayableSavePayload playableSavePayload = PlayableSavePayload.builder()
+        PatternSavePayload patternSavePayload = PatternSavePayload.builder()
                 .level(2)
                 .bpms(bpms)
                 .music(music_link).build();
-        Playable playable = Playable.builder()
+        Pattern pattern = Pattern.builder()
                 .level(2)
                 .id(1L)
                 .music(saved_music)
@@ -70,13 +70,13 @@ public class PlayableServiceTest {
 //                bpm -> bpm.toEntity(playable)).collect(Collectors.toList());
 
         when(musicRepository.findById(1L)).thenReturn(Optional.of(saved_music));
-        when(playableRepository.save(any())).thenReturn(playable);
+        when(patternRepository.save(any())).thenReturn(pattern);
 //        when(bpmRepository.saveAll(any())).thenReturn(_bpms);
 
         /*
          * when
          */
-        PlayableDetailResponseEntityDto result = playableService.save(playableSavePayload);
+        PatternDetailResponseEntityDto result = patternService.save(patternSavePayload);
 
         /*
          * then
@@ -97,7 +97,7 @@ public class PlayableServiceTest {
             { add(MusicBpmSaveEntityDto.builder().value(100).build());
                 add(MusicBpmSaveEntityDto.builder().value(150).build());}};
         Music saved_music = Music.builder().title("music").id(1L).build();
-        Playable playable = Playable.builder()
+        Pattern pattern = Pattern.builder()
                 .level(2)
                 .id(1L)
                 .music(saved_music)
@@ -107,12 +107,12 @@ public class PlayableServiceTest {
 //                .collect(Collectors.toList()));
 
 
-        when(playableRepository.findById(1L)).thenReturn(Optional.of(playable));
+        when(patternRepository.findById(1L)).thenReturn(Optional.of(pattern));
 
         /*
          * when
          */
-        PlayableDetailResponseEntityDto result = playableService.findById(1L);
+        PatternDetailResponseEntityDto result = patternService.findById(1L);
 
         /*
          * then
@@ -139,12 +139,12 @@ public class PlayableServiceTest {
         Music saved_music_1 = Music.builder().title("music1").id(1L).build();
         Music saved_music_2 = Music.builder().title("music2").id(2L).build();
 
-        Playable playable1 = Playable.builder()
+        Pattern pattern1 = Pattern.builder()
                 .level(2)
                 .id(1L)
                 .music(saved_music_1)
                 .build();
-        Playable playable2 = Playable.builder()
+        Pattern pattern2 = Pattern.builder()
                 .level(3)
                 .id(2L)
                 .music(saved_music_2)
@@ -157,11 +157,11 @@ public class PlayableServiceTest {
 //                .map(bpm -> bpm.toEntity(playable2))
 //                .collect(Collectors.toList()));
 
-        Page<Playable> page = new PageImpl<>(
-                new ArrayList<Playable>() {{ add(playable1); add(playable2); }});
+        Page<Pattern> page = new PageImpl<>(
+                new ArrayList<Pattern>() {{ add(pattern1); add(pattern2); }});
         Pageable pageable = PageRequest.of(0, 10);
 
-        when(playableRepository.findAll(pageable)).thenReturn(page);
+        when(patternRepository.findAll(pageable)).thenReturn(page);
 
         /*
          * when

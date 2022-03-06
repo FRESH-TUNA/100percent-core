@@ -2,8 +2,6 @@ package com.main.koko_main_api.configs;
 
 import com.main.koko_main_api.repositories.album.AlbumCustomRepository;
 import com.main.koko_main_api.repositories.album.AlbumCustomRepositoryJPQLImpl;
-import com.main.koko_main_api.repositories.playable.PlayableSearchRepository;
-import com.main.koko_main_api.repositories.playable.PlayableSearchRepositoryImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

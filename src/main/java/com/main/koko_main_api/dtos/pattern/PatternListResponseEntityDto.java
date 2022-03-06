@@ -1,23 +1,23 @@
-package com.main.koko_main_api.dtos.playable;
+package com.main.koko_main_api.dtos.pattern;
 
-import com.main.koko_main_api.domains.Playable;
+import com.main.koko_main_api.domains.Pattern;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class PlayableListResponseEntityDto {
+public class PatternListResponseEntityDto {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PlayableMusicEntityDto music;
+    private PatternMusicEntityDto music;
 
-    public PlayableListResponseEntityDto(Playable p)  {
+    public PatternListResponseEntityDto(Pattern p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();
         modifiedDate = p.getModifiedDate();
-        music = new PlayableMusicEntityDto(p.getMusic());
+        music = new PatternMusicEntityDto(p.getMusic());
     }
 }
