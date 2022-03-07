@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MusicRequestParams {
-    private String filter;
+    private String mode;
     private Long play_type;
     private Long difficulty_type;
     private Long album;
@@ -17,8 +17,8 @@ public class MusicRequestParams {
     }
 
     @Builder
-    public MusicRequestParams(String filter, Long play_type, Long difficulty_type, Long album, Integer level) {
-        this.filter = filter;
+    public MusicRequestParams(String mode, Long play_type, Long difficulty_type, Long album, Integer level) {
+        this.mode = mode;
         this.play_type = play_type;
         this.difficulty_type = difficulty_type;
         this.album = album;

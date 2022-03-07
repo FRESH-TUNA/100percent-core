@@ -3,7 +3,7 @@ package com.main.koko_main_api.dtos.music;
 import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.controllers.music.MusicController;
 
-import com.main.koko_main_api.dtos.music.playables.MusicPlayablesDto;
+import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -45,8 +45,8 @@ public class MusicDtoAssembler implements
         return payload;
     }
 
-    private void add_link_to_playables(List<MusicPlayablesDto> dtos) {
-        for(MusicPlayablesDto dto : dtos)
+    private void add_link_to_playables(List<MusicPatternsDto> dtos) {
+        for(MusicPatternsDto dto : dtos)
             dto.add(linkTo(methodOn(PatternController.class
                 ).findById(dto.getId())).withSelfRel());
     }

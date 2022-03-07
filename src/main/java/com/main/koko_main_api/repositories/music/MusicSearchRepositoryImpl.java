@@ -39,8 +39,8 @@ public class MusicSearchRepositoryImpl
     /*
      * filters
      */
-    private BooleanExpression albumEq(Album a) {
-        return a != null ? QMusic.music.album.eq(a) : null;
+    private BooleanExpression albumIdEq(Long a) {
+        return a != null ? QMusic.music.album.id.eq(a) : null;
     }
 
     /*
@@ -64,9 +64,9 @@ public class MusicSearchRepositoryImpl
      * main methods
      */
     @Override
-    public Page<Music> findAll(Pageable pageable, Album album) {
-        JPAQuery<Music> musics_query = findAll_base_query().where(albumEq(album));
-        JPAQuery<Long> counts_query = counts_base_query().where(albumEq(album));
+    public Page<Music> findAllByAlbum(Pageable pageable, Long album_id) {
+        JPAQuery<Music> musics_query = findAll_base_query().where(albumIdEq(album_id));
+        JPAQuery<Long> counts_query = counts_base_query().where(albumIdEq(album_id));
 
         // count query all
         Long music_counts = counts_query.fetchOne();

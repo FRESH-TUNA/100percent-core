@@ -65,8 +65,8 @@ class MusicSearchRepositoryTest {
          * when
          */
         Pageable pageable = PageRequest.of(0, 1);
-        Page<Music> FIVE_KEY_musics = musicRepository.findAll(pageable, ALBUM_A);
-        Page<Music> SIX_KEY_musics = musicRepository.findAll(pageable, ALBUM_B);
+        Page<Music> FIVE_KEY_musics = musicRepository.findAllByAlbum(pageable, ALBUM_A.getId());
+        Page<Music> SIX_KEY_musics = musicRepository.findAllByAlbum(pageable, ALBUM_B.getId());
 
         assertThat(FIVE_KEY_musics.getNumberOfElements()).isEqualTo(1);
         assertThat(SIX_KEY_musics.getNumberOfElements()).isEqualTo(1);
@@ -91,7 +91,7 @@ class MusicSearchRepositoryTest {
          * when
          */
         Pageable pageable = PageRequest.of(0, 1);
-        Page<Music> ALBUM_B_musics = musicRepository.findAll(pageable, ALBUM_B);
+        Page<Music> ALBUM_B_musics = musicRepository.findAllByAlbum(pageable, ALBUM_B.getId());
 
         assertThat(ALBUM_B_musics.getNumberOfElements()).isEqualTo(0);
         assertThat(ALBUM_B_musics.getTotalElements()).isEqualTo(0);

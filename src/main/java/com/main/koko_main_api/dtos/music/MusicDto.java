@@ -1,7 +1,7 @@
 package com.main.koko_main_api.dtos.music;
 
 import com.main.koko_main_api.dtos.music.bpm.MusicAlbumDto;
-import com.main.koko_main_api.dtos.music.playables.MusicPlayablesDto;
+import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -15,7 +15,7 @@ public class MusicDto extends RepresentationModel<MusicDto> {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicAlbumDto album;
-    private List<MusicPlayablesDto> playables;
+    private List<MusicPatternsDto> playables;
 
     public MusicDto(MusicEntityToServiceDto m)  {
         id = m.getId();
