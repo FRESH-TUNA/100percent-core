@@ -1,6 +1,7 @@
 package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.controllers.music.MusicRequestParams;
+import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.*;
@@ -49,7 +50,7 @@ public class MusicService {
      * difficulty 기준 필터링
      */
     private Page<MusicEntityToServiceDto> pagedfindAll(Pageable pageable, MusicRequestParams params) {
-        Page<Music> musics_page = musicRepository.findAll(pageable, params.getAlbum());
+        Page<Music> musics_page = musicRepository.findAll(pageable, new Album());
         Long play_type_id = params.getPlay_type();
         List<Music> musics = musics_page.getContent();
         List<MusicEntityToServiceDto> musicEntityToServiceDtos = new ArrayList<>();

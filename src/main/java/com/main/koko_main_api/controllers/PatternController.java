@@ -21,14 +21,7 @@ public class PatternController {
     private final PatternListPayloadAssembler listAssembler;
     private final PatternDetailPayloadAssembler detailAssembler;
     private final PatternService patternService;
-    /*
-     * autowired를 통해 다른 스프링에 등록된 bean(service)를 주입할수 있다.
-     * 기본 생성자가 하나라면 생략 가능하다!
-     */
-//    @Autowired
-//    public PlayablesController(PlayablesService service) {
-//        this.playablesService = service;
-//    }
+
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/playables")
