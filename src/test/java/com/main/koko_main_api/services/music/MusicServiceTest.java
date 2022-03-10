@@ -42,7 +42,7 @@ public class MusicServiceTest {
     private PatternRepository patternRepository;
 
     @Test
-    public void 앨범없이_플레이타입으로_필터후_페이징() {
+    public void findAll_테스트() {
         /*
          * data mocking
          */
@@ -88,10 +88,6 @@ public class MusicServiceTest {
         /*
          * when
          */
-//        MusicRequestParams hard_params = MusicRequestParams.builder()
-//                .play_type(five_key.getId()).mode("db").build();
-//        MusicRequestParams normal_params = MusicRequestParams.builder()
-//                .play_type(six_key.getId()).build();
         Page<MusicEntityToServiceDto> five_key_result = musicService.findAll(page, five_key.getId());
         Page<MusicEntityToServiceDto> six_key_result = musicService.findAll(page, six_key.getId());
 

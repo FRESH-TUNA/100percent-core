@@ -30,8 +30,6 @@ public class MusicService {
     private final MusicSaveDtoDeassembler deassembler;
     private final MusicDtoAssembler showAssembler;
 
-    private final MusicAddPatternsResultService musicAddPatternsResultService;
-
     private final PagedResourcesAssembler<MusicEntityToServiceDto> pageAssembler;
 
     /*
@@ -58,39 +56,19 @@ public class MusicService {
         List<Pattern> patterns = patternRepository
                 .findAllByPlayTypeAndMusics(music_ids, play_type_id);
 
-        return musicAddPatternsResultService.call(music_page, patterns);
+        return add_patterns_and_get_music_page(music_page, patterns);
     }
 
     public Page<MusicEntityToServiceDto> findAllByAlbum(Pageable pageable, Long play_type_id, Long album_id) {
-        HashMap<Music, MusicEntityToServiceDto> entity_dto_mapper = new HashMap<>();
-        List<Long> music_ids = new ArrayList<>();
         Page<Music> music_page = musicRepository.findAllByAlbum(pageable, album_id);
 
-        Page<MusicEntityToServiceDto> results = music_page.map(
-                m -> {
-                    MusicEntityToServiceDto dto = new MusicEntityToServiceDto(m);
-                    entity_dto_mapper.put(m, dto);
-                    music_ids.add(m.getId());
-                    return dto;
-                });
+        List<Long> music_ids = music_page.map(m -> m.getId()).toList();
 
         List<Pattern> patterns = patternRepository
                 .findAllByPlayTypeAndMusics(music_ids, play_type_id);
 
-        addMusicPatternDtos(entity_dto_mapper, patterns);
-        return results;
+        return add_patterns_and_get_music_page(music_page, patterns);
     }
-
-    /*
-     * helpers
-     */
-    private void addMusicPatternDtos(HashMap<Music, MusicEntityToServiceDto> mapper,
-                                     List<Pattern> patterns) {
-        for(Pattern p: patterns) {
-            mapper.get(p.getMusic()).addMusicPatternDto(new MusicPatternsDto(p));
-        }
-    }
-
 
     /*
      * playable/playType + album 에따른 필터링을 지원하는 findall 메소드
@@ -135,5 +113,22 @@ public class MusicService {
             List<MusicEntityToServiceDto> dtos) {
         int list_size = dtos.size();
         return new PageImpl<>(dtos, PageRequest.of(0, list_size), list_size);
+    }
+
+    private Page<MusicEntityToServiceDto> add_patterns_and_get_music_page(Page<Music> music_page,
+                                              List<Pattern> patterns) {
+        HashMap<Music, MusicEntityToServiceDto> entity_dto_mapper = new HashMap<>();
+        Page<MusicEntityToServiceDto> result = music_page
+                .map(m -> {
+                    MusicEntityToServiceDto dto = new MusicEntityToServiceDto(m);
+                    entity_dto_mapper.put(m, dto);
+                    return dto;
+                });
+
+        for(Pattern p: patterns) {
+            entity_dto_mapper.get(p.getMusic()).addMusicPatternDto(new MusicPatternsDto(p));
+        }
+
+        return result;
     }
 }
