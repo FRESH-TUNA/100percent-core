@@ -10,8 +10,7 @@ import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -71,31 +70,6 @@ public class MusicService {
     }
 
     /*
-     * playable/playType + album 에따른 필터링을 지원하는 findall 메소드
-     * difficulty 기준 필터링
-     */
-//    private Page<MusicEntityToServiceDto> findAll(Pageable pageable, Long Album_id) {
-//        Page<Music> musics_page = musicRepository.findAll(pageable, new Album());
-//        Long play_type_id = params.getPlay_type();
-//        List<Music> musics = musics_page.getContent();
-//        List<MusicEntityToServiceDto> musicEntityToServiceDtos = new ArrayList<>();
-//
-//        for(Music m : musics) {
-//            List<MusicPlayablesDto> filtered_playables = new ArrayList<>();
-//            List<Pattern> patterns = m.getPatterns();
-//
-//            // play_type filtering
-//            for(Pattern pattern : patterns)
-//                if(pattern.getPlayType().getId().equals(play_type_id))
-//                    filtered_playables.add(new MusicPlayablesDto(pattern));
-//
-//            musicEntityToServiceDtos.add(new MusicEntityToServiceDto(m, filtered_playables));
-//        }
-//
-//        return new PageImpl<>(musicEntityToServiceDtos, pageable, musics_page.getTotalElements());
-//    }
-
-    /*
      * create
      */
     @Transactional
@@ -109,24 +83,18 @@ public class MusicService {
     /*
      * helper
      */
-    private Page<MusicEntityToServiceDto> list_to_single_page(
-            List<MusicEntityToServiceDto> dtos) {
-        int list_size = dtos.size();
-        return new PageImpl<>(dtos, PageRequest.of(0, list_size), list_size);
-    }
-
     private Page<MusicEntityToServiceDto> add_patterns_and_get_music_page(Page<Music> music_page,
                                               List<Pattern> patterns) {
-        HashMap<Music, MusicEntityToServiceDto> entity_dto_mapper = new HashMap<>();
+        HashMap<Long, MusicEntityToServiceDto> entity_dto_mapper = new HashMap<>();
         Page<MusicEntityToServiceDto> result = music_page
                 .map(m -> {
                     MusicEntityToServiceDto dto = new MusicEntityToServiceDto(m);
-                    entity_dto_mapper.put(m, dto);
+                    entity_dto_mapper.put(m.getId(), dto);
                     return dto;
                 });
 
         for(Pattern p: patterns) {
-            entity_dto_mapper.get(p.getMusic()).addMusicPatternDto(new MusicPatternsDto(p));
+            entity_dto_mapper.get(p.getMusic().getId()).addMusicPatternDto(new MusicPatternsDto(p));
         }
 
         return result;

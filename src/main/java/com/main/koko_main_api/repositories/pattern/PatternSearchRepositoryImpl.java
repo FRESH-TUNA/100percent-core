@@ -1,17 +1,13 @@
 package com.main.koko_main_api.repositories.pattern;
 
-import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.domains.QMusic;
 import com.main.koko_main_api.domains.QPattern;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
-import java.util.Optional;
 
 /*
  * 참고자료
@@ -44,6 +40,14 @@ public class PatternSearchRepositoryImpl
         return id != null ? QPattern.pattern.playType.id.eq(id) : null;
     }
 
+    private BooleanExpression difficulty_id_eq(Long id) {
+        return id != null ? QPattern.pattern.difficultyType.id.eq(id) : null;
+    }
+
+    private BooleanExpression levelEq(Integer level) {
+        return level != null ? QPattern.pattern.level.eq(level) : null;
+    }
+
     /*
      * main methods
      */
@@ -52,8 +56,31 @@ public class PatternSearchRepositoryImpl
         return queryFactory
                 .selectDistinct(pattern)
                 .from(pattern)
-                .leftJoin(pattern.music).fetchJoin()
                 .where(music_ids_eq(music_ids), play_type_id_eq(play_type_id))
+                .fetch();
+    }
+
+    @Override
+    public List<Pattern> findAllByPlayTypeAndDifficulty(Long play_type_id, Long difficulty_id) {
+        QPattern pattern = QPattern.pattern;
+        return queryFactory
+                .selectDistinct(pattern)
+                .from(pattern)
+                .leftJoin(pattern.difficultyType).fetchJoin()
+                .leftJoin(pattern.playType).fetchJoin()
+                .where(difficulty_id_eq(difficulty_id), play_type_id_eq(play_type_id))
+                .fetch();
+    }
+
+    @Override
+    public List<Pattern> findAllByPlayTypeAndLevel(Long play_type_id, Integer level) {
+        QPattern pattern = QPattern.pattern;
+        return queryFactory
+                .selectDistinct(pattern)
+                .from(pattern)
+                .leftJoin(pattern.difficultyType).fetchJoin()
+                .leftJoin(pattern.playType).fetchJoin()
+                .where(levelEq(level), play_type_id_eq(play_type_id))
                 .fetch();
     }
 }
