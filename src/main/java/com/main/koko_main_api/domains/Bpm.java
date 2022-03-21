@@ -21,7 +21,7 @@ public class Bpm extends BaseTimeModel {
     private Integer value;
 
     @ManyToOne
-    @JoinColumn(name = "music_id")
+    @JoinColumn(name = "music_id", nullable = false)
     private Music music;
 
     /*

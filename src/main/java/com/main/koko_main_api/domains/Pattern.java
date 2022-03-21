@@ -19,7 +19,7 @@ public class Pattern extends BaseTimeModel  {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id")
+    @JoinColumn(name = "music_id", nullable = false)
     private Music music;
 
     // 별의 갯수 (1~15)
@@ -28,11 +28,11 @@ public class Pattern extends BaseTimeModel  {
     private Integer level;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "difficulty_type_id")
+    @JoinColumn(name = "difficulty_type_id", nullable = false)
     private DifficultyType difficultyType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_type_id")
+    @JoinColumn(name = "play_type_id", nullable = false)
     private PlayType playType;
 
 

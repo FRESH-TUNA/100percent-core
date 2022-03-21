@@ -1,6 +1,5 @@
 package com.main.koko_main_api.services.music;
 
-import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;

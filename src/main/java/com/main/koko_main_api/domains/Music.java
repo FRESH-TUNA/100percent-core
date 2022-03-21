@@ -23,7 +23,7 @@ public class Music extends BaseTimeModel {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "album_id")
+    @JoinColumn(name = "album_id", nullable = false)
     private Album album;
 
     @ManyToMany(cascade = CascadeType.ALL)
