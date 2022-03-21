@@ -1,11 +1,9 @@
 package com.main.koko_main_api.repositories.pattern;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
-import com.main.koko_main_api.domains.DifficultyType;
-import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.domains.PlayType;
+import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.repositories.DifficultyTypeRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 
 import com.main.koko_main_api.repositories.PlayTypesRepository;
@@ -39,30 +37,50 @@ public class PatternSearchRepositoryTest {
     @Autowired
     private DifficultyTypeRepository difficultyTypeRepository;
 
+    @Autowired
+    private AlbumRepository albumRepository;
+
+
+    private Album 앨범만들어서반환() {
+        Album album = Album.builder().title("album").build();
+        albumRepository.save(album);
+        return album;
+    }
+
     @Test
     void 뮤직_플레이타입_필터링_테스트() {
         /*
          * given
          */
         // music
-        Music music = Music.builder().title("music").build();
-        musicRepository.save(music);
+        Music music1 = Music.builder().title("music1").album(앨범만들어서반환()).build();
+        Music music2 = Music.builder().title("music2").album(앨범만들어서반환()).build();
+        musicRepository.save(music1);
+        musicRepository.save(music2);
 
-        PlayType playType = PlayType.builder().title("5K").build();
-        playTypesRepository.save(playType);
+        PlayType playType1 = PlayType.builder().title("5K").build();
+        PlayType playType2 = PlayType.builder().title("4K").build();
+        playTypesRepository.save(playType1);
+        playTypesRepository.save(playType2);
+
+        DifficultyType difficultyType = DifficultyType.builder().name("normal").build();
+        difficultyTypeRepository.save(difficultyType);
 
         // pattern
         List<Pattern> patterns = new ArrayList<>();
-        patterns.add(Pattern.builder().level(2).music(music).build());
-        patterns.add(Pattern.builder().level(2).music(music).playType(playType).build());
-        patterns.add(Pattern.builder().level(2).build());
+        patterns.add(Pattern.builder().level(2).music(music1)
+                .difficultyType(difficultyType).playType(playType2).build());
+        patterns.add(Pattern.builder().level(2).music(music1)
+                .difficultyType(difficultyType).playType(playType1).build());
+        patterns.add(Pattern.builder().level(2).music(music2)
+                .difficultyType(difficultyType).playType(playType1).build());
         patternRepository.saveAll(patterns);
 
         /*
          * when
          */
         patterns = patternRepository.findAllByPlayTypeAndMusics(
-                new ArrayList<Long>() {{ add(music.getId()); }}, playType.getId());
+                new ArrayList<Long>() {{ add(music1.getId()); }}, playType2.getId());
 
         /*
          * then
@@ -77,30 +95,37 @@ public class PatternSearchRepositoryTest {
          * given
          */
         // music
-        Music music = Music.builder().title("music").build();
+        Music music = Music.builder().title("music").album(앨범만들어서반환()).build();
         musicRepository.save(music);
 
-        PlayType playType = PlayType.builder().title("5K").build();
-        playTypesRepository.save(playType);
+        PlayType playType1 = PlayType.builder().title("5K").build();
+        PlayType playType2 = PlayType.builder().title("4K").build();
+        playTypesRepository.save(playType1);
+        playTypesRepository.save(playType2);
+
+        DifficultyType difficultyType = DifficultyType.builder().name("normal").build();
+        difficultyTypeRepository.save(difficultyType);
 
         // pattern
         List<Pattern> patterns = new ArrayList<>();
-        patterns.add(Pattern.builder().level(3).music(music).build());
-        patterns.add(Pattern.builder().level(3).music(music).playType(playType).build());
-        patterns.add(Pattern.builder().level(3).music(music).playType(playType).build());
-        patterns.add(Pattern.builder().level(2).build());
+        patterns.add(Pattern.builder().level(2).music(music)
+                .difficultyType(difficultyType).playType(playType1).build());
+        patterns.add(Pattern.builder().level(3).music(music)
+                .difficultyType(difficultyType).playType(playType1).build());
+        patterns.add(Pattern.builder().level(3).music(music)
+                .difficultyType(difficultyType).playType(playType2).build());
         patternRepository.saveAll(patterns);
 
         /*
          * when
          */
-        patterns = patternRepository.findAllByPlayTypeAndLevel(playType.getId(), 3);
+        patterns = patternRepository.findAllByPlayTypeAndLevel(playType1.getId(), 3);
 
         /*
          * then
          * music과 playtype이 모두 설정된 1개만 반환된다.
          */
-        assertThat(patterns.size()).isEqualTo(2);
+        assertThat(patterns.size()).isEqualTo(1);
     }
 
     @Test
@@ -109,34 +134,39 @@ public class PatternSearchRepositoryTest {
          * given
          */
         // music
-        Music music = Music.builder().title("music").build();
+        Music music = Music.builder().title("music").album(앨범만들어서반환()).build();
         musicRepository.save(music);
 
-        PlayType playType = PlayType.builder().title("5K").build();
-        playTypesRepository.save(playType);
+        PlayType playType1 = PlayType.builder().title("5K").build();
+        PlayType playType2 = PlayType.builder().title("4K").build();
+        playTypesRepository.save(playType1);
+        playTypesRepository.save(playType2);
 
-        DifficultyType difficultyType = DifficultyType.builder().name("normal").build();
-        difficultyTypeRepository.save(difficultyType);
+        DifficultyType difficultyType1 = DifficultyType.builder().name("normal").build();
+        DifficultyType difficultyType2 = DifficultyType.builder().name("hard").build();
+        difficultyTypeRepository.save(difficultyType1);
+        difficultyTypeRepository.save(difficultyType2);
 
         // pattern
         List<Pattern> patterns = new ArrayList<>();
-        patterns.add(Pattern.builder().level(3).music(music).build());
-        patterns.add(Pattern.builder().level(3).music(music).playType(playType)
-                .difficultyType(difficultyType).build());
-        patterns.add(Pattern.builder().level(3).music(music).playType(playType)
-                .difficultyType(difficultyType).build());
-        patterns.add(Pattern.builder().level(2).build());
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType2)
+                .difficultyType(difficultyType1).build());
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType1)
+                .difficultyType(difficultyType1).build());
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType1)
+                .difficultyType(difficultyType2).build());
         patternRepository.saveAll(patterns);
 
         /*
          * when
          */
-        patterns = patternRepository.findAllByPlayTypeAndDifficulty(playType.getId(), difficultyType.getId());
+        patterns = patternRepository.findAllByPlayTypeAndDifficulty(
+                playType1.getId(), difficultyType1.getId());
 
         /*
          * then
          * music과 playtype이 모두 설정된 1개만 반환된다.
          */
-        assertThat(patterns.size()).isEqualTo(2);
+        assertThat(patterns.size()).isEqualTo(1);
     }
 }
