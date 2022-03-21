@@ -64,10 +64,10 @@ public class PatternSearchRepositoryImpl
     public List<Pattern> findAllByPlayTypeAndDifficulty(Long play_type_id, Long difficulty_id) {
         QPattern pattern = QPattern.pattern;
         return queryFactory
-                .selectDistinct(pattern)
+                .select(pattern)
                 .from(pattern)
-                .leftJoin(pattern.difficultyType).fetchJoin()
-                .leftJoin(pattern.playType).fetchJoin()
+                .innerJoin(pattern.difficultyType).fetchJoin()
+                .innerJoin(pattern.playType).fetchJoin()
                 .where(difficulty_id_eq(difficulty_id), play_type_id_eq(play_type_id))
                 .fetch();
     }

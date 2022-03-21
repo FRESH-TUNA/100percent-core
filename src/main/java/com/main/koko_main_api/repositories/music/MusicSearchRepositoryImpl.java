@@ -50,9 +50,9 @@ public class MusicSearchRepositoryImpl
     private JPAQuery<Music> findAll_base_query() {
         QMusic music = QMusic.music;
         JPAQuery<Music> query = queryFactory
-                .selectDistinct(music)
+                .select(music)
                 .from(music)
-                .leftJoin(music.album).fetchJoin();
+                .innerJoin(music.album).fetchJoin();
         return query;
     }
 
