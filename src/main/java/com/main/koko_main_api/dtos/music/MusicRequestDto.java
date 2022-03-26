@@ -1,6 +1,6 @@
 package com.main.koko_main_api.dtos.music;
 
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmsSavePayloadDto;
+import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
 import lombok.AllArgsConstructor;
 
 import lombok.Getter;
@@ -12,9 +12,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class MusicSaveDto {
+public class MusicRequestDto {
     private String title;
     private URI album;
     private List<URI> composers;
-    private List<MusicBpmsSavePayloadDto> bpms;
+    private List<MusicBpmsRequestDto> bpms;
 }

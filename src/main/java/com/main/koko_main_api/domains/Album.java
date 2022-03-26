@@ -18,10 +18,6 @@ public class Album extends BaseTimeModel {
     @Column(length = 255, nullable = false)
     private String title;
 
-    @Builder
-    public Album(String title) {
-        this.title = title;
-    }
 
     @OneToMany(mappedBy = "album")
     private List<Music> musics;
@@ -29,4 +25,11 @@ public class Album extends BaseTimeModel {
     public void update(String title) {
         this.title = title;
     }
+
+    @Builder
+    public Album(String title, Long id) {
+        this.id = id;
+        this.title = title;
+    }
+
 }
