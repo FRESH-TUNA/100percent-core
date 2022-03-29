@@ -1,9 +1,8 @@
 package com.main.koko_main_api.services.music;
 
-import com.main.koko_main_api.controllers.music.MusicRequestParams;
 import com.main.koko_main_api.domains.*;
 
-import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
+import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.junit.jupiter.api.Test;
@@ -88,8 +87,8 @@ public class MusicServiceTest {
         /*
          * when
          */
-        Page<MusicEntityToServiceDto> five_key_result = musicService.findAll(page, five_key.getId());
-        Page<MusicEntityToServiceDto> six_key_result = musicService.findAll(page, six_key.getId());
+        Page<MusicDto> five_key_result = musicService.findAll(page, five_key.getId());
+        Page<MusicDto> six_key_result = musicService.findAll(page, six_key.getId());
 
         /*
          * then
@@ -99,5 +98,50 @@ public class MusicServiceTest {
 
         assertThat(five_key_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
         assertThat(five_key_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void findAll_by_앨범_테스트() {
+        /*
+         * data mocking
+         */
+        final int MUSIC_LENGTH = 2;
+        List<Music> musics = new ArrayList<>();
+        List<Long> music_ids = new ArrayList<>();
+        Album album = Album.builder().title("album").build();
+        PlayType five_key = PlayType.builder().title("5K").id(1L).build();
+        List<Pattern> five_patterns = new ArrayList<>();
+        Long playable_id = 1L;
+
+        for(int i = 0; i < MUSIC_LENGTH; ++i) {
+            Music music = Music.builder().album(album).id((long) i).build();
+            musics.add(music);
+            music_ids.add((long) i);
+
+            Pattern pattern_hard_type = Pattern.builder()
+                    .id(playable_id++)
+                    .music(music).playType(five_key).build();
+
+            music.add_playable(pattern_hard_type);
+            five_patterns.add(pattern_hard_type);
+        }
+
+        Pageable page = PageRequest.of(0, 1);
+        Page<Music> music_page = new PageImpl<>(musics, page, MUSIC_LENGTH);
+
+        when(musicRepository.findAllByAlbum(page, album.getId())).thenReturn(music_page);
+        when(patternRepository.findAllByPlayTypeAndMusics(music_ids, five_key.getId()))
+                .thenReturn(five_patterns);
+
+        /*
+         * when
+         */
+        Page<MusicDto> five_key_result = musicService.findAllByAlbum(
+                page, five_key.getId(), album.getId());
+
+        /*
+         * then
+         */
+        assertThat(five_key_result.getTotalElements()).isEqualTo(2);
     }
 }

@@ -29,13 +29,13 @@ public class MusicService {
     private final MusicRequestDtoDeassembler deassembler;
     private final MusicDtoAssembler showAssembler;
 
-    private final PagedResourcesAssembler<MusicEntityToServiceDto> pageAssembler;
+    private final PagedResourcesAssembler<MusicDto> pageAssembler;
 
     /*
      * playtype_id가 반드시 전달되어서 필터링된다.
      */
-    public PagedModel<MusicDto> findAll(Pageable pageable, MusicRequestParams params) {
-        Page<MusicEntityToServiceDto> result;
+    public PagedModel<MusicResponseDto> findAll(Pageable pageable, MusicRequestParams params) {
+        Page<MusicDto> result;
         String mode = params.getMode();
         Long album_id = params.getAlbum(), play_type_id = params.getPlay_type();
 
@@ -47,7 +47,7 @@ public class MusicService {
         return pageAssembler.toModel(result, showAssembler);
     }
 
-    public Page<MusicEntityToServiceDto> findAll(Pageable pageable, Long play_type_id) {
+    public Page<MusicDto> findAll(Pageable pageable, Long play_type_id) {
         Page<Music> music_page = musicRepository.findAll(pageable);
 
         List<Long> music_ids = music_page.map(m -> m.getId()).toList();
@@ -73,9 +73,9 @@ public class MusicService {
      * create
      */
     @Transactional
-    public MusicDto save(MusicRequestDto musicSavePayloadDto) {
+    public MusicResponseDto save(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
-        MusicEntityToServiceDto dto = new MusicEntityToServiceDto(
+        MusicDto dto = new MusicDto(
                 musicRepository.save(music));
         return showAssembler.toModel(dto);
     }
@@ -84,17 +84,17 @@ public class MusicService {
      * helper
      */
     private Page<MusicDto> add_patterns_and_get_music_page(Page<Music> music_page,
-                                              List<Pattern> patterns) {
-        HashMap<Music, MusicDto> entity_dto_mapper = new HashMap<>();
+                                                           List<Pattern> patterns) {
+        HashMap<Long, MusicDto> entity_dto_mapper = new HashMap<>();
         Page<MusicDto> result = music_page
                 .map(m -> {
                     MusicDto dto = new MusicDto(m);
-                    entity_dto_mapper.put(m, dto);
+                    entity_dto_mapper.put(m.getId(), dto);
                     return dto;
                 });
 
         for(Pattern p: patterns) {
-            entity_dto_mapper.get(p.getMusic()).addMusicPatternDto(new MusicPatternsDto(p));
+            entity_dto_mapper.get(p.getMusic().getId()).addMusicPatternDto(new MusicPatternsDto(p));
         }
 
         return result;

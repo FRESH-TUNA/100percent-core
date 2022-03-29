@@ -4,14 +4,13 @@ import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.bpm.MusicAlbumDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
 import lombok.Getter;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class MusicDto extends RepresentationModel<MusicDto> {
+public class MusicDto {
     private Long id;
     private String title;
     private LocalDateTime createdDate;
@@ -19,7 +18,10 @@ public class MusicDto extends RepresentationModel<MusicDto> {
     private MusicAlbumDto album;
     private List<MusicPatternsDto> playables;
 
-    public MusicDto(Music m)  {
+    /*
+     * for findById
+     */
+    public MusicDto(Music m) {
         id = m.getId();
         title = m.getTitle();
         createdDate = m.getCreatedDate();

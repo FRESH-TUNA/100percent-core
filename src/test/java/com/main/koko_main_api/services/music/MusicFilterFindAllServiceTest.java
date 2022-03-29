@@ -1,7 +1,7 @@
 package com.main.koko_main_api.services.music;
 import com.main.koko_main_api.domains.*;
 
-import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
+import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ public class MusicFilterFindAllServiceTest {
         /*
          * then
          */
-        Page<MusicEntityToServiceDto> page = musicFilterFindAllService
+        Page<MusicDto> page = musicFilterFindAllService
                 .findAllByDifficulty(five_key.getId(), hard_type.getId());
         assertThat(page.getSize()).isEqualTo(MUSIC_LENGTH);
     }
@@ -116,7 +116,7 @@ public class MusicFilterFindAllServiceTest {
         /*
          * then
          */
-        Page<MusicEntityToServiceDto> page = musicFilterFindAllService
+        Page<MusicDto> page = musicFilterFindAllService
                 .findAllByLevel(five_key.getId(), level);
         assertThat(page.getSize()).isEqualTo(MUSIC_LENGTH);
     }

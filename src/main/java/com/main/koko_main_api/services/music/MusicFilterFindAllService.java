@@ -2,7 +2,7 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
+import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 
@@ -36,7 +36,7 @@ public class MusicFilterFindAllService {
      * 1개의 page로 된 response를 반환한다.
      */
 
-    public Page<MusicEntityToServiceDto> findAllByDifficulty(Long play_type_id, Long difficulty_id) {
+    public Page<MusicDto> findAllByDifficulty(Long play_type_id, Long difficulty_id) {
         // pattern을 가지고 온다.
         List<Pattern> patterns = patternRepository.findAllByPlayTypeAndDifficulty(play_type_id, difficulty_id);
 
@@ -53,7 +53,7 @@ public class MusicFilterFindAllService {
      * playable/playtype + level 기준 필터링
      * 1개의 page로 된 response를 반환한다.
      */
-    public Page<MusicEntityToServiceDto> findAllByLevel(Long play_type_id, Integer level) {
+    public Page<MusicDto> findAllByLevel(Long play_type_id, Integer level) {
         // pattern을 가지고 온다.
         List<Pattern> patterns = patternRepository.findAllByPlayTypeAndLevel(play_type_id, level);
 
@@ -78,12 +78,12 @@ public class MusicFilterFindAllService {
         return new PageImpl(musics, PageRequest.of(0, musics.size()), musics.size());
     }
 
-    private Page<MusicEntityToServiceDto> add_patterns_and_get_music_page(Page<Music> music_page,
-                                                                          List<Pattern> patterns) {
-        HashMap<Long, MusicEntityToServiceDto> entity_dto_mapper = new HashMap<>();
-        Page<MusicEntityToServiceDto> result = music_page
+    private Page<MusicDto> add_patterns_and_get_music_page(Page<Music> music_page,
+                                                           List<Pattern> patterns) {
+        HashMap<Long, MusicDto> entity_dto_mapper = new HashMap<>();
+        Page<MusicDto> result = music_page
                 .map(m -> {
-                    MusicEntityToServiceDto dto = new MusicEntityToServiceDto(m);
+                    MusicDto dto = new MusicDto(m);
                     entity_dto_mapper.put(m.getId(), dto);
                     return dto;
                 });

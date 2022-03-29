@@ -1,8 +1,8 @@
 package com.main.koko_main_api.controllers.music;
 
 import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.MusicDto;
-import com.main.koko_main_api.dtos.music.MusicEntityToServiceDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 
 import com.main.koko_main_api.services.music.MusicService;
@@ -21,7 +21,7 @@ public class MusicController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/musics")
-    public MusicDto save(@RequestBody MusicRequestDto payload) {
+    public MusicResponseDto save(@RequestBody MusicRequestDto payload) {
         return musicService.save(payload);
     }
 
@@ -30,7 +30,7 @@ public class MusicController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(path="/main_api/v1/musics/{id}")
-    public MusicDto findById(Long id) {
-        return new MusicDto(new MusicEntityToServiceDto(new Music()));
+    public MusicResponseDto findById(Long id) {
+        return new MusicResponseDto(new MusicDto(new Music()));
     }
 }
