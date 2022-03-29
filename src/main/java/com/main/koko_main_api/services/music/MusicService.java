@@ -73,11 +73,9 @@ public class MusicService {
      * create
      */
     @Transactional
-    public MusicResponseDto save(MusicRequestDto musicSavePayloadDto) {
+    public MusicDto save(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
-        MusicDto dto = new MusicDto(
-                musicRepository.save(music));
-        return showAssembler.toModel(dto);
+        return new MusicDto(musicRepository.save(music));
     }
 
     /*

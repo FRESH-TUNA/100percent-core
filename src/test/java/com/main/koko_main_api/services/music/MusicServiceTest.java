@@ -3,6 +3,8 @@ package com.main.koko_main_api.services.music;
 import com.main.koko_main_api.domains.*;
 
 import com.main.koko_main_api.dtos.music.MusicDto;
+import com.main.koko_main_api.dtos.music.MusicRequestDto;
+import com.main.koko_main_api.dtos.music.MusicRequestDtoDeassembler;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,9 @@ public class MusicServiceTest {
 
     @Mock
     private PatternRepository patternRepository;
+
+    @Mock
+    private MusicRequestDtoDeassembler deassembler;
 
     @Test
     public void findAll_테스트() {
@@ -143,5 +148,23 @@ public class MusicServiceTest {
          * then
          */
         assertThat(five_key_result.getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    public void save() {
+        MusicRequestDto requestDto = new MusicRequestDto(null, null, null, null);
+        Music music = Music.builder().title("music").album(Album.builder().title("hoho").id(1L).build()).build();
+
+        /*
+         * when
+         */
+        when(deassembler.toEntity(requestDto)).thenReturn(music);
+        when(musicRepository.save(music)).thenReturn(music);
+        MusicDto result = musicService.save(requestDto);
+
+        /*
+         * then
+         */
+        assertThat(result.getClass()).isEqualTo(MusicDto.class);
     }
 }

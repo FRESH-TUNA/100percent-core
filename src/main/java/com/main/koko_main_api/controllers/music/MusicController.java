@@ -21,7 +21,7 @@ public class MusicController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/musics")
-    public MusicResponseDto save(@RequestBody MusicRequestDto payload) {
+    public MusicDto save(@RequestBody MusicRequestDto payload) {
         return musicService.save(payload);
     }
 
