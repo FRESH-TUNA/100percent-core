@@ -40,7 +40,7 @@ public class MusicDtoAssembler implements
         payload.add(linkHelper.linkToItemResource(
                 AlbumRepository.class, payload.getAlbum().getId()));
 
-        add_link_to_playables(payload.getPlayables());
+        add_link_to_playables(payload.getPatterns());
 
         return payload;
     }

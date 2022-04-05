@@ -101,8 +101,8 @@ public class MusicServiceTest {
         assertThat(five_key_result.getTotalElements()).isEqualTo(2);
         assertThat(six_key_result.getTotalElements()).isEqualTo(2);
 
-        assertThat(five_key_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
-        assertThat(five_key_result.getContent().get(0).getPlayables().size()).isEqualTo(1);
+        assertThat(five_key_result.getContent().get(0).getPatterns().size()).isEqualTo(1);
+        assertThat(five_key_result.getContent().get(0).getPatterns().size()).isEqualTo(1);
     }
 
     @Test

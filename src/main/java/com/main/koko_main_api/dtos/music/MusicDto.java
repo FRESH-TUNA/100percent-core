@@ -16,7 +16,7 @@ public class MusicDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicAlbumDto album;
-    private List<MusicPatternsDto> playables;
+    private List<MusicPatternsDto> patterns;
 
     /*
      * for findById
@@ -27,10 +27,10 @@ public class MusicDto {
         createdDate = m.getCreatedDate();
         modifiedDate = m.getModifiedDate();
         album = new MusicAlbumDto(m.getAlbum());
-        playables = new ArrayList<>();
+        patterns = new ArrayList<>();
     }
 
     public void addMusicPatternDto(MusicPatternsDto dto) {
-        this.playables.add(dto);
+        this.patterns.add(dto);
     }
 }

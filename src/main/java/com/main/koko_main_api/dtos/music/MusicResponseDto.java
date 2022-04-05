@@ -15,7 +15,7 @@ public class MusicResponseDto extends RepresentationModel<MusicResponseDto> {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicAlbumDto album;
-    private List<MusicPatternsDto> playables;
+    private List<MusicPatternsDto> patterns;
 
     public MusicResponseDto(MusicDto m)  {
         id = m.getId();
@@ -23,6 +23,6 @@ public class MusicResponseDto extends RepresentationModel<MusicResponseDto> {
         createdDate = m.getCreatedDate();
         modifiedDate = m.getModifiedDate();
         album = m.getAlbum();
-        this.playables = m.getPlayables();
+        this.patterns = m.getPatterns();
     }
 }
