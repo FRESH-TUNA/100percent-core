@@ -1,7 +1,6 @@
 package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.assemblers.music.MusicAssembler;
-import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
@@ -16,6 +15,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,9 +38,9 @@ public class MusicFilterFindAllService {
         // pattern을 가지고 온다.
         List<Pattern> patterns = patternRepository.findAllByPlayTypeAndDifficulty(play_type_id, difficulty_id);
 
-        List<Long> music_ids = getMusicIdsFromPatterns(patterns);
+        List<Music> musics = getMusicsFromPatterns(patterns);
 
-        List<Music> musics = musicRepository.findAllByIds(music_ids);
+        musicRepository.findAll(musics);
 
         Page<Music> music_page = musicsToSinglePage(musics);
 
@@ -57,9 +57,9 @@ public class MusicFilterFindAllService {
         // pattern을 가지고 온다.
         List<Pattern> patterns = patternRepository.findAllByPlayTypeAndLevel(play_type_id, level);
 
-        List<Long> music_ids = getMusicIdsFromPatterns(patterns);
+        List<Music> musics = getMusicsFromPatterns(patterns);
 
-        List<Music> musics = musicRepository.findAllByIds(music_ids);
+        musicRepository.findAll(musics);
 
         Page<Music> music_page = musicsToSinglePage(musics);
 
@@ -71,9 +71,10 @@ public class MusicFilterFindAllService {
     /*
      * helper
      */
-    private List<Long> getMusicIdsFromPatterns(List<Pattern> patterns) {
-        return patterns.stream().map(p -> p.getMusic().getId())
-                .distinct().sorted().collect(Collectors.toList());
+    private List<Music> getMusicsFromPatterns(List<Pattern> patterns) {
+        return patterns.stream().map(p -> p.getMusic())
+                .distinct().sorted(Comparator.comparingLong(x -> x.getId()))
+                .collect(Collectors.toList());
     }
 
     private Page<Music> musicsToSinglePage(List<Music> musics) {

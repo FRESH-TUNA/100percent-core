@@ -2,7 +2,6 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.assemblers.music.MusicAssembler;
 import com.main.koko_main_api.assemblers.music.MusicDeassembler;
-import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;

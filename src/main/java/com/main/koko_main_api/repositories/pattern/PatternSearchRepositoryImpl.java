@@ -55,7 +55,7 @@ public class PatternSearchRepositoryImpl
     public List<Pattern> findAllByPlayTypeAndMusics(List<Music> musics, Long play_type_id) {
         QPattern pattern = QPattern.pattern;
         return queryFactory
-                .selectDistinct(pattern)
+                .select(pattern)
                 .from(pattern)
                 .where(music_eq(musics), play_type_id_eq(play_type_id))
                 .fetch();
@@ -77,7 +77,7 @@ public class PatternSearchRepositoryImpl
     public List<Pattern> findAllByPlayTypeAndLevel(Long play_type_id, Integer level) {
         QPattern pattern = QPattern.pattern;
         return queryFactory
-                .selectDistinct(pattern)
+                .select(pattern)
                 .from(pattern)
                 .leftJoin(pattern.difficultyType).fetchJoin()
                 .leftJoin(pattern.playType).fetchJoin()

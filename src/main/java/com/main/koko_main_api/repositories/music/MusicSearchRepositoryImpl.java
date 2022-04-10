@@ -42,7 +42,7 @@ public class MusicSearchRepositoryImpl
     private BooleanExpression albumIdEq(Long a) {
         return a != null ? QMusic.music.album.id.eq(a) : null;
     }
-    private BooleanExpression IdIn(List<Long> list) { return QMusic.music.id.in(list); }
+    private BooleanExpression In(List<Music> musics) { return QMusic.music.in(musics); }
 
     /*
      * helpers
@@ -75,7 +75,19 @@ public class MusicSearchRepositoryImpl
         return new PageImpl<>(musics, pageable, music_counts);
     }
 
-    public List<Music> findAllByIds(List<Long> ids) {
-        return findAll_base_query().where(IdIn(ids)).fetch();
+    @Override
+    public List<Music> findAll(List<Music> musics) {
+        return findAll_base_query().where(In(musics)).fetch();
+    }
+
+    @Override
+    public Page<Music> findAll(Pageable pageable) {
+        JPAQuery<Music> musics_query = findAll_base_query();
+        JPAQuery<Long> counts_query = counts_base_query();
+
+        // count query all
+        Long music_counts = counts_query.fetchOne();
+        List<Music> musics = getQuerydsl().applyPagination(pageable, musics_query).fetch();
+        return new PageImpl<>(musics, pageable, music_counts);
     }
 }

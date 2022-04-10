@@ -8,5 +8,7 @@ import java.util.List;
 public interface MusicSearchRepository<T, ID> {
     Page<T> findAllByAlbum(Pageable pageable, Long album_id);
 
-    List<T> findAllByIds(List<ID> ids);
+    List<T> findAll(List<T> musics);
+
+    Page<T> findAll(Pageable pageable);
 }
