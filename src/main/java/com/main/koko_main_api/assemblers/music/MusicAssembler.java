@@ -1,9 +1,11 @@
-package com.main.koko_main_api.dtos.music;
+package com.main.koko_main_api.assemblers.music;
 
 import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.controllers.music.MusicController;
 
-import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
+import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.dtos.music.MusicResponseDto;
+import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -22,31 +24,31 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * model메소드를 직접 구현한다?!
  */
 @Component
-public class MusicDtoAssembler implements
-        RepresentationModelAssembler<MusicDto, MusicResponseDto> {
+public class MusicAssembler implements
+        RepresentationModelAssembler<Music, MusicResponseDto> {
 
     @Autowired
     private RepositoryEntityLinks linkHelper;
 
     @Override
-    public MusicResponseDto toModel(MusicDto m) {
-        MusicResponseDto payload = new MusicResponseDto(m);
+    public MusicResponseDto toModel(Music m) {
+        MusicResponseDto res = new MusicResponseDto(m);
 
-        // add self links
-        payload.add(linkTo(methodOn(MusicController.class
-            ).findById(payload.getId())).withSelfRel());
+        // add self link
+        res.add(linkTo(methodOn(MusicController.class
+            ).findById(res.getId())).withSelfRel());
 
-        // add album links
-        payload.add(linkHelper.linkToItemResource(
-                AlbumRepository.class, payload.getAlbum().getId()));
+        // add album link
+        res.add(linkHelper.linkToItemResource(
+                AlbumRepository.class, res.getAlbum().getId()));
 
-        add_link_to_playables(payload.getPatterns());
+        add_link_to_playables(res.getPatterns());
 
-        return payload;
+        return res;
     }
 
-    private void add_link_to_playables(List<MusicPatternsDto> dtos) {
-        for(MusicPatternsDto dto : dtos)
+    private void add_link_to_playables(List<MusicPatternsResponseDto> dtos) {
+        for(MusicPatternsResponseDto dto : dtos)
             dto.add(linkTo(methodOn(PatternController.class
                 ).findById(dto.getId())).withSelfRel());
     }

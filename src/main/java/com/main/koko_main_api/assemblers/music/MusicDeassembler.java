@@ -1,11 +1,11 @@
-package com.main.koko_main_api.dtos.music;
+package com.main.koko_main_api.assemblers.music;
 
 import com.main.koko_main_api.domains.Album;
-import com.main.koko_main_api.domains.Bpm;
+
 import com.main.koko_main_api.domains.Composer;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.RequestDeassembler;
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
+import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MusicRequestDtoDeassembler
+public class MusicDeassembler
         implements RequestDeassembler<MusicRequestDto, Music> {
 
     @Autowired

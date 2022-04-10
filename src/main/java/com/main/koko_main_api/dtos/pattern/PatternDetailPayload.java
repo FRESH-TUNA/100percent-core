@@ -5,8 +5,6 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Getter
 public class PatternDetailPayload extends RepresentationModel<PatternDetailPayload> {
     private Long id;

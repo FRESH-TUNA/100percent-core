@@ -4,7 +4,7 @@ import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.bpm.MusicAlbumDto;
-import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
+import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class MusicDtoTest {
          * then
          */
         MusicDto dto = new MusicDto(music);
-        dto.addMusicPatternDto(new MusicPatternsDto(new Pattern()));
+        dto.addMusicPatternDto(new MusicPatternsResponseDto(new Pattern()));
 
         /*
          * when

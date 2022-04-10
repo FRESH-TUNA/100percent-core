@@ -1,5 +1,6 @@
 package com.main.koko_main_api.repositories.pattern;
 
+import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.domains.QPattern;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -32,8 +33,8 @@ public class PatternSearchRepositoryImpl
     /*
      * filters
      */
-    private BooleanExpression music_ids_eq(List<Long> music_ids) {
-        return QPattern.pattern.music.id.in(music_ids);
+    private BooleanExpression music_eq(List<Music> musics) {
+        return QPattern.pattern.music.in(musics);
     }
 
     private BooleanExpression play_type_id_eq(Long id) {
@@ -51,12 +52,12 @@ public class PatternSearchRepositoryImpl
     /*
      * main methods
      */
-    public List<Pattern> findAllByPlayTypeAndMusics(List<Long> music_ids, Long play_type_id) {
+    public List<Pattern> findAllByPlayTypeAndMusics(List<Music> musics, Long play_type_id) {
         QPattern pattern = QPattern.pattern;
         return queryFactory
                 .selectDistinct(pattern)
                 .from(pattern)
-                .where(music_ids_eq(music_ids), play_type_id_eq(play_type_id))
+                .where(music_eq(musics), play_type_id_eq(play_type_id))
                 .fetch();
     }
 

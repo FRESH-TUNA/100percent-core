@@ -1,5 +1,6 @@
 package com.main.koko_main_api.dtos.music;
 
+import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Composer;
 import com.main.koko_main_api.domains.Music;
@@ -24,9 +25,9 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles(profiles = "test")
 @ExtendWith(MockitoExtension.class)
-class MusicRequestDtoDeassemblerTest {
+class MusicDeassemblerTest {
     @InjectMocks
-    private MusicRequestDtoDeassembler deassembler;
+    private MusicDeassembler deassembler;
 
     @Mock
     private AlbumRepository albumRepository;

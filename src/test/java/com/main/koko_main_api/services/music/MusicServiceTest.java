@@ -4,7 +4,7 @@ import com.main.koko_main_api.domains.*;
 
 import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
-import com.main.koko_main_api.dtos.music.MusicRequestDtoDeassembler;
+import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MusicServiceTest {
     private PatternRepository patternRepository;
 
     @Mock
-    private MusicRequestDtoDeassembler deassembler;
+    private MusicDeassembler deassembler;
 
     @Test
     public void findAll_테스트() {
@@ -127,7 +128,7 @@ public class MusicServiceTest {
                     .id(playable_id++)
                     .music(music).playType(five_key).build();
 
-            music.add_playable(pattern_hard_type);
+            music.add_pattern(pattern_hard_type);
             five_patterns.add(pattern_hard_type);
         }
 
@@ -141,7 +142,7 @@ public class MusicServiceTest {
         /*
          * when
          */
-        Page<MusicDto> five_key_result = musicService.findAllByAlbum(
+        PagedModel<Music> five_key_result = musicService.findAllByAlbum(
                 page, five_key.getId(), album.getId());
 
         /*

@@ -2,7 +2,7 @@ package com.main.koko_main_api.dtos.music;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.bpm.MusicAlbumDto;
-import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
+import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class MusicDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicAlbumDto album;
-    private List<MusicPatternsDto> patterns;
+    private List<MusicPatternsResponseDto> patterns;
 
     /*
      * for findById
@@ -30,7 +30,7 @@ public class MusicDto {
         patterns = new ArrayList<>();
     }
 
-    public void addMusicPatternDto(MusicPatternsDto dto) {
+    public void addMusicPatternDto(MusicPatternsResponseDto dto) {
         this.patterns.add(dto);
     }
 }

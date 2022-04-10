@@ -42,9 +42,7 @@ public class Music extends BaseTimeModel {
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bpm> bpms = new ArrayList<>();
 
-    public void add_playable(Pattern pattern) {
-        this.patterns.add(pattern);
-    }
+
 
     /*
      * methods
@@ -58,12 +56,14 @@ public class Music extends BaseTimeModel {
         Iterator<Bpm> it = bpms.iterator();
         while(it.hasNext()) this.bpms.add(it.next());
     }
-
     public void add_bpm(Bpm bpm) {
         this.bpms.add(bpm);
     }
     public void add_composer(Composer composer) {
         this.composers.add(composer);
+    }
+    public void add_pattern(Pattern pattern) {
+        this.patterns.add(pattern);
     }
 
     @Builder

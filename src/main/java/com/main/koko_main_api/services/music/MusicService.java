@@ -1,13 +1,14 @@
 package com.main.koko_main_api.services.music;
 
-import com.main.koko_main_api.controllers.music.MusicRequestParams;
+import com.main.koko_main_api.assemblers.music.MusicAssembler;
+import com.main.koko_main_api.assemblers.music.MusicDeassembler;
+import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
 import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 
 import com.main.koko_main_api.dtos.music.*;
 import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
-import com.main.koko_main_api.dtos.music.patterns.MusicPatternsDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,47 +30,28 @@ public class MusicService {
     private final MusicRepository musicRepository;
     private final PatternRepository patternRepository;
 
-    private final MusicRequestDtoDeassembler deassembler;
-    private final MusicDtoAssembler showAssembler;
+    private final MusicDeassembler deassembler;
+    private final MusicAssembler showAssembler;
+    private final PagedResourcesAssembler<Music> pageAssembler;
 
-    private final PagedResourcesAssembler<MusicDto> pageAssembler;
-
-    /*
-     * playtype_id가 반드시 전달되어서 필터링된다.
-     */
-    public PagedModel<MusicResponseDto> findAll(Pageable pageable, MusicRequestParams params) {
-        Page<MusicDto> result;
-        String mode = params.getMode();
-        Long album_id = params.getAlbum(), play_type_id = params.getPlay_type();
-
-        if(mode == null || mode.equals("db")) {
-            if(album_id == null) result = findAll(pageable, play_type_id);
-            else result = findAllByAlbum(pageable, play_type_id, album_id);
-        }
-        else result = null;
-        return pageAssembler.toModel(result, showAssembler);
-    }
-
-    public Page<MusicDto> findAll(Pageable pageable, Long play_type_id) {
+    public PagedModel<MusicResponseDto> findAll(Pageable pageable, Long play_type_id) {
         Page<Music> music_page = musicRepository.findAll(pageable);
 
-        List<Long> music_ids = music_page.map(m -> m.getId()).toList();
-
         List<Pattern> patterns = patternRepository
-                .findAllByPlayTypeAndMusics(music_ids, play_type_id);
+                .findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id);
 
-        return add_patterns_and_get_music_page(music_page, patterns);
+        Page<Music> res = add_patterns_and_get_music_page(music_page, patterns);
+        return pageAssembler.toModel(res, showAssembler);
     }
 
-    public Page<MusicDto> findAllByAlbum(Pageable pageable, Long play_type_id, Long album_id) {
+    public PagedModel<MusicResponseDto> findAllByAlbum(Pageable pageable, Long play_type_id, Long album_id) {
         Page<Music> music_page = musicRepository.findAllByAlbum(pageable, album_id);
 
-        List<Long> music_ids = music_page.map(m -> m.getId()).toList();
-
         List<Pattern> patterns = patternRepository
-                .findAllByPlayTypeAndMusics(music_ids, play_type_id);
+                .findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id);
 
-        return add_patterns_and_get_music_page(music_page, patterns);
+        Page<Music> res = add_patterns_and_get_music_page(music_page, patterns);
+        return pageAssembler.toModel(res, showAssembler);
     }
 
     /*
@@ -91,23 +73,21 @@ public class MusicService {
         return new MusicDto(musicRepository.save(music));
     }
 
+
     /*
      * helper
      */
-    private Page<MusicDto> add_patterns_and_get_music_page(Page<Music> music_page,
+    private Page<Music> add_patterns_and_get_music_page(Page<Music> music_page,
                                                            List<Pattern> patterns) {
-        HashMap<Long, MusicDto> entity_dto_mapper = new HashMap<>();
-        Page<MusicDto> result = music_page
+        HashMap<Music, Music> entity_dto_mapper = new HashMap<>();
+        Page<Music> result = music_page
                 .map(m -> {
-                    MusicDto dto = new MusicDto(m);
-                    entity_dto_mapper.put(m.getId(), dto);
+                    Music dto = Music.builder().id(m.getId())
+                            .album(m.getAlbum()).title(m.getTitle()).build();
+                    entity_dto_mapper.put(m, dto);
                     return dto;
                 });
-
-        for(Pattern p: patterns) {
-            entity_dto_mapper.get(p.getMusic().getId()).addMusicPatternDto(new MusicPatternsDto(p));
-        }
-
+        for(Pattern p: patterns) entity_dto_mapper.get(p.getMusic()).add_pattern(p);
         return result;
     }
 

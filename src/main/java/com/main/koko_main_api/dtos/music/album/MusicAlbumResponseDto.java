@@ -5,11 +5,11 @@ import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 
 @Getter
-public class MusicAlbumPayloadDto extends RepresentationModel<MusicAlbumPayloadDto> {
+public class MusicAlbumResponseDto extends RepresentationModel<MusicAlbumResponseDto> {
     private Long id;
     private String title;
 
-    public MusicAlbumPayloadDto(Album a)  {
+    public MusicAlbumResponseDto(Album a)  {
         id = a.getId();
         title = a.getTitle();
     }
