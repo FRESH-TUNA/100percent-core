@@ -26,7 +26,6 @@ public class MusicFilterFindAllService {
     private final MusicRepository musicRepository;
     private final PatternRepository patternRepository;
 
-    private final MusicDeassembler deassembler;
     private final MusicAssembler showAssembler;
     private final PagedResourcesAssembler<Music> pageAssembler;
 
