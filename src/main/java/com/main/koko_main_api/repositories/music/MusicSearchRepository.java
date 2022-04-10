@@ -10,6 +10,4 @@ public interface MusicSearchRepository<T, ID> {
     Page<T> findAllByAlbum(Pageable pageable, Long album_id);
 
     List<T> findAllByIds(List<ID> ids);
-
-    Optional<T> findById(ID id);
 }

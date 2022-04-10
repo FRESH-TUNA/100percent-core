@@ -1,154 +1,119 @@
 package com.main.koko_main_api.repositories.music;
 
-import com.main.koko_main_api.dtos.*;
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.main.koko_main_api.configs.RepositoryConfig;
+import com.main.koko_main_api.domains.*;
+import com.main.koko_main_api.repositories.ComposerRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.*;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//https://www.baeldung.com/spring-data-rest-relationships
-
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MusicRepositoryTest {
-    @LocalServerPort
-    private int port;
+@DataJpaTest
+@Import({MusicSearchRepositoryImpl.class, RepositoryConfig.class})
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class MusicRepositoryTest {
+    @Autowired
+    private AlbumRepository albumRepository;
 
     @Autowired
-    private TestRestTemplate template;
+    private MusicRepository musicRepository;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private ComposerRepository composerRepository;
 
+    @Autowired
+    private TestEntityManager em;
+
+    private final String 기본_작곡가_이름 = "composer_a", 기본_앨범_이름 = "ALBUM_A", 기본_이름 = "title";
+    private final int 기본_BPM = 100;
+
+    // O
     @Test
-    public void music_to_composer_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+    void 뮤직_저장_테스트() {
+        Music music = 뮤직_생성();
 
-        //composer 생성
-        ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
-                .builder().name("composer1").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer1, ComposersResponseDto.class);
-        ComposersSaveRequestDto composer2 = ComposersSaveRequestDto
-                .builder().name("composer2").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer2, ComposersResponseDto.class);
-
-        // music 생성
-        MusicsSaveRequestDto music1 = MusicsSaveRequestDto
-                .builder().title("music1").build();
-        MusicsSaveRequestDto music2 = MusicsSaveRequestDto
-                .builder().title("music2").build();
-        template.postForEntity(MUSIC_ENDPOINT, music1, MusicsResponseDto.class);
-        template.postForEntity(MUSIC_ENDPOINT, music2, MusicsResponseDto.class);
-
-        // 연관관계 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "text/uri-list");
-        HttpEntity<String> entity = new HttpEntity<>(
-                COMPOSER_ENDPOINT + "/1\n" + COMPOSER_ENDPOINT + "/2", headers);
-        template.exchange(MUSIC_ENDPOINT + "/1/composers", HttpMethod.PUT, entity, String.class);
-
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/composers", String.class);
-        System.out.println(jsonResponse);
-        JSONObject jsonObj = new JSONObject(jsonResponse).getJSONObject("_embedded");
-        JSONArray jsonArray = jsonObj.getJSONArray("composers");
-        assertThat(jsonArray.getJSONObject(0).getString("name")).isEqualTo("composer1");
+        // 저장이 잘되었는지 test
+        em.clear();
+        music = musicRepository.findById(music.getId()).get();
+        assertThat(music.getTitle()).isEqualTo(기본_이름);
+        assertThat(music.getComposers().get(0).getName()).isEqualTo(기본_작곡가_이름);
+        assertThat(music.getAlbum().getTitle()).isEqualTo(기본_앨범_이름);
+        assertThat(music.getBpms().get(0).getValue()).isEqualTo(기본_BPM);
     }
 
+    // O
     @Test
-    public void music_to_composer_once_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+    void 뮤직_업데이트_테스트() {
+        Music music = 뮤직_생성();
+        System.out.println("---------------------");
 
-        //composer 생성
-        ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
-                .builder().name("composer1").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer1, ComposersResponseDto.class);
-        ComposersSaveRequestDto composer2 = ComposersSaveRequestDto
-                .builder().name("composer2").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer2, ComposersResponseDto.class);
-        System.out.println( template.getForObject(COMPOSER_ENDPOINT , String.class));
-        /*
-         * music 생성
-         */
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
+        // Album
+        Album ALBUM_A = Album.builder().title("newalbum").build();
+        albumRepository.saveAndFlush(ALBUM_A);
+        //composer
+        Composer composer = Composer.builder().name("newcomposer").build();
+        composerRepository.saveAndFlush(composer);
 
-        // composers data 생성
-        JSONArray composers = new JSONArray();
-        composers.put(COMPOSER_ENDPOINT + "/1"); composers.put(COMPOSER_ENDPOINT + "/2");
+        // Music
+        Music new_music = Music.builder().id(music.getId())
+                .album(albumRepository.getById(ALBUM_A.getId()))
+                .title("title2").build();
+        // bpm
+        Bpm bpm = Bpm.builder().value(200).music(music).build();
 
-        // request body 생성
-        JSONObject request_body = new JSONObject();
-        request_body.put("title", "music_title");
-        request_body.put("composers", composers);
+        // 추가 쿼리가 안날라가는지 test
+        em.clear();
 
-        //요청
-        HttpEntity<String> entity = new HttpEntity<>(request_body.toString(), headers);
-        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
+        // 연관관계 설정
+        new_music.add_composer(composerRepository.getById(composer.getId()));
+        new_music.add_bpm(bpm); composer.add_music(new_music);
 
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/composers", String.class);
-        System.out.println(jsonResponse);
-        JSONObject jsonObj = new JSONObject(jsonResponse).getJSONObject("_embedded");
-        JSONArray jsonArray = jsonObj.getJSONArray("composers");
-        assertThat(jsonArray.getJSONObject(0).getString("name")).isEqualTo("composer1");
-        assertThat(jsonArray.getJSONObject(1).getString("name")).isEqualTo("composer2");
+        //when
+        musicRepository.saveAndFlush(new_music);
+        em.clear();
+        music = musicRepository.findById(music.getId()).get();
+
+        //then
+        assertThat(music.getTitle()).isEqualTo("title2");
+        assertThat(music.getComposers().get(0).getName()).isEqualTo("newcomposer");
+        assertThat(music.getComposers().size()).isEqualTo(1);
+        assertThat(music.getAlbum().getTitle()).isEqualTo("newalbum");
+        assertThat(music.getBpms().get(0).getValue()).isEqualTo(200);
+        assertThat(music.getBpms().size()).isEqualTo(1);
     }
 
-    @Test
-    public void music_to_album_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+    private Music 뮤직_생성() {
+        // Album
+        Album ALBUM_A = Album.builder().title(기본_앨범_이름).build();
+        albumRepository.saveAndFlush(ALBUM_A);
+        //composer
+        Composer composer = Composer.builder().name(기본_작곡가_이름).build();
+        composerRepository.saveAndFlush(composer);
 
-        /*
-         * album 생성
-         */
-        String title = "TECHNIKA";
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
-                .builder().title(title).build();
-        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
-                ALBUM_ENDPOINT, albumsSaveRequestDto, AlbumsResponseDto.class);
+        // 추가 쿼리가 안날라가는지 test
+        em.clear();
 
-        /*
-         * music 생성
-         */
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
+        // Music
+        Music music = Music.builder()
+                .album(albumRepository.getById(ALBUM_A.getId()))
+                .title("title").build();
+        // bpm
+        Bpm bpm = Bpm.builder().value(기본_BPM).music(music).build();
 
-        // request body 생성
-        JSONObject request_body = new JSONObject();
-        request_body.put("title", "music_title");
-        request_body.put("album", ALBUM_ENDPOINT + "/1");
+        // 연관관계 설정
+        composer = composerRepository.getById(composer.getId());
+        music.add_composer(composer);
+        composer.add_music(music); music.add_bpm(bpm);
 
-        //요청
-        HttpEntity<String> entity = new HttpEntity<>(request_body.toString(), headers);
-        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
-
-        //검증
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/album", String.class);
-        JSONObject jsonObj = new JSONObject(jsonResponse);
-        assertThat(jsonObj.getString("title")).isEqualTo("TECHNIKA");
+        //when
+        return musicRepository.saveAndFlush(music);
     }
 }

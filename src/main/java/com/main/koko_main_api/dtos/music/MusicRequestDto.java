@@ -13,8 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class MusicRequestDto {
+    private URI music;
     private String title;
     private URI album;
+
     private List<URI> composers;
     private List<MusicBpmsRequestDto> bpms;
 }

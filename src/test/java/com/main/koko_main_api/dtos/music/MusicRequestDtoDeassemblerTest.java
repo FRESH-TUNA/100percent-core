@@ -82,7 +82,7 @@ class MusicRequestDtoDeassemblerTest {
 
     private MusicRequestDto getMusicRequestDto(
             URI album_uri, List<URI> composers, List<MusicBpmsRequestDto> bpms) {
-        return new MusicRequestDto("songsong", album_uri, composers, bpms);
+        return new MusicRequestDto(null, "songsong", album_uri, composers, bpms);
     }
 
     private List<Composer> getComposers () {

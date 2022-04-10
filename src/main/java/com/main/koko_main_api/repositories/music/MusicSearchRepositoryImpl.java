@@ -78,9 +78,4 @@ public class MusicSearchRepositoryImpl
     public List<Music> findAllByIds(List<Long> ids) {
         return findAll_base_query().where(IdIn(ids)).fetch();
     }
-
-    @Override
-    public Optional<Music> findById(Long aLong) {
-        return Optional.empty();
-    }
 }

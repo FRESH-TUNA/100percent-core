@@ -152,7 +152,7 @@ public class MusicServiceTest {
 
     @Test
     public void save() {
-        MusicRequestDto requestDto = new MusicRequestDto(null, null, null, null);
+        MusicRequestDto requestDto = new MusicRequestDto(null, null, null, null, null);
         Music music = Music.builder().title("music").album(Album.builder().title("hoho").id(1L).build()).build();
 
         /*

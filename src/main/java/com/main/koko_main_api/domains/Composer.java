@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,11 +24,18 @@ public class Composer extends BaseTimeModel {
 //            joinColumns = @JoinColumn(name = "musics_id", referencedColumnName = "id"),
 //            inverseJoinColumns = @JoinColumn(name = "composers_id", referencedColumnName = "id"))
     @ManyToMany(mappedBy = "composers")
-    private List<Music> musics;
+    private List<Music> musics = new ArrayList<>();
 
     @Builder
     public Composer(String name, Long id) {
         this.id = id;
         this.name = name;
+    }
+
+    /*
+     * helper
+     */
+    public void add_music(Music music) {
+        this.musics.add(music);
     }
 }

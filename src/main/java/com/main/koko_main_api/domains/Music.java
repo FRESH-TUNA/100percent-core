@@ -39,7 +39,7 @@ public class Music extends BaseTimeModel {
 
     // bpms에 한해서 @RestResource를 적용하지 않는다. (URI을 적용하지 않는다.)
     // @RestResource(exported = false)
-    @OneToMany(mappedBy = "music")
+    @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bpm> bpms = new ArrayList<>();
 
     public void add_playable(Pattern pattern) {
@@ -59,15 +59,17 @@ public class Music extends BaseTimeModel {
         while(it.hasNext()) this.bpms.add(it.next());
     }
 
-    public void set_composers_for_save(List<Composer> composers) {
-        this.composers = composers;
+    public void add_bpm(Bpm bpm) {
+        this.bpms.add(bpm);
+    }
+    public void add_composer(Composer composer) {
+        this.composers.add(composer);
     }
 
     @Builder
-    public Music(String title, Album album, Long id, List<Composer> composers) {
+    public Music(String title, Album album, Long id) {
         this.title = title;
         this.album = album;
         this.id = id;
-        this.composers = composers;
     }
 }
