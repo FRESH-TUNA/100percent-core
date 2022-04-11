@@ -1,11 +1,10 @@
 package com.main.koko_main_api.services;
 
 import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmSaveEntityDto;
+
 import com.main.koko_main_api.dtos.pattern.PatternDetailResponseEntityDto;
 import com.main.koko_main_api.dtos.pattern.PatternSavePayload;
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
@@ -41,8 +40,6 @@ public class PatternServiceTest {
     @Mock
     private MusicRepository musicRepository;
 
-    @Mock
-    private BpmRepository bpmRepository;
 
     @Mock
     private PatternRepository patternRepository;
@@ -52,14 +49,11 @@ public class PatternServiceTest {
         /*
          * data mocking
          */
-        List<MusicBpmSaveEntityDto> bpms = new ArrayList() {
-            { add(MusicBpmSaveEntityDto.builder().value(100).build());
-              add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+
         Music saved_music = Music.builder().title("music").id(1L).build();
         URI music_link = new URI("http://localhost/musics/1");
         PatternSavePayload patternSavePayload = PatternSavePayload.builder()
                 .level(2)
-                .bpms(bpms)
                 .music(music_link).build();
         Pattern pattern = Pattern.builder()
                 .level(2)
@@ -93,9 +87,7 @@ public class PatternServiceTest {
         /*
          * data mocking
          */
-        List<MusicBpmSaveEntityDto> bpms = new ArrayList() {
-            { add(MusicBpmSaveEntityDto.builder().value(100).build());
-                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
+
         Music saved_music = Music.builder().title("music").id(1L).build();
         Pattern pattern = Pattern.builder()
                 .level(2)
@@ -129,12 +121,6 @@ public class PatternServiceTest {
         /*
          * data and method mocking
          */
-        List<MusicBpmSaveEntityDto> playable1_bpms = new ArrayList() {
-            { add(MusicBpmSaveEntityDto.builder().value(100).build());
-                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
-        List<MusicBpmSaveEntityDto> playable2_bpms = new ArrayList() {
-            { add(MusicBpmSaveEntityDto.builder().value(100).build());
-                add(MusicBpmSaveEntityDto.builder().value(150).build());}};
 
         Music saved_music_1 = Music.builder().title("music1").id(1L).build();
         Music saved_music_2 = Music.builder().title("music2").id(2L).build();

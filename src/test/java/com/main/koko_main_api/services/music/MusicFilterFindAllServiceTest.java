@@ -1,7 +1,7 @@
 package com.main.koko_main_api.services.music;
 import com.main.koko_main_api.domains.*;
 
-import com.main.koko_main_api.dtos.music.MusicDto;
+import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -40,7 +40,6 @@ public class MusicFilterFindAllServiceTest {
         final int MUSIC_LENGTH = 2;
         List<Music> musics = new ArrayList<>();
         List<Pattern> patterns = new ArrayList<>();
-        List<Long> music_ids = new ArrayList<>();
 
         //sub
         Album album = Album.builder().title("album").build();
@@ -56,9 +55,9 @@ public class MusicFilterFindAllServiceTest {
                     .id(playable_id++).difficultyType(hard_type)
                     .music(music).playType(five_key).build();
 
-            music.add_playable(pattern_hard_type);
+            music.add_pattern(pattern_hard_type);
 
-            musics.add(music); patterns.add(pattern_hard_type); music_ids.add(i);
+            musics.add(music); patterns.add(pattern_hard_type);
         }
 
         /*
@@ -66,14 +65,14 @@ public class MusicFilterFindAllServiceTest {
          */
         when(patternRepository.findAllByPlayTypeAndDifficulty(
                 five_key.getId(), hard_type.getId())).thenReturn(patterns);
-        when(musicRepository.findAllByIds(music_ids)).thenReturn(musics);
+        when(musicRepository.findAll(musics)).thenReturn(musics);
 
         /*
          * then
          */
-        Page<MusicDto> page = musicFilterFindAllService
+        PagedModel<MusicResponseDto> page = musicFilterFindAllService
                 .findAllByDifficulty(five_key.getId(), hard_type.getId());
-        assertThat(page.getSize()).isEqualTo(MUSIC_LENGTH);
+        assertThat(page.getContent().size()).isEqualTo(MUSIC_LENGTH);
     }
 
     @Test
@@ -101,9 +100,9 @@ public class MusicFilterFindAllServiceTest {
                     .id(playable_id++).level(level)
                     .music(music).playType(five_key).build();
 
-            music.add_playable(pattern_hard_type);
+            music.add_pattern(pattern_hard_type);
 
-            musics.add(music); patterns.add(pattern_hard_type); music_ids.add(i);
+            musics.add(music); patterns.add(pattern_hard_type);
         }
 
         /*
@@ -111,13 +110,13 @@ public class MusicFilterFindAllServiceTest {
          */
         when(patternRepository.findAllByPlayTypeAndLevel(
                 five_key.getId(), level)).thenReturn(patterns);
-        when(musicRepository.findAllByIds(music_ids)).thenReturn(musics);
+        when(musicRepository.findAll(musics)).thenReturn(musics);
 
         /*
          * then
          */
-        Page<MusicDto> page = musicFilterFindAllService
+        PagedModel<MusicResponseDto> page = musicFilterFindAllService
                 .findAllByLevel(five_key.getId(), level);
-        assertThat(page.getSize()).isEqualTo(MUSIC_LENGTH);
+        assertThat(page.getContent().size()).isEqualTo(MUSIC_LENGTH);
     }
 }

@@ -49,10 +49,14 @@ public class MusicSearchRepositoryImpl
      */
     private JPAQuery<Music> findAll_base_query() {
         QMusic music = QMusic.music;
+        QComposer composer = QComposer.composer;
+
         JPAQuery<Music> query = queryFactory
                 .select(music)
                 .from(music)
+                .leftJoin(music.composers, composer).fetchJoin()
                 .innerJoin(music.album).fetchJoin();
+
         return query;
     }
 

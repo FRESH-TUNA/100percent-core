@@ -5,7 +5,6 @@ import com.main.koko_main_api.dtos.pattern.PatternDetailResponseEntityDto;
 import com.main.koko_main_api.dtos.pattern.PatternSaveEntityDto;
 import com.main.koko_main_api.dtos.pattern.PatternSavePayload;
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
@@ -21,7 +20,6 @@ import javax.transaction.Transactional;
 public class PatternService extends URIToID {
     private final PatternRepository patternRepository;
     private final MusicRepository musicRepository;
-    private final BpmRepository bpmRepository;
     private final PatternSearchRepository patternSearchRepository;
 
     @Transactional

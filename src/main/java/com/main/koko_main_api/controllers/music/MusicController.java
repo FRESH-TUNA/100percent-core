@@ -3,7 +3,6 @@ package com.main.koko_main_api.controllers.music;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
-import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 
 import com.main.koko_main_api.services.music.MusicFilterFindAllService;
@@ -23,7 +22,7 @@ public class MusicController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/musics")
-    public MusicDto save(@RequestBody MusicRequestDto dto) {
+    public MusicResponseDto save(@RequestBody MusicRequestDto dto) {
         return musicService.save(dto);
     }
 

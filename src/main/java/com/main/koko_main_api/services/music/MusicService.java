@@ -2,12 +2,10 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.assemblers.music.MusicAssembler;
 import com.main.koko_main_api.assemblers.music.MusicDeassembler;
-import com.main.koko_main_api.domains.Bpm;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 
 import com.main.koko_main_api.dtos.music.*;
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,21 +53,22 @@ public class MusicService {
 
     /*
      * create
+     * 만드는중
      */
     @Transactional
-    public MusicDto save(MusicRequestDto musicSavePayloadDto) {
+    public MusicResponseDto save(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
-        set_bpms(music, musicSavePayloadDto.getBpms());
-        return new MusicDto(musicRepository.save(music));
+        return new MusicResponseDto(musicRepository.save(music));
     }
 
     /*
      * update
+     * 만드는중
      */
     @Transactional
-    public MusicDto update(MusicRequestDto musicSavePayloadDto) {
+    public MusicResponseDto update(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
-        return new MusicDto(musicRepository.save(music));
+        return new MusicResponseDto(musicRepository.save(music));
     }
 
 
@@ -88,12 +87,5 @@ public class MusicService {
                 });
         for(Pattern p: patterns) entity_dto_mapper.get(p.getMusic()).add_pattern(p);
         return result;
-    }
-
-    private void set_bpms(Music music, List<MusicBpmsRequestDto> bpm_datas) {
-        List<Bpm> bpms = bpm_datas.stream()
-                .map(b -> Bpm.builder().value(b.getValue()).music(music).build())
-                .collect(Collectors.toList());
-        music.add_bpms(bpms);
     }
 }

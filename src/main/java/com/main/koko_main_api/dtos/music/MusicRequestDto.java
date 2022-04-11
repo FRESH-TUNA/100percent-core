@@ -1,6 +1,4 @@
 package com.main.koko_main_api.dtos.music;
-
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
 import lombok.AllArgsConstructor;
 
 import lombok.Getter;
@@ -18,5 +16,5 @@ public class MusicRequestDto {
     private URI album;
 
     private List<URI> composers;
-    private List<MusicBpmsRequestDto> bpms;
+    private Integer min_bpm, max_bpm;
 }

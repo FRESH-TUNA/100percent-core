@@ -2,7 +2,6 @@ package com.main.koko_main_api.services.music;
 
 import com.main.koko_main_api.domains.*;
 
-import com.main.koko_main_api.dtos.music.MusicDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
@@ -98,11 +97,8 @@ public class MusicServiceTest {
         /*
          * then
          */
-        assertThat(five_key_result.getTotalElements()).isEqualTo(2);
-        assertThat(six_key_result.getTotalElements()).isEqualTo(2);
-
-        assertThat(five_key_result.getContent().get(0).getPatterns().size()).isEqualTo(1);
-        assertThat(five_key_result.getContent().get(0).getPatterns().size()).isEqualTo(1);
+        assertThat(five_key_result.getContent().size()).isEqualTo(2);
+        assertThat(six_key_result.getContent().size()).isEqualTo(2);
     }
 
     @Test
@@ -150,7 +146,7 @@ public class MusicServiceTest {
 
     @Test
     public void save() {
-        MusicRequestDto requestDto = new MusicRequestDto(null, null, null, null, null);
+        MusicRequestDto requestDto = new MusicRequestDto(null, null, null, null, 100, 200);
         Music music = Music.builder().title("music").album(Album.builder().title("hoho").id(1L).build()).build();
 
         /*
@@ -158,11 +154,11 @@ public class MusicServiceTest {
          */
         when(deassembler.toEntity(requestDto)).thenReturn(music);
         when(musicRepository.save(music)).thenReturn(music);
-        MusicDto result = musicService.save(requestDto);
+        MusicResponseDto result = musicService.save(requestDto);
 
         /*
          * then
          */
-        assertThat(result.getClass()).isEqualTo(MusicDto.class);
+        assertThat(result.getClass()).isEqualTo(MusicResponseDto.class);
     }
 }

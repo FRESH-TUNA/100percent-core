@@ -2,12 +2,8 @@ package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.domains.*;
-import com.main.koko_main_api.repositories.DifficultyTypeRepository;
-import com.main.koko_main_api.repositories.PlayTypesRepository;
-import com.main.koko_main_api.repositories.album.AlbumRepository;
-import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
-import com.querydsl.core.Tuple;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -96,45 +92,28 @@ class MusicSearchRepositoryTest {
         assertThat(ALBUM_B_musics.getNumberOfElements()).isEqualTo(0);
         assertThat(ALBUM_B_musics.getTotalElements()).isEqualTo(0);
     }
-//    @Test
-//    void test_findAll() {
-//        /*
-//         * given
-//         */
-//        final int MUSIC_COUNTS = 5;
-//
-//        // Album
-//        Album album = Album.builder().title("album").build();
-//        albumRepository.save(album);
-//
-//        // Music
-//        List<Music> musics = new ArrayList<>();
-//        for(int i = 0; i < MUSIC_COUNTS; ++i)
-//            musics.add(Music.builder().title("music").album(album).build());
-//        musicRepository.saveAll(musics);
-//
-//        //Playtype
-//        PlayType playType = PlayType.builder().title("5K").build();
-//        playTypesRepository.save(playType);
-//
-//        // Playables
-//        List<Pattern> patterns = new ArrayList<>();
-//        for(int i = 0; i < MUSIC_COUNTS; ++i) {
-//            Music music = musics.get(i);
-//            Pattern pattern1 = Pattern.builder().level(2).music(music).playType(playType).build();
-//            Pattern pattern2 = Pattern.builder().level(10).music(music).playType(playType).build();
-//            patterns.add(Pattern.builder().level(2).music(music).build());
-//            music.add_playable(pattern1);
-//            music.add_playable(pattern2);
-//        }
-//        patternRepository.saveAll(patterns);
-//
-//        /*
-//         * when
-//         */
-//        List<Music> All_musics = musicRepository.findAll();
-//        assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS);
-//        assertThat(All_musics.get(0).getAlbum().getTitle()).isEqualTo("album");
-//        assertThat(All_musics.get(0).getPatterns().size()).isEqualTo(2);
-//    }
+
+    @Test
+    void 뮤직들의정보로_필터링_테스트() {
+        /*
+         * given
+         */
+        final int MUSIC_COUNTS = 5;
+
+        // Album
+        Album album = Album.builder().title("album").build();
+        albumRepository.save(album);
+
+        // Music
+        List<Music> musics = new ArrayList<>();
+        for(int i = 0; i < MUSIC_COUNTS; ++i)
+            musics.add(Music.builder().title("music").album(album).build());
+        musicRepository.saveAll(musics);
+
+        /*
+         * when
+         */
+        List<Music> All_musics = musicRepository.findAll(musics);
+        assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS);
+    }
 }

@@ -31,20 +31,23 @@ public class MusicDeassembler
 
     // composer add 추가할것
     @Override
-    public Music toEntity(MusicRequestDto musicRequestDto) {
-        musicRepository.getById(convertURItoID(musicRequestDto.getMusic()));
-        Album album = albumRepository.getById(convertURItoID(musicRequestDto.getAlbum()));
+    public Music toEntity(MusicRequestDto dto) {
+        musicRepository.getById(convertURItoID(dto.getMusic()));
+        Album album = albumRepository.getById(convertURItoID(dto.getAlbum()));
         List<Composer> composers = new ArrayList<>();
-        String title = musicRequestDto.getTitle();
+        String title = dto.getTitle();
+        Integer min_bpm = dto.getMin_bpm(), max_bpm = dto.getMax_bpm();
 
-        for(URI composer_uri : musicRequestDto.getComposers())
+        for(URI composer_uri : dto.getComposers())
             composers.add(composerRepository.getById(convertURItoID(composer_uri)));
 
-        if(musicRequestDto.getMusic() == null)
-            return Music.builder().title(title).album(album).build();
+        if(dto.getMusic() == null)
+            return Music.builder().title(title).album(album)
+                    .min_bpm(min_bpm).max_bpm(max_bpm).build();
         else
-            return Music.builder().id(convertURItoID(musicRequestDto.getMusic()))
-                    .title(title).album(album).build();
+            return Music.builder().id(convertURItoID(dto.getMusic()))
+                    .title(title).album(album).min_bpm(min_bpm)
+                    .max_bpm(max_bpm).build();
     }
 
     private Long convertURItoID(URI uri) {

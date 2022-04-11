@@ -1,6 +1,5 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.repositories.BpmRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.json.JSONArray;
@@ -30,8 +29,7 @@ public class PatternControllerTest {
     private int port;
     @Autowired
     private TestRestTemplate template;
-    @Autowired
-    private BpmRepository bpmRepository;
+
     @Autowired
     private MusicRepository musicRepository;
     @Autowired
@@ -47,7 +45,6 @@ public class PatternControllerTest {
      */
     @AfterEach
     public void clear_db() {
-        this.bpmRepository.deleteAll();
         this.patternRepository.deleteAll();
         this.musicRepository.deleteAll();
     }

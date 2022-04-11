@@ -4,7 +4,6 @@ import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Composer;
 import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmsRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.junit.jupiter.api.Test;
@@ -43,7 +42,7 @@ class MusicDeassemblerTest {
         List<Composer> composers = getComposers();
         Album album = getAlbum();
         MusicRequestDto dto = getMusicRequestDto(
-                getAlbumURI(album), getComposerURLs(composers), getMusicBpmsRequestDto());
+                getAlbumURI(album), getComposerURLs(composers));
 
         /*
          * when
@@ -70,20 +69,13 @@ class MusicDeassemblerTest {
         return album;
     }
 
-    private List<MusicBpmsRequestDto> getMusicBpmsRequestDto() {
-        List<MusicBpmsRequestDto> dtos = new ArrayList<>();
-        dtos.add(new MusicBpmsRequestDto(100));
-        dtos.add(new MusicBpmsRequestDto(200));
-        return dtos;
-    }
-
     private URI getAlbumURI(Album album) {
         return URI.create("https://localhost:8000/main-api/albums/" + album.getId());
     }
 
     private MusicRequestDto getMusicRequestDto(
-            URI album_uri, List<URI> composers, List<MusicBpmsRequestDto> bpms) {
-        return new MusicRequestDto(null, "songsong", album_uri, composers, bpms);
+            URI album_uri, List<URI> composers) {
+        return new MusicRequestDto(null, "songsong", album_uri, composers, 200, 200);
     }
 
     private List<Composer> getComposers () {

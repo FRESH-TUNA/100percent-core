@@ -20,6 +20,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/*
+ * test O
+ */
 @DataJpaTest
 @Import({PatternSearchRepositoryImpl.class, RepositoryConfig.class})
 @ActiveProfiles("test")
@@ -80,7 +83,7 @@ public class PatternSearchRepositoryTest {
          * when
          */
         patterns = patternRepository.findAllByPlayTypeAndMusics(
-                new ArrayList<Long>() {{ add(music1.getId()); }}, playType2.getId());
+                new ArrayList<Music>() {{ add(music1); }}, playType2.getId());
 
         /*
          * then

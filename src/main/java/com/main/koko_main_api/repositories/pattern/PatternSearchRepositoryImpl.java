@@ -57,6 +57,8 @@ public class PatternSearchRepositoryImpl
         return queryFactory
                 .select(pattern)
                 .from(pattern)
+                .innerJoin(pattern.difficultyType).fetchJoin()
+                .innerJoin(pattern.playType).fetchJoin()
                 .where(music_eq(musics), play_type_id_eq(play_type_id))
                 .fetch();
     }

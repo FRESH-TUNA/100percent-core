@@ -1,6 +1,5 @@
 package com.main.koko_main_api.dtos.pattern;
 
-import com.main.koko_main_api.dtos.music.bpm.MusicBpmSaveEntityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -18,6 +17,5 @@ import java.util.List;
 @Getter
 public class PatternSavePayload {
     private Integer level;
-    private List<MusicBpmSaveEntityDto> bpms;
     private URI music;
 }

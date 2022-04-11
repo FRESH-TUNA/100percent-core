@@ -33,7 +33,7 @@ class MusicRepositoryTest {
     private TestEntityManager em;
 
     private final String 기본_작곡가_이름 = "composer_a", 기본_앨범_이름 = "ALBUM_A", 기본_이름 = "title";
-    private final int 기본_BPM = 100;
+    private final int 기본_min_BPM = 100, 기본_max_BPM = 200;
 
     // O
     @Test
@@ -46,7 +46,8 @@ class MusicRepositoryTest {
         assertThat(music.getTitle()).isEqualTo(기본_이름);
         assertThat(music.getComposers().get(0).getName()).isEqualTo(기본_작곡가_이름);
         assertThat(music.getAlbum().getTitle()).isEqualTo(기본_앨범_이름);
-        assertThat(music.getBpms().get(0).getValue()).isEqualTo(기본_BPM);
+        assertThat(music.getMin_bpm()).isEqualTo(기본_min_BPM);
+        assertThat(music.getMax_bpm()).isEqualTo(기본_max_BPM);
     }
 
     // O
@@ -65,16 +66,15 @@ class MusicRepositoryTest {
         // Music
         Music new_music = Music.builder().id(music.getId())
                 .album(albumRepository.getById(ALBUM_A.getId()))
+                .min_bpm(250).max_bpm(250)
                 .title("title2").build();
-        // bpm
-        Bpm bpm = Bpm.builder().value(200).music(music).build();
 
         // 추가 쿼리가 안날라가는지 test
         em.clear();
 
         // 연관관계 설정
         new_music.add_composer(composerRepository.getById(composer.getId()));
-        new_music.add_bpm(bpm); composer.add_music(new_music);
+        composer.add_music(new_music);
 
         //when
         musicRepository.saveAndFlush(new_music);
@@ -86,8 +86,8 @@ class MusicRepositoryTest {
         assertThat(music.getComposers().get(0).getName()).isEqualTo("newcomposer");
         assertThat(music.getComposers().size()).isEqualTo(1);
         assertThat(music.getAlbum().getTitle()).isEqualTo("newalbum");
-        assertThat(music.getBpms().get(0).getValue()).isEqualTo(200);
-        assertThat(music.getBpms().size()).isEqualTo(1);
+        assertThat(music.getMin_bpm()).isEqualTo(250);
+        assertThat(music.getMax_bpm()).isEqualTo(250);
     }
 
     private Music 뮤직_생성() {
@@ -104,14 +104,13 @@ class MusicRepositoryTest {
         // Music
         Music music = Music.builder()
                 .album(albumRepository.getById(ALBUM_A.getId()))
+                .min_bpm(기본_min_BPM).max_bpm(기본_max_BPM)
                 .title("title").build();
-        // bpm
-        Bpm bpm = Bpm.builder().value(기본_BPM).music(music).build();
 
         // 연관관계 설정
         composer = composerRepository.getById(composer.getId());
         music.add_composer(composer);
-        composer.add_music(music); music.add_bpm(bpm);
+        composer.add_music(music);
 
         //when
         return musicRepository.saveAndFlush(music);

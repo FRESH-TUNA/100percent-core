@@ -17,8 +17,9 @@ public class MusicResponseDto extends RepresentationModel<MusicResponseDto> {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MusicAlbumResponseDto album;
+    private Integer min_bpm, max_bpm;
     private List<MusicPatternsResponseDto> patterns;
-    private List<Integer> bpms;
+
 
     public MusicResponseDto(Music m)  {
         id = m.getId();
@@ -26,11 +27,9 @@ public class MusicResponseDto extends RepresentationModel<MusicResponseDto> {
         createdDate = m.getCreatedDate();
         modifiedDate = m.getModifiedDate();
         album = new MusicAlbumResponseDto(m.getAlbum());
-
+        min_bpm = m.getMin_bpm(); max_bpm = m.getMax_bpm();
         this.patterns = m.getPatterns().stream()
                 .map(p -> new MusicPatternsResponseDto(p))
-                .collect(Collectors.toList());
-        this.bpms = m.getBpms().stream().map(b -> b.getValue())
                 .collect(Collectors.toList());
     }
 }
