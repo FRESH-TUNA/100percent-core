@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +29,9 @@ public class MusicService {
     private final MusicAssembler showAssembler;
     private final PagedResourcesAssembler<Music> pageAssembler;
 
+    /*
+     * 기본 findAll methods
+     */
     public PagedModel<MusicResponseDto> findAll(Pageable pageable, Long play_type_id) {
         Page<Music> music_page = musicRepository.findAll(pageable);
 
@@ -56,21 +57,10 @@ public class MusicService {
      * 만드는중
      */
     @Transactional
-    public MusicResponseDto save(MusicRequestDto musicSavePayloadDto) {
+    public MusicResponseDto save_or_update(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
-        return new MusicResponseDto(musicRepository.save(music));
+        return showAssembler.toModel(musicRepository.save(music));
     }
-
-    /*
-     * update
-     * 만드는중
-     */
-    @Transactional
-    public MusicResponseDto update(MusicRequestDto musicSavePayloadDto) {
-        Music music = deassembler.toEntity(musicSavePayloadDto);
-        return new MusicResponseDto(musicRepository.save(music));
-    }
-
 
     /*
      * helper
