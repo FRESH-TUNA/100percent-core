@@ -15,6 +15,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+// test O
 @DataJpaTest
 @Import({MusicSearchRepositoryImpl.class, RepositoryConfig.class})
 @ActiveProfiles("test")
@@ -35,7 +37,6 @@ class MusicRepositoryTest {
     private final String 기본_작곡가_이름 = "composer_a", 기본_앨범_이름 = "ALBUM_A", 기본_이름 = "title";
     private final int 기본_min_BPM = 100, 기본_max_BPM = 200;
 
-    // O
     @Test
     void 뮤직_저장_테스트() {
         Music music = 뮤직_생성();
