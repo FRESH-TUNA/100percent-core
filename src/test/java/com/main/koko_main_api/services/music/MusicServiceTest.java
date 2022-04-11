@@ -154,7 +154,7 @@ public class MusicServiceTest {
          */
         when(deassembler.toEntity(requestDto)).thenReturn(music);
         when(musicRepository.save(music)).thenReturn(music);
-        MusicResponseDto result = musicService.save(requestDto);
+        MusicResponseDto result = musicService.create_or_update(requestDto);
 
         /*
          * then

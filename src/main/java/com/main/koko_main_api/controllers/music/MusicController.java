@@ -23,7 +23,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/musics")
     public MusicResponseDto save(@RequestBody MusicRequestDto dto) {
-        return musicService.save(dto);
+        return musicService.create_or_update(dto);
     }
 
     /*

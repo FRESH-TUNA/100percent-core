@@ -44,6 +44,9 @@ class MusicRepositoryTest {
         // 저장이 잘되었는지 test
         em.clear();
         music = musicRepository.findById(music.getId()).get();
+
+        //  em.clear안하면 이미 캐시에 있어서 쿼리 안날라간다.
+        //  music.getPatterns().size();
         assertThat(music.getTitle()).isEqualTo(기본_이름);
         assertThat(music.getComposers().get(0).getName()).isEqualTo(기본_작곡가_이름);
         assertThat(music.getAlbum().getTitle()).isEqualTo(기본_앨범_이름);
