@@ -117,4 +117,16 @@ class MusicSearchRepositoryTest {
         List<Music> All_musics = musicRepository.findAll(musics);
         assertThat(All_musics.size()).isEqualTo(MUSIC_COUNTS);
     }
+
+    @Test
+    void id로찾기테스트() {
+        // Album
+        Album album = Album.builder().title("album").build();
+        albumRepository.save(album);
+
+        Music music = Music.builder().title("music").album(album).build();
+        musicRepository.saveAndFlush(music);
+
+        music = musicRepository.findById(music.getId()).get();
+    }
 }

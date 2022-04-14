@@ -17,6 +17,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -60,6 +61,22 @@ public class MusicService {
     public MusicResponseDto create_or_update(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
         return showAssembler.toModel(musicRepository.save(music));
+    }
+
+    /*
+     * findbyid
+     */
+    public MusicResponseDto findById(Long id) {
+        Music m = musicRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("해당 음아깅 없습니다."));
+        return showAssembler.toModel(m);
+    }
+
+    /*
+     * delete
+     */
+    public void destroy(Long id) {
+        musicRepository.deleteById(id);
     }
 
     /*

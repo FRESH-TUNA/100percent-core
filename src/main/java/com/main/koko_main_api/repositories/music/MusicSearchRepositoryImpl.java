@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /*
@@ -93,5 +94,21 @@ public class MusicSearchRepositoryImpl
         Long music_counts = counts_query.fetchOne();
         List<Music> musics = getQuerydsl().applyPagination(pageable, musics_query).fetch();
         return new PageImpl<>(musics, pageable, music_counts);
+    }
+
+
+    @Override
+    public Optional<Music> findById(Long id) {
+        QMusic music = QMusic.music;
+        QComposer composer = QComposer.composer;
+
+        JPAQuery<Music> query = queryFactory
+                .select(music)
+                .from(music)
+                .where(music.id.eq(id))
+                .leftJoin(music.composers, composer).fetchJoin()
+                .innerJoin(music.album).fetchJoin();
+
+        return Optional.ofNullable(query.fetchOne());
     }
 }
