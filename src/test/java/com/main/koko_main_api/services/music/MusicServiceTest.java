@@ -110,7 +110,7 @@ public class MusicServiceTest {
          */
         when(musicRepository.findAll(pageable)).thenReturn(music_page);
         when(patternRepository.findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id)).thenReturn(patterns);
-        when(pageCreater.call(music_page, patterns)).thenReturn(music_page);
+        when(pageCreater.create(music_page, patterns)).thenReturn(music_page);
         when(pageAssembler.toModel(music_page, showAssembler)).thenReturn(
                 PagedModel.of(response_page.getContent(),
                         new PagedModel.PageMetadata(pageable.getPageSize(),

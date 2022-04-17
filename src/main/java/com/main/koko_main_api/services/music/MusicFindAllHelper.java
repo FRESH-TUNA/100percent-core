@@ -29,8 +29,7 @@ public class MusicFindAllHelper {
 
     public List<Music> getMusicsFromPatterns(List<Pattern> patterns) {
         return patterns.stream().map(p -> p.getMusic())
-                .distinct().sorted(Comparator.comparingLong(x -> x.getId()))
-                .collect(Collectors.toList());
+                .distinct().collect(Collectors.toList());
     }
 
     public Page<Music> musicsToSinglePage(List<Music> musics) {
