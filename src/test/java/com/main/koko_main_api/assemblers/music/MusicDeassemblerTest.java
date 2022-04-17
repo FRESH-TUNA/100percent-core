@@ -1,9 +1,8 @@
-package com.main.koko_main_api.dtos.music;
-
-import com.main.koko_main_api.assemblers.music.MusicDeassembler;
+package com.main.koko_main_api.assemblers.music;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Composer;
 import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+/*
+ * ok
+ */
 @ActiveProfiles(profiles = "test")
 @ExtendWith(MockitoExtension.class)
 class MusicDeassemblerTest {
@@ -55,10 +57,7 @@ class MusicDeassemblerTest {
         /*
          then
          */
-        Music music = deassembler.toEntity(dto);
-        assertThat(music.getAlbum()).isEqualTo(album);
-        assertThat(music.getComposers()).isEqualTo(composers);
-        assertThat(music.getTitle()).isEqualTo("songsong");
+        assertThat(deassembler.toEntity(dto).getClass()).isEqualTo(Music.class);
     }
 
     /*

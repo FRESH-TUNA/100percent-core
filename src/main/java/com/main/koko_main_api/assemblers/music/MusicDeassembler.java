@@ -8,7 +8,7 @@ import com.main.koko_main_api.dtos.RequestDeassembler;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
-import com.main.koko_main_api.repositories.music.MusicRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +23,6 @@ public class MusicDeassembler
     @Autowired
     private AlbumRepository albumRepository;
 
-    @Autowired
-    private MusicRepository musicRepository;
 
     @Autowired
     private ComposerRepository composerRepository;
@@ -32,7 +30,6 @@ public class MusicDeassembler
     // composer add 추가할것
     @Override
     public Music toEntity(MusicRequestDto dto) {
-        musicRepository.getById(convertURItoID(dto.getMusic()));
         Album album = albumRepository.getById(convertURItoID(dto.getAlbum()));
         List<Composer> composers = new ArrayList<>();
         String title = dto.getTitle();

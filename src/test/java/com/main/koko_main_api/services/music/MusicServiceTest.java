@@ -7,7 +7,9 @@ import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.assemblers.music.MusicDeassembler;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
+
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
+import com.main.koko_main_api.utils.MusicFindAllPageCreater;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,11 +46,19 @@ public class MusicServiceTest {
     private MusicRepository musicRepository;
 
     @Mock
+    private PatternRepository patternRepository;
+
+    @Mock
+    private MusicFindAllPageCreater pageCreater;
+
+    @Mock
     private MusicDeassembler deassembler;
 
     @Mock
     private MusicAssembler showAssembler;
 
+    @Mock
+    private PagedResourcesAssembler<Music> pageAssembler;
 
     @Test
     public void create_or_update_테스트() {
@@ -84,5 +94,33 @@ public class MusicServiceTest {
          * then
          */
         assertThat(result.getClass()).isEqualTo(MusicResponseDto.class);
+    }
+
+    @Test
+    public void findAll_페이징_테스트() {
+        List<Music> musics = new ArrayList<>();
+        List<Pattern> patterns = new ArrayList<>();
+
+        Pageable pageable = PageRequest.of(0, 1);
+        Page<Music> music_page = new PageImpl<Music>(musics, pageable, musics.size());
+        Page<MusicResponseDto> response_page = new PageImpl<>(new ArrayList<>(), pageable, musics.size());
+        Long play_type_id = 1L;
+
+        /*
+         * when
+         */
+        when(musicRepository.findAll(pageable)).thenReturn(music_page);
+        when(patternRepository.findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id)).thenReturn(patterns);
+        when(pageCreater.call(music_page, patterns)).thenReturn(music_page);
+        when(pageAssembler.toModel(music_page, showAssembler)).thenReturn(
+                PagedModel.of(response_page.getContent(),
+                        new PagedModel.PageMetadata(pageable.getPageSize(),
+                                music_page.getNumber(), music_page.getTotalElements())));
+
+        /*
+         * then
+         */
+        PagedModel<MusicResponseDto> result = musicService.findAll(pageable, play_type_id);
+        assertThat(result.getClass()).isEqualTo(PagedModel.class);
     }
 }
