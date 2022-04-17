@@ -8,7 +8,6 @@ import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.dtos.music.*;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
-import com.main.koko_main_api.utils.MusicFindAllPageCreater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
@@ -27,33 +26,56 @@ public class MusicService {
     private final MusicRepository musicRepository;
     private final PatternRepository patternRepository;
 
-    private final MusicFindAllPageCreater pageCreater;
+    private final MusicFindAllHelper findAllHelper;
     private final MusicDeassembler deassembler;
     private final MusicAssembler showAssembler;
     private final PagedResourcesAssembler<Music> pageAssembler;
-
 
     /*
      * 기본 findAll methods
      */
     public PagedModel<MusicResponseDto> findAll(Pageable pageable, Long play_type_id) {
         Page<Music> music_page = musicRepository.findAll(pageable);
-
         List<Pattern> patterns = patternRepository
                 .findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id);
 
-        return pageAssembler.toModel(pageCreater.call(music_page, patterns), showAssembler);
+        return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
     }
 
     public PagedModel<MusicResponseDto> findAllByAlbum(Pageable pageable, Long play_type_id, Long album_id) {
         Page<Music> music_page = musicRepository.findAllByAlbum(pageable, album_id);
-
         List<Pattern> patterns = patternRepository
                 .findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id);
 
-        Page<Music> res = pageCreater.call(music_page, patterns);
+        return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
+    }
 
-        return pageAssembler.toModel(pageCreater.call(music_page, patterns), showAssembler);
+    /*
+     * playable/playtype + difficulty 기준 필터링
+     * 1개의 page로 된 response를 반환한다.
+     */
+    public PagedModel<MusicResponseDto> findAllByDifficulty(Long play_type_id, Long difficulty_id) {
+        // pattern을 가지고 온다.
+        List<Pattern> patterns = patternRepository.findAllByPlayTypeAndDifficulty(play_type_id, difficulty_id);
+        List<Music> musics = findAllHelper.getMusicsFromPatterns(patterns);
+        musics = musicRepository.findAll(musics);
+        Page<Music> music_page = findAllHelper.musicsToSinglePage(musics);
+
+        return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
+    }
+
+    /*
+     * playable/playtype + level 기준 필터링
+     * 1개의 page로 된 response를 반환한다.
+     */
+    public PagedModel<MusicResponseDto> findAllByLevel(Long play_type_id, Integer level) {
+        // pattern을 가지고 온다.
+        List<Pattern> patterns = patternRepository.findAllByPlayTypeAndLevel(play_type_id, level);
+        List<Music> musics = findAllHelper.getMusicsFromPatterns(patterns);
+        musics = musicRepository.findAll(musics);
+        Page<Music> music_page = findAllHelper.musicsToSinglePage(musics);
+
+        return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
     }
 
     /*
@@ -66,6 +88,7 @@ public class MusicService {
         return showAssembler.toModel(musicRepository.save(music));
     }
 
+
     /*
      * findbyid
      */
@@ -75,10 +98,17 @@ public class MusicService {
         return showAssembler.toModel(m);
     }
 
+
     /*
      * delete
      */
     public void destroy(Long id) {
         musicRepository.deleteById(id);
     }
+
+
+    /*
+     * helper
+     */
+
 }

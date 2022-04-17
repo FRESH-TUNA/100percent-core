@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 public class MusicFilterFindAllServiceTest {
     @InjectMocks
-    private MusicFilterFindAllService musicFilterFindAllService;
+    private MusicService musicFilterFindAllService;
 
     @Mock
     private MusicRepository musicRepository;

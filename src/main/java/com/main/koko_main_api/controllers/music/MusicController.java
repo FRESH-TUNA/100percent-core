@@ -5,7 +5,6 @@ import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 
-import com.main.koko_main_api.services.music.MusicFilterFindAllService;
 import com.main.koko_main_api.services.music.MusicService;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class MusicController {
     private final MusicService musicService;
-    private final MusicFilterFindAllService filterFindAllService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/main_api/v1/musics")
@@ -52,9 +50,9 @@ public class MusicController {
             else return musicService.findAllByAlbum(pageable, play_type_id, album_id);
         }
         else if(mode.equals("difficulty"))
-            return filterFindAllService.findAllByDifficulty(play_type_id, d_id);
+            return musicService.findAllByDifficulty(play_type_id, d_id);
         else
-            return filterFindAllService.findAllByLevel(play_type_id, level);
+            return musicService.findAllByLevel(play_type_id, level);
     }
 }
 

@@ -9,7 +9,6 @@ import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
-import com.main.koko_main_api.utils.MusicFindAllPageCreater;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,7 +48,7 @@ public class MusicServiceTest {
     private PatternRepository patternRepository;
 
     @Mock
-    private MusicFindAllPageCreater pageCreater;
+    private MusicFindAllHelper pageCreater;
 
     @Mock
     private MusicDeassembler deassembler;
