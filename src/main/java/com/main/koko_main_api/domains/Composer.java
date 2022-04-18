@@ -19,10 +19,6 @@ public class Composer extends BaseTimeModel {
     @Column(length = 255, nullable = false)
     private String name;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "composer_music",
-//            joinColumns = @JoinColumn(name = "musics_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "composers_id", referencedColumnName = "id"))
     @ManyToMany(mappedBy = "composers")
     private List<Music> musics = new ArrayList<>();
 

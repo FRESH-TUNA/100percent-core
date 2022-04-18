@@ -1,21 +1,17 @@
 package com.main.koko_main_api.assemblers.music;
 
-import com.main.koko_main_api.controllers.PatternController;
-import com.main.koko_main_api.controllers.music.MusicController;
-
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
+import com.main.koko_main_api.repositories.music.MusicRepository;
+import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /*
  * RepresentationModelAssemblerSupport 는 RepresentationModelAssembler 의 구현체
@@ -35,12 +31,11 @@ public class MusicAssembler implements
         MusicResponseDto res = new MusicResponseDto(m);
 
         // add self link
-        res.add(linkTo(methodOn(MusicController.class
-            ).findById(res.getId())).withSelfRel());
+        res.add(linkHelper.linkToItemResource(MusicRepository.class, res.getId()));
 
         // add album link
         res.add(linkHelper.linkToItemResource(
-                AlbumRepository.class, res.getAlbum().getId()));
+                AlbumRepository.class, res.getAlbum().getId()).withRel("album"));
 
         add_link_to_playables(res.getPatterns());
 
@@ -49,7 +44,6 @@ public class MusicAssembler implements
 
     private void add_link_to_playables(List<MusicPatternsResponseDto> dtos) {
         for(MusicPatternsResponseDto dto : dtos)
-            dto.add(linkTo(methodOn(PatternController.class
-                ).findById(dto.getId())).withSelfRel());
+            dto.add(linkHelper.linkToItemResource(PatternRepository.class, dto.getId()).withSelfRel());
     }
 }
