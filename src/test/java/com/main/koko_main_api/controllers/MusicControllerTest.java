@@ -1,8 +1,8 @@
 package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.dtos.*;
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
+import com.main.koko_main_api.dtos.album.AlbumResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -125,10 +125,10 @@ public class MusicControllerTest {
          * album 생성
          */
         String title = "TECHNIKA";
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title(title).build();
-        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
-                ALBUM_ENDPOINT, albumsSaveRequestDto, AlbumsResponseDto.class);
+        ResponseEntity<AlbumResponseDto> responseEntity = restTemplate.postForEntity(
+                ALBUM_ENDPOINT, albumRequestDto, AlbumResponseDto.class);
 
         /*
          * music 생성

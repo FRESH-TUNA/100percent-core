@@ -1,8 +1,7 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.dtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.dtos.album.AlbumResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.repositories.album.AlbumCustomRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -54,12 +53,12 @@ public class AlbumControllerTest {
     @Test
     public void save_test() throws Exception {
         String title = "TECHNIKA";
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title(title).build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
 
-        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
-                url, albumsSaveRequestDto, AlbumsResponseDto.class);
+        ResponseEntity<AlbumResponseDto> responseEntity = restTemplate.postForEntity(
+                url, albumRequestDto, AlbumResponseDto.class);
 
         //결과 확인
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -69,16 +68,16 @@ public class AlbumControllerTest {
     @Test
     public void findById_test() throws Exception {
         // save
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title("thisistitle").build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-        ResponseEntity<AlbumsResponseDto> saveResponseEntity = restTemplate.postForEntity(
-                url, albumsSaveRequestDto, AlbumsResponseDto.class);
+        ResponseEntity<AlbumResponseDto> saveResponseEntity = restTemplate.postForEntity(
+                url, albumRequestDto, AlbumResponseDto.class);
 
         //find test
         String find_url = "/main_api/v1/albums/{id}";
-        ResponseEntity<AlbumsResponseDto> findResponseEntity = restTemplate.getForEntity(
-                find_url, AlbumsResponseDto.class, saveResponseEntity.getBody().getId());
+        ResponseEntity<AlbumResponseDto> findResponseEntity = restTemplate.getForEntity(
+                find_url, AlbumResponseDto.class, saveResponseEntity.getBody().getId());
         assertThat(findResponseEntity.getBody().getId())
                 .isEqualTo(saveResponseEntity.getBody().getId());
         assertThat(findResponseEntity.getBody().getTitle()).isEqualTo("thisistitle");
@@ -87,18 +86,18 @@ public class AlbumControllerTest {
     @Test
     public void update_test() throws Exception {
         // save
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title("thisistitle").build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-        ResponseEntity<AlbumsResponseDto> saveResponseEntity = restTemplate.postForEntity(url, albumsSaveRequestDto, AlbumsResponseDto.class);
+        ResponseEntity<AlbumResponseDto> saveResponseEntity = restTemplate.postForEntity(url, albumRequestDto, AlbumResponseDto.class);
 
         //update
         String update_url = "/main_api/v1/albums/{id}";
         AlbumsUpdateRequestDto updateDto = AlbumsUpdateRequestDto.builder()
                 .title("changedTitle").build();
         HttpEntity<AlbumsUpdateRequestDto> updateRequestEntity = new HttpEntity<>(updateDto);
-        ResponseEntity<AlbumsResponseDto> updateResponseEntity = restTemplate.exchange(
-                update_url, HttpMethod.PUT, updateRequestEntity, AlbumsResponseDto.class, saveResponseEntity.getBody().getId());
+        ResponseEntity<AlbumResponseDto> updateResponseEntity = restTemplate.exchange(
+                update_url, HttpMethod.PUT, updateRequestEntity, AlbumResponseDto.class, saveResponseEntity.getBody().getId());
         assertThat(updateResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(updateResponseEntity.getBody().getTitle()).isEqualTo("changedTitle");
     }
@@ -106,11 +105,11 @@ public class AlbumControllerTest {
     @Test
     public void delete_test() throws Exception {
         // save
-        AlbumsSaveRequestDto albumsSaveRequestDto = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title("thisistitle").build();
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-        ResponseEntity<AlbumsResponseDto> saveResponseEntity = restTemplate.postForEntity(
-                url, albumsSaveRequestDto, AlbumsResponseDto.class);
+        ResponseEntity<AlbumResponseDto> saveResponseEntity = restTemplate.postForEntity(
+                url, albumRequestDto, AlbumResponseDto.class);
 
         //delete (테스트의 경우 flush가 안되서 강제로 flush한다.
         String delete_url = "/main_api/v1/albums/{id}";
@@ -126,12 +125,12 @@ public class AlbumControllerTest {
     public void findAll_test() throws Exception {
         // save
         String url = "http://localhost:" + port + "/main_api/v1/albums";
-        AlbumsSaveRequestDto albumsSaveRequestDto1 = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto1 = AlbumRequestDto
                 .builder().title("thisistitle1").build();
-        AlbumsSaveRequestDto albumsSaveRequestDto2 = AlbumsSaveRequestDto
+        AlbumRequestDto albumRequestDto2 = AlbumRequestDto
                 .builder().title("thisistitle2").build();
-        restTemplate.postForEntity(url, albumsSaveRequestDto1, AlbumsResponseDto.class);
-        restTemplate.postForEntity(url, albumsSaveRequestDto2, AlbumsResponseDto.class);
+        restTemplate.postForEntity(url, albumRequestDto1, AlbumResponseDto.class);
+        restTemplate.postForEntity(url, albumRequestDto2, AlbumResponseDto.class);
 
         //find test
         ResponseEntity<List> findResponseEntity;

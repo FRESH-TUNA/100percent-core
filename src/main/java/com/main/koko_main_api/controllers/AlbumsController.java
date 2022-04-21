@@ -1,8 +1,7 @@
 package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsSaveRequestDto;
-import com.main.koko_main_api.dtos.album.AlbumsUpdateRequestDto;
+import com.main.koko_main_api.dtos.album.AlbumResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import com.main.koko_main_api.services.AlbumsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,29 +15,29 @@ public class AlbumsController {
     private final AlbumsService albumsService;
 
     @GetMapping("/main_api/v1/albums")
-    public List<AlbumsResponseDto> findAll() {
+    public List<AlbumResponseDto> findAll() {
         return albumsService.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/main_api/v1/albums")
-    public AlbumsResponseDto save(@RequestBody AlbumsSaveRequestDto requestDto) {
+    public AlbumResponseDto save(@RequestBody AlbumRequestDto requestDto) {
         return albumsService.save(requestDto);
     }
 
     @GetMapping("/main_api/v1/albums/{id}")
-    public AlbumsResponseDto findById(@PathVariable Long id) {
+    public AlbumResponseDto findById(@PathVariable Long id) {
         return albumsService.findById(id);
     }
 
     @PutMapping("/main_api/v1/albums/{id}")
-    public AlbumsResponseDto update(@PathVariable Long id, @RequestBody AlbumsUpdateRequestDto requestDto) {
+    public AlbumResponseDto update(@PathVariable Long id, @RequestBody AlbumRequestDto requestDto) {
         return albumsService.update(id, requestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/main_api/v1/albums/{id}")
-    public Long delete(@PathVariable Long id) {
-        return albumsService.delete(id);
+    public void delete(@PathVariable Long id) {
+        albumsService.delete(id);
     }
 }
