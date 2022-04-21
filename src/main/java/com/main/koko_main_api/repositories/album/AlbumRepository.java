@@ -1,8 +1,23 @@
 package com.main.koko_main_api.repositories.album;
 
 import com.main.koko_main_api.domains.Album;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
-// DB레이어와의 통신을 담당하는 접근계층
-public interface AlbumRepository extends JpaRepository<Album, Long> {
+public interface AlbumRepository {
+    List<Album> findAll();
+
+    void flush();
+
+    Optional<Album> findById(Long id);
+
+    Album getById(Long id);
+
+    void deleteById(Long id);
+
+    void deleteAll();
+
+    Album save(Album album);
+
+    Album saveAndFlush(Album album);
 }

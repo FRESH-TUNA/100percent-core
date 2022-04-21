@@ -19,8 +19,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles(profiles = "test")
@@ -59,6 +57,8 @@ class MusicAssemblerTest {
         assertThat(dto.getLink("album").get().getHref()).isEqualTo("album_link");
 
         assertThat(dto.getPatterns().get(0).getLink("self").get().getHref())
+                .isEqualTo("pattern_link");
+        assertThat(dto.getPatterns().get(1).getLink("self").get().getHref())
                 .isEqualTo("pattern_link");
     }
 }
