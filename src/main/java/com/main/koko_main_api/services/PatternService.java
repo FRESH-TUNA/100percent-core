@@ -20,7 +20,6 @@ import javax.transaction.Transactional;
 public class PatternService extends URIToID {
     private final PatternRepository patternRepository;
     private final MusicRepository musicRepository;
-    private final PatternSearchRepository patternSearchRepository;
 
     @Transactional
     public PatternDetailResponseEntityDto save(PatternSavePayload dto) {

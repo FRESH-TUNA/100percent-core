@@ -22,8 +22,8 @@ public class Album extends BaseTimeModel {
     @OneToMany(mappedBy = "album")
     private List<Music> musics;
 
-    public void update(String title) {
-        this.title = title;
+    public void update(Album album) {
+        this.title = album.getTitle();
     }
 
     @Builder

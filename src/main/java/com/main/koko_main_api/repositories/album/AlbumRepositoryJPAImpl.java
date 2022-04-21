@@ -1,6 +1,8 @@
 package com.main.koko_main_api.repositories.album;
 
 import com.main.koko_main_api.domains.Album;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -44,6 +46,7 @@ public class AlbumRepositoryJPAImpl implements AlbumRepository{
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         Query query = em.createQuery("DELETE FROM Album A");
         query.executeUpdate();

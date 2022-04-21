@@ -27,7 +27,11 @@ public class AlbumsService {
     // transaction이 끝나는순간 변경된 부분을 반영한다.
     @Transactional
     public AlbumResponseDto update(Long id, AlbumRequestDto dto) {
-        return assembler.toModel(albumsRepository.save(dto.toEntity(id)));
+        Album album = albumsRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + id));
+
+        album.update(dto.toEntity());
+        return assembler.toModel(album);
     }
 
     @Transactional
