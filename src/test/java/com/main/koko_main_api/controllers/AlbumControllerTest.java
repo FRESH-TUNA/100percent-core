@@ -75,7 +75,6 @@ public class AlbumControllerTest {
                 url, albumRequestDto, AlbumResponseDto.class);
 
         //find test
-        String find_url = "/main_api/v1/albums/{id}";
         ResponseEntity<AlbumResponseDto> findResponseEntity = restTemplate.getForEntity(
                 saveResponseEntity.getBody().getLink("self").get().getHref(), AlbumResponseDto.class);
 
@@ -91,7 +90,6 @@ public class AlbumControllerTest {
         ResponseEntity<AlbumResponseDto> saveResponseEntity = restTemplate.postForEntity(url, albumRequestDto, AlbumResponseDto.class);
 
         // when
-        String update_url = "/main_api/v1/albums/{id}";
         AlbumRequestDto updateDto = AlbumRequestDto.builder().title("changedTitle").build();
         HttpEntity<AlbumRequestDto> updateRequestEntity = new HttpEntity<>(updateDto);
         ResponseEntity<AlbumResponseDto> updateResponseEntity = restTemplate.exchange(
@@ -111,7 +109,6 @@ public class AlbumControllerTest {
                 url, albumRequestDto, AlbumResponseDto.class);
 
         //delete (테스트의 경우 flush가 안되서 강제로 flush한다.
-        String delete_url = "/main_api/v1/albums/{id}";
         restTemplate.delete(saveResponseEntity.getBody().getLink("self").get().getHref());
     }
 
