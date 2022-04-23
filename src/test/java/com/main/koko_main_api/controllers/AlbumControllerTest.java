@@ -1,7 +1,6 @@
 package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.dtos.album.AlbumResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 
