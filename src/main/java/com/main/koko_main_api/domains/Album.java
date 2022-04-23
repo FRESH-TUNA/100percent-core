@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,10 +21,14 @@ public class Album extends BaseTimeModel {
 
 
     @OneToMany(mappedBy = "album")
-    private List<Music> musics;
+    private List<Music> musics = new ArrayList<>();
 
     public void update(Album album) {
         this.title = album.getTitle();
+    }
+
+    public void add_music(Music music) {
+        this.musics.add(music);
     }
 
     @Builder
@@ -31,5 +36,4 @@ public class Album extends BaseTimeModel {
         this.id = id;
         this.title = title;
     }
-
 }

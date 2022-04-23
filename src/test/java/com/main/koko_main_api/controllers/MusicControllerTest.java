@@ -1,7 +1,7 @@
 package com.main.koko_main_api.repositories.music;
 
 import com.main.koko_main_api.dtos.*;
-import com.main.koko_main_api.dtos.album.AlbumResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -127,8 +127,8 @@ public class MusicControllerTest {
         String title = "TECHNIKA";
         AlbumRequestDto albumRequestDto = AlbumRequestDto
                 .builder().title(title).build();
-        ResponseEntity<AlbumResponseDto> responseEntity = restTemplate.postForEntity(
-                ALBUM_ENDPOINT, albumRequestDto, AlbumResponseDto.class);
+        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
+                ALBUM_ENDPOINT, albumRequestDto, AlbumsResponseDto.class);
 
         /*
          * music 생성

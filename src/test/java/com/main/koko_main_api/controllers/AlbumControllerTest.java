@@ -1,6 +1,7 @@
 package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.dtos.album.AlbumResponseDto;
+import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 
@@ -14,7 +15,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,9 +37,6 @@ public class AlbumControllerTest {
 
     @Autowired
     private AlbumRepository albumsRepository;
-
-    @Autowired
-    private EntityManager em;
 
     /*
      * aftereach 를 통해 후처리를 할수 있다.
@@ -80,7 +77,7 @@ public class AlbumControllerTest {
         //find test
         String find_url = "/main_api/v1/albums/{id}";
         ResponseEntity<AlbumResponseDto> findResponseEntity = restTemplate.getForEntity(
-                find_url, AlbumResponseDto.class, saveResponseEntity.getBody().getId());
+                saveResponseEntity.getBody().getLink("self").get().getHref(), AlbumResponseDto.class);
 
         assertThat(findResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
@@ -98,7 +95,7 @@ public class AlbumControllerTest {
         AlbumRequestDto updateDto = AlbumRequestDto.builder().title("changedTitle").build();
         HttpEntity<AlbumRequestDto> updateRequestEntity = new HttpEntity<>(updateDto);
         ResponseEntity<AlbumResponseDto> updateResponseEntity = restTemplate.exchange(
-                update_url, HttpMethod.PUT, updateRequestEntity, AlbumResponseDto.class, saveResponseEntity.getBody().getId());
+                saveResponseEntity.getBody().getLink("self").get().getHref(), HttpMethod.PUT, updateRequestEntity, AlbumResponseDto.class);
 
         // then
         assertThat(updateResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -115,7 +112,7 @@ public class AlbumControllerTest {
 
         //delete (테스트의 경우 flush가 안되서 강제로 flush한다.
         String delete_url = "/main_api/v1/albums/{id}";
-        restTemplate.delete(delete_url, saveResponseEntity.getBody().getId());
+        restTemplate.delete(saveResponseEntity.getBody().getLink("self").get().getHref());
     }
 
     @Test

@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/musics")
 public class MusicController {
     private final MusicService musicService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path="/main_api/v1/musics")
+    @PostMapping
     public MusicResponseDto save(@RequestBody MusicRequestDto dto) {
         return musicService.create_or_update(dto);
     }
@@ -28,8 +29,8 @@ public class MusicController {
      * 개발중
      */
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(path="/main_api/v1/musics/{id}")
-    public MusicResponseDto findById(Long id) {
+    @GetMapping(path="/{id}")
+    public MusicResponseDto findById(@PathVariable Long id) {
         return new MusicResponseDto(new Music());
     }
 
@@ -37,7 +38,7 @@ public class MusicController {
      * 개발중
      */
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path="/main_api/vi/musics")
+    @GetMapping
     public PagedModel<MusicResponseDto> findAll
         (@RequestParam MusicFindAllRequestParams params, Pageable pageable) {
 

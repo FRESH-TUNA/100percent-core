@@ -32,7 +32,8 @@ public class AlbumRepositoryJPAImpl implements AlbumRepository{
 
     @Override
     public Optional<Album> findById(Long id) {
-        return Optional.ofNullable(em.find(Album.class, id));
+        TypedQuery<Album> query = em.createQuery("SELECT A FROM Album A LEFT JOIN FETCH A.musics", Album.class);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override

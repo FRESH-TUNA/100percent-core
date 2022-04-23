@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
     // GET 요청에 해당하는 API를 만든다.
-    @GetMapping
+    @GetMapping("/hello")
     public String hello() {
         return "Hello";
     }

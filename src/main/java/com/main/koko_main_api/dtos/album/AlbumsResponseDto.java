@@ -6,20 +6,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Getter
 @RequiredArgsConstructor
-public class AlbumResponseDto extends RepresentationModel<AlbumResponseDto> {
+@Getter
+public class AlbumsResponseDto extends RepresentationModel<AlbumsResponseDto> {
     private String title;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private List<AlbumMusicsResponseDto> musics;
 
-    public AlbumResponseDto(Album entity, List<AlbumMusicsResponseDto> musics) {
+    public AlbumsResponseDto(Album entity) {
         this.title = entity.getTitle();
         this.createdDate = entity.getCreatedDate();
         this.modifiedDate = entity.getModifiedDate();
-        this.musics = musics;
     }
 }
