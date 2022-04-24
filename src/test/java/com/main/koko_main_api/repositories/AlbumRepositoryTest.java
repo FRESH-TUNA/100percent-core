@@ -1,35 +1,60 @@
 package com.main.koko_main_api.repositories;
-
+import com.main.koko_main_api.configs.RepositoryConfig;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.List;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@AutoConfigureTestDatabase
+// test O
 @DataJpaTest
-public class AlbumRepositoryTest {
+@Import({RepositoryConfig.class})
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
+class AlbumRepositoryTest {
     @Autowired
-    private AlbumRepository vr;
+    private AlbumRepository repository;
 
     @Test
-    public void test() {
-        String title = "title";
+    void 전체앨범가져오기테스트() {
+        repository.saveAndFlush(Album.builder().title("title1").build());
+        repository.saveAndFlush(Album.builder().title("title1").build());
+        assertThat(repository.findAll().size()).isEqualTo(2);
+    }
 
-        vr.save(Album.builder()
-                .title(title)
-                .build());
-        List<Album> albumList = vr.findAll();
+    @Test
+    void 레퍼런스같고오기테스트() {
+        Album album1 = repository.getById(1L);
+        Album album2 = repository.getById(1L);
+        assertThat(album1).isEqualTo(album2);
+    }
 
-        Album album = albumList.get(0);
-        assertThat(album.getTitle()).isEqualTo(title);
+    @Test
+    void 저장후_삭제_테스트() {
+        Album a = repository.saveAndFlush(Album.builder().title("title1").build());
+        repository.deleteById(a.getId());
+
+        assertThat(repository.findById(a.getId()).isPresent()).isEqualTo(false);
+    }
+
+    @Test
+    void 전체_삭제_테스트() {
+        repository.saveAndFlush(Album.builder().title("title1").build());
+        repository.saveAndFlush(Album.builder().title("title1").build());
+        repository.deleteAll();
+        assertThat(repository.findAll().isEmpty()).isEqualTo(true);
+    }
+
+    @Test
+    void 저장후_검색_테스트() {
+        Album album = Album.builder().title("title1").build();
+        repository.saveAndFlush(album);
+        assertThat(repository.findById(album.getId()).get()).isEqualTo(album);
     }
 }

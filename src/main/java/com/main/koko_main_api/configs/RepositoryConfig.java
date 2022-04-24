@@ -1,9 +1,8 @@
 package com.main.koko_main_api.configs;
 
-import com.main.koko_main_api.repositories.album.AlbumCustomRepository;
-import com.main.koko_main_api.repositories.album.AlbumCustomRepositoryJPQLImpl;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepositoryJPAImpl;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +24,4 @@ public class RepositoryConfig {
     public AlbumRepository albumRepository() {
         return new AlbumRepositoryJPAImpl(em);
     }
-//    @Bean
-//    public PlayableSearchRepository playableSearchRepository(EntityManager em) {
-//        return new PlayableSearchRepositoryImpl(this.em);
-//    }
 }

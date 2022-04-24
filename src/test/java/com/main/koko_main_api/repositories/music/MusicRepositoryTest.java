@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // test O
 @DataJpaTest
-@Import({MusicSearchRepositoryImpl.class, RepositoryConfig.class})
+@Import({RepositoryConfig.class})
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MusicRepositoryTest {
