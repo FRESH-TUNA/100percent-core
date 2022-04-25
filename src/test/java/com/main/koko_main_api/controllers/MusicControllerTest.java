@@ -153,4 +153,53 @@ public class MusicControllerTest {
         // music findbyid
         assertThat(template.getForEntity(music_uri, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    public void 업데이트_테스트() throws Exception {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        //composer 생성
+        String composer1 = 작곡가_생성("composer1");
+        String composer2 = 작곡가_생성("composer2");
+        String composer3 = 작곡가_생성("composer3");
+        String composer4 = 작곡가_생성("composer4");
+
+        // album 생성
+        String album = 앨범_생성("album");
+        String album2 = 앨범_생성("album2");
+
+        // music 생성
+        JSONObject request = new JSONObject();
+        request.put("title", "music");
+        request.put("album", album);
+        request.put("min_bpm", 100); request.put("max_bpm", 200);
+
+        JSONArray composer_data = new JSONArray();
+        composer_data.put(composer1); composer_data.put(composer2);
+        request.put("composers", composer_data);
+
+        String music_uri = new JSONObject(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody())
+                .getJSONObject("_links").getJSONObject("self").getString("href");
+
+
+        // 새로운 music 정보 생성하여 update 테스트
+        JSONObject new_request = new JSONObject();
+        new_request.put("title", "music2");
+        new_request.put("album", album2);
+        new_request.put("min_bpm", 150); new_request.put("max_bpm", 250);
+
+        JSONArray new_composer_data = new JSONArray();
+        composer_data.put(composer3); composer_data.put(composer4);
+        new_request.put("composers", new_composer_data);
+
+        HttpStatus result = template.exchange(music_uri, HttpMethod.PUT,
+                new HttpEntity<>(new_request.toString(), headers), String.class).getStatusCode();
+
+        assertThat(result).isEqualTo(HttpStatus.OK);
+    }
 }

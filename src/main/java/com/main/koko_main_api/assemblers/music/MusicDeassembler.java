@@ -43,7 +43,7 @@ public class MusicDeassembler
     }
 
     private Long convertURItoID(URI uri) {
-        String[] datas = uri.toString().split("/");
-        return Long.parseLong(datas[datas.length - 1]);
+        String[] data = uri.toString().split("/");
+        return Long.parseLong(data[data.length - 1]);
     }
 }

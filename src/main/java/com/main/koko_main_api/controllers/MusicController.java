@@ -31,9 +31,6 @@ public class MusicController {
         return musicService.update(id, dto);
     }
 
-    /*
-     * 개발중
-     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path="/{id}")
     public MusicResponseDto findById(@PathVariable Long id) {
