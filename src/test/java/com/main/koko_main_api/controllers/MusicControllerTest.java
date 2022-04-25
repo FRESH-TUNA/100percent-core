@@ -118,4 +118,39 @@ public class MusicControllerTest {
 
         assertThat(result).isEqualTo(HttpStatus.CREATED);
     }
+
+    @Test
+    public void findbyid_테스트() throws Exception {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        //composer 생성
+        String composer1 = 작곡가_생성("composer1");
+        String composer2 = 작곡가_생성("composer2");
+
+        // album 생성
+        String album = 앨범_생성("album");
+
+
+        // music 생성
+        JSONObject request = new JSONObject();
+        request.put("title", "music");
+        request.put("album", album);
+        request.put("min_bpm", 100); request.put("max_bpm", 200);
+
+        JSONArray composer_data = new JSONArray();
+        composer_data.put(composer1); composer_data.put(composer2);
+        request.put("composers", composer_data);
+
+        String music_uri = new JSONObject(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody())
+                .getJSONObject("_links").getJSONObject("self").getString("href");
+
+
+        // music findbyid
+        assertThat(template.getForEntity(music_uri, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 }

@@ -38,7 +38,7 @@ public class MusicAssembler implements
         res.add(linkTo(methodOn(MusicController.class).findById(m.getId())).withSelfRel());
 
         // add album link
-        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withSelfRel());
+        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withRel("album"));
 
         return res;
     }
