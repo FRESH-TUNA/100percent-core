@@ -1,10 +1,8 @@
-package com.main.koko_main_api.repositories.music;
+package com.main.koko_main_api.controllers;
 
-import com.main.koko_main_api.dtos.*;
-import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
-import com.main.koko_main_api.dtos.album.AlbumRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
+import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
