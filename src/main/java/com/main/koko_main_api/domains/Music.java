@@ -47,10 +47,17 @@ public class Music extends BaseTimeModel {
     public void add_pattern(Pattern pattern) {
         this.patterns.add(pattern);
     }
+    public void update(Music new_music) {
+        this.title = new_music.getTitle();
+        this.album = new_music.getAlbum();
+        this.min_bpm = new_music.getMin_bpm(); this.max_bpm = new_music.getMax_bpm();
+        this.composers = new_music.getComposers();
+    }
 
     @Builder
-    public Music(String title, Album album, Long id, Integer min_bpm, Integer max_bpm) {
+    public Music(String title, Album album, Long id, Integer min_bpm, Integer max_bpm, List<Composer> composers) {
         this.title = title; this.album = album; this.id = id;
         this.min_bpm = min_bpm; this.max_bpm = max_bpm;
+        this.composers = composers;
     }
 }

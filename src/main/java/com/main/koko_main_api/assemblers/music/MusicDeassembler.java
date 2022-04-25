@@ -38,13 +38,8 @@ public class MusicDeassembler
         for(URI composer_uri : dto.getComposers())
             composers.add(composerRepository.getById(convertURItoID(composer_uri)));
 
-        if(dto.getMusic() == null)
-            return Music.builder().title(title).album(album)
-                    .min_bpm(min_bpm).max_bpm(max_bpm).build();
-        else
-            return Music.builder().id(convertURItoID(dto.getMusic()))
-                    .title(title).album(album).min_bpm(min_bpm)
-                    .max_bpm(max_bpm).build();
+        return Music.builder().title(title).album(album)
+                .min_bpm(min_bpm).max_bpm(max_bpm).build();
     }
 
     private Long convertURItoID(URI uri) {

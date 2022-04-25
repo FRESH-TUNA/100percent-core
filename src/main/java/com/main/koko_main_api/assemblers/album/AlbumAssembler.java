@@ -1,7 +1,7 @@
 package com.main.koko_main_api.assemblers.album;
 
 import com.main.koko_main_api.controllers.AlbumController;
-import com.main.koko_main_api.controllers.music.MusicController;
+import com.main.koko_main_api.controllers.MusicController;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.album.AlbumMusicsResponseDto;

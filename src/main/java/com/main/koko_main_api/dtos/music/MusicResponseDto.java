@@ -21,15 +21,13 @@ public class MusicResponseDto extends RepresentationModel<MusicResponseDto> {
     private List<MusicPatternsResponseDto> patterns;
 
 
-    public MusicResponseDto(Music m)  {
+    public MusicResponseDto(Music m, List<MusicPatternsResponseDto> patterns)  {
         id = m.getId();
         title = m.getTitle();
         createdDate = m.getCreatedDate();
         modifiedDate = m.getModifiedDate();
         album = new MusicAlbumResponseDto(m.getAlbum());
         min_bpm = m.getMin_bpm(); max_bpm = m.getMax_bpm();
-        this.patterns = m.getPatterns().stream()
-                .map(p -> new MusicPatternsResponseDto(p))
-                .collect(Collectors.toList());
+        this.patterns = patterns;
     }
 }

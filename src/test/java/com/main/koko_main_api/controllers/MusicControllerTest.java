@@ -3,8 +3,12 @@ package com.main.koko_main_api.repositories.music;
 import com.main.koko_main_api.dtos.*;
 import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;
+import com.main.koko_main_api.repositories.ComposerRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,129 +32,92 @@ public class MusicControllerTest {
     private TestRestTemplate template;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private AlbumRepository albumRepository;
+
+    @Autowired
+    private ComposerRepository composerRepository;
+
+    @Autowired
+    private MusicRepository musicRepository;
+
+    /*
+     * aftereach 를 통해 후처리를 할수 있다.
+     * resttemplate을 이용한 테스트의 경우 @Transactional을
+     * 사용해도 별도의 쓰레드에서 테스트가 실행되어 사용할수 없다.
+     */
+    @AfterEach
+    void clear_db() {
+        this.musicRepository.deleteAll();
+        this.composerRepository.deleteAll();
+        this.albumRepository.deleteAll();
+    }
+
+    /*
+     * helpers
+     */
+    private String 작곡가_생성(String name) throws JSONException {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+
+        JSONObject request = new JSONObject();
+        request.put("name", name);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        JSONObject result = new JSONObject(template.exchange(COMPOSER_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody());
+
+        return result.getJSONObject("_links").getJSONObject("self").getString("href");
+    }
+
+    private String 앨범_생성(String title) throws JSONException {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
+
+        JSONObject request = new JSONObject();
+        request.put("title", title);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        JSONObject result = new JSONObject(template.exchange(ALBUM_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody());
+
+        return result.getJSONObject("_links").getJSONObject("self").getString("href");
+    }
 
     @Test
-    public void music_to_composer_test() throws Exception {
+    public void 생성_테스트() throws Exception {
         //endpoints
         String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
         String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
 
         //composer 생성
-        ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
-                .builder().name("composer1").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer1, ComposersResponseDto.class);
-        ComposersSaveRequestDto composer2 = ComposersSaveRequestDto
-                .builder().name("composer2").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer2, ComposersResponseDto.class);
+        String composer1 = 작곡가_생성("composer1");
+        String composer2 = 작곡가_생성("composer2");
+
+        // album 생성
+        String album = 앨범_생성("album");
+
 
         // music 생성
-        MusicsSaveRequestDto music1 = MusicsSaveRequestDto
-                .builder().title("music1").build();
-        MusicsSaveRequestDto music2 = MusicsSaveRequestDto
-                .builder().title("music2").build();
-        template.postForEntity(MUSIC_ENDPOINT, music1, MusicsResponseDto.class);
-        template.postForEntity(MUSIC_ENDPOINT, music2, MusicsResponseDto.class);
+        JSONObject request = new JSONObject();
+        request.put("title", "music");
+        request.put("album", album);
+        request.put("min_bpm", 100); request.put("max_bpm", 200);
 
-        // 연관관계 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "text/uri-list");
-        HttpEntity<String> entity = new HttpEntity<>(
-                COMPOSER_ENDPOINT + "/1\n" + COMPOSER_ENDPOINT + "/2", headers);
-        template.exchange(MUSIC_ENDPOINT + "/1/composers", HttpMethod.PUT, entity, String.class);
+        JSONArray composer_data = new JSONArray();
+        composer_data.put(composer1); composer_data.put(composer2);
+        request.put("composers", composer_data);
 
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/composers", String.class);
-        System.out.println(jsonResponse);
-        JSONObject jsonObj = new JSONObject(jsonResponse).getJSONObject("_embedded");
-        JSONArray jsonArray = jsonObj.getJSONArray("composers");
-        assertThat(jsonArray.getJSONObject(0).getString("name")).isEqualTo("composer1");
+        HttpStatus result = template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getStatusCode();
+
+        assertThat(result).isEqualTo(HttpStatus.CREATED);
     }
-
-    @Test
-    public void music_to_composer_once_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
-
-        //composer 생성
-        ComposersSaveRequestDto composer1 = ComposersSaveRequestDto
-                .builder().name("composer1").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer1, ComposersResponseDto.class);
-        ComposersSaveRequestDto composer2 = ComposersSaveRequestDto
-                .builder().name("composer2").build();
-        template.postForEntity(COMPOSER_ENDPOINT, composer2, ComposersResponseDto.class);
-        System.out.println( template.getForObject(COMPOSER_ENDPOINT , String.class));
-        /*
-         * music 생성
-         */
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        // composers data 생성
-        JSONArray composers = new JSONArray();
-        composers.put(COMPOSER_ENDPOINT + "/1"); composers.put(COMPOSER_ENDPOINT + "/2");
-
-        // request body 생성
-        JSONObject request_body = new JSONObject();
-        request_body.put("title", "music_title");
-        request_body.put("composers", composers);
-
-        //요청
-        HttpEntity<String> entity = new HttpEntity<>(request_body.toString(), headers);
-        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
-
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/composers", String.class);
-        System.out.println(jsonResponse);
-        JSONObject jsonObj = new JSONObject(jsonResponse).getJSONObject("_embedded");
-        JSONArray jsonArray = jsonObj.getJSONArray("composers");
-        assertThat(jsonArray.getJSONObject(0).getString("name")).isEqualTo("composer1");
-        assertThat(jsonArray.getJSONObject(1).getString("name")).isEqualTo("composer2");
-    }
-
-    @Test
-    public void music_to_album_test() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
-
-        /*
-         * album 생성
-         */
-        String title = "TECHNIKA";
-        AlbumRequestDto albumRequestDto = AlbumRequestDto
-                .builder().title(title).build();
-        ResponseEntity<AlbumsResponseDto> responseEntity = restTemplate.postForEntity(
-                ALBUM_ENDPOINT, albumRequestDto, AlbumsResponseDto.class);
-
-        /*
-         * music 생성
-         */
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        // request body 생성
-        JSONObject request_body = new JSONObject();
-        request_body.put("title", "music_title");
-        request_body.put("album", ALBUM_ENDPOINT + "/1");
-
-        //요청
-        HttpEntity<String> entity = new HttpEntity<>(request_body.toString(), headers);
-        System.out.println(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST, entity, String.class));
-
-        //검증
-        // 연관관계 생성 checking
-        String jsonResponse = template.getForObject(MUSIC_ENDPOINT + "/1/album", String.class);
-        JSONObject jsonObj = new JSONObject(jsonResponse);
-        assertThat(jsonObj.getString("title")).isEqualTo("TECHNIKA");
-    }
-
-
 }

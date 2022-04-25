@@ -1,6 +1,5 @@
 package com.main.koko_main_api.repositories.music;
 
-import com.main.koko_main_api.domains.Music;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

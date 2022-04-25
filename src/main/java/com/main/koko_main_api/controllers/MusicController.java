@@ -1,4 +1,4 @@
-package com.main.koko_main_api.controllers.music;
+package com.main.koko_main_api.controllers;
 
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
@@ -22,7 +22,13 @@ public class MusicController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MusicResponseDto save(@RequestBody MusicRequestDto dto) {
-        return musicService.create_or_update(dto);
+        return musicService.create(dto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(path="/{id}")
+    public MusicResponseDto update(@PathVariable Long id, @RequestBody MusicRequestDto dto) {
+        return musicService.update(id, dto);
     }
 
     /*
@@ -31,7 +37,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path="/{id}")
     public MusicResponseDto findById(@PathVariable Long id) {
-        return new MusicResponseDto(new Music());
+        return musicService.findById(id);
     }
 
     /*

@@ -1,17 +1,24 @@
 package com.main.koko_main_api.assemblers.music;
 
+
+import com.main.koko_main_api.controllers.AlbumController;
+import com.main.koko_main_api.controllers.MusicController;
+import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.domains.Pattern;
+import com.main.koko_main_api.dtos.album.AlbumMusicsResponseDto;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
-import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /*
  * RepresentationModelAssemblerSupport 는 RepresentationModelAssembler 의 구현체
@@ -23,27 +30,25 @@ import java.util.List;
 public class MusicAssembler implements
         RepresentationModelAssembler<Music, MusicResponseDto> {
 
-    @Autowired
-    private RepositoryEntityLinks linkHelper;
-
     @Override
     public MusicResponseDto toModel(Music m) {
-        MusicResponseDto res = new MusicResponseDto(m);
+        MusicResponseDto res = new MusicResponseDto(m, patterns(m.getPatterns()));
 
         // add self link
-        res.add(linkHelper.linkToItemResource(MusicRepository.class, res.getId()));
+        res.add(linkTo(methodOn(MusicController.class).findById(m.getId())).withSelfRel());
 
         // add album link
-        res.add(linkHelper.linkToItemResource(
-                AlbumRepository.class, res.getAlbum().getId()).withRel("album"));
-
-        add_link_to_playables(res.getPatterns());
+        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withSelfRel());
 
         return res;
     }
 
-    private void add_link_to_playables(List<MusicPatternsResponseDto> dtos) {
-        for(MusicPatternsResponseDto dto : dtos)
-            dto.add(linkHelper.linkToItemResource(PatternRepository.class, dto.getId()).withSelfRel());
+
+    private List<MusicPatternsResponseDto> patterns(List<Pattern> patterns) {
+        return patterns.stream().map(p -> {
+            MusicPatternsResponseDto dto = new MusicPatternsResponseDto(p);
+            dto.add(linkTo(methodOn(PatternController.class).findById(p.getId())).withSelfRel());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

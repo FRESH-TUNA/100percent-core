@@ -60,42 +60,6 @@ public class MusicServiceTest {
     private PagedResourcesAssembler<Music> pageAssembler;
 
     @Test
-    public void create_or_update_테스트() {
-        MusicRequestDto requestDto = new MusicRequestDto();
-        Music music = Music.builder().title("music").album(Album.builder().title("hoho").id(1L).build()).build();
-
-        /*
-         * when
-         */
-        when(deassembler.toEntity(requestDto)).thenReturn(music);
-        when(musicRepository.save(music)).thenReturn(music);
-        when(showAssembler.toModel(music)).thenReturn(new MusicResponseDto(music));
-        MusicResponseDto result = musicService.create_or_update(requestDto);
-
-        /*
-         * then
-         */
-        assertThat(result.getClass()).isEqualTo(MusicResponseDto.class);
-    }
-
-    @Test
-    public void id로검색텍스트() {
-        Music music = Music.builder().title("music").album(Album.builder().title("hoho").id(1L).build()).build();
-
-        /*
-         * when
-         */
-        when(musicRepository.findById(music.getId())).thenReturn(Optional.of(music));
-        when(showAssembler.toModel(music)).thenReturn(new MusicResponseDto(music));
-        MusicResponseDto result = musicService.findById(music.getId());
-
-        /*
-         * then
-         */
-        assertThat(result.getClass()).isEqualTo(MusicResponseDto.class);
-    }
-
-    @Test
     public void findAll_페이징_테스트() {
         List<Music> musics = new ArrayList<>();
         List<Pattern> patterns = new ArrayList<>();

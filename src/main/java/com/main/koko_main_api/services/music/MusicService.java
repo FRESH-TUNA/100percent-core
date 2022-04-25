@@ -83,8 +83,19 @@ public class MusicService {
      * 만드는중
      */
     @Transactional
-    public MusicResponseDto create_or_update(MusicRequestDto musicSavePayloadDto) {
+    public MusicResponseDto create(MusicRequestDto musicSavePayloadDto) {
         Music music = deassembler.toEntity(musicSavePayloadDto);
+        return showAssembler.toModel(musicRepository.save(music));
+    }
+
+    @Transactional
+    public MusicResponseDto update(Long id, MusicRequestDto dto) {
+        Music music = musicRepository.findById(id).get();
+
+        Music new_music = deassembler.toEntity(dto);
+
+        music.update(new_music);
+
         return showAssembler.toModel(musicRepository.save(music));
     }
 

@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class MusicRequestDto {
-    private URI music;
     private String title;
     private URI album;
 
