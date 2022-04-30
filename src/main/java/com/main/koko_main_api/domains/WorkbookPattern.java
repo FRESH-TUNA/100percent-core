@@ -1,5 +1,6 @@
 package com.main.koko_main_api.domains;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,14 @@ public class WorkbookPattern extends BaseTimeModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workbook_id", nullable = false)
     private Workbook workbook;
+
+    /*
+     * methods
+     */
+    @Builder
+    public WorkbookPattern(Long id, Pattern pattern, Workbook workbook) {
+        this.id = id;
+        this.pattern = pattern;
+        this.workbook = workbook;
+    }
 }

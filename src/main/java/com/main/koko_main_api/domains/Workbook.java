@@ -1,8 +1,8 @@
 package com.main.koko_main_api.domains;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,5 +28,11 @@ public class Workbook extends BaseTimeModel {
     /*
      * methods
      */
-
+    @Builder
+    public Workbook(Long id, String title, String description, List<WorkbookPattern> patterns) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.patterns = patterns;
+    }
 }

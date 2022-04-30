@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AlbumsService {
+public class AlbumService {
     private final AlbumRepository albumsRepository;
     private final AlbumsAssembler listAssembler;
     private final AlbumAssembler showAssembler;

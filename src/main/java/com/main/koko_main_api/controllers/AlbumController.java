@@ -3,7 +3,7 @@ package com.main.koko_main_api.controllers;
 import com.main.koko_main_api.dtos.album.AlbumResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;
-import com.main.koko_main_api.services.AlbumsService;
+import com.main.koko_main_api.services.AlbumService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.rest.webmvc.RepositoryLinksResource;
@@ -20,33 +20,33 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequestMapping("/albums")
 public class AlbumController implements
         RepresentationModelProcessor<RepositoryLinksResource> {
-    private final AlbumsService albumsService;
+    private final AlbumService albumService;
 
     @GetMapping
     public List<AlbumsResponseDto> findAll() {
-        return albumsService.findAll();
+        return albumService.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AlbumResponseDto save(@RequestBody AlbumRequestDto requestDto) {
-        return albumsService.save(requestDto);
+        return albumService.save(requestDto);
     }
 
     @GetMapping("/{id}")
     public AlbumResponseDto findById(@PathVariable Long id) {
-        return albumsService.findById(id);
+        return albumService.findById(id);
     }
 
     @PutMapping("/{id}")
     public AlbumResponseDto update(@PathVariable Long id, @RequestBody AlbumRequestDto requestDto) {
-        return albumsService.update(id, requestDto);
+        return albumService.update(id, requestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        albumsService.delete(id);
+        albumService.delete(id);
     }
 
     @Override
