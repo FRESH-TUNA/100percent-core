@@ -28,6 +28,10 @@ public class Workbook extends BaseTimeModel {
     /*
      * methods
      */
+    public void add_patterns(List<WorkbookPattern> patterns) {
+        this.patterns = patterns;
+    }
+
     @Builder
     public Workbook(Long id, String title, String description, List<WorkbookPattern> patterns) {
         this.id = id;

@@ -2,16 +2,12 @@ package com.main.koko_main_api.assemblers.workbook;
 
 import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.dtos.RequestDeassembler;
-import com.main.koko_main_api.dtos.music.MusicRequestDto;
 import com.main.koko_main_api.dtos.workbook.WorkbookRequestDto;
-import com.main.koko_main_api.repositories.ComposerRepository;
-import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

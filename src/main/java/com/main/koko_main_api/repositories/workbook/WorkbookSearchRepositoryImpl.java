@@ -1,11 +1,8 @@
 package com.main.koko_main_api.repositories.workbook;
 
 import com.main.koko_main_api.domains.*;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-
-import java.util.List;
 import java.util.Optional;
 
 /*
