@@ -2,6 +2,7 @@ package com.main.koko_main_api.domains;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,11 @@ public class Workbook extends BaseTimeModel {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "workbook")
+    @OneToMany(mappedBy = "workbook", cascade = CascadeType.ALL)
     private List<WorkbookPattern> patterns = new ArrayList<>();
+
+    /*
+     * methods
+     */
+
 }
