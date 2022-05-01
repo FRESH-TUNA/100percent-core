@@ -21,10 +21,14 @@ public class WorkbookDeassembler
     public Workbook toEntity(WorkbookRequestDto dto) {
         String title = dto.getTitle();
         String description = dto.getDescription();
-        List<WorkbookPattern> patterns = workbookPatterns(patterns(dto.getPatterns()));
 
-        return Workbook.builder().title(title)
-                .description(description).patterns(patterns).build();
+        Workbook workbook = Workbook.builder().title(title)
+                .description(description).build();
+
+        List<WorkbookPattern> patterns = workbookPatterns(patterns(dto.getPatterns()), workbook);
+
+        workbook.add_patterns(patterns);
+        return workbook;
     }
 
     private List<Pattern> patterns(List<URI> patterns) {
@@ -33,9 +37,9 @@ public class WorkbookDeassembler
                 .collect(Collectors.toList());
     }
 
-    private List<WorkbookPattern> workbookPatterns(List<Pattern> patterns) {
+    private List<WorkbookPattern> workbookPatterns(List<Pattern> patterns, Workbook workbook) {
         return patterns.stream()
-                .map(p -> WorkbookPattern.builder().pattern(p).build())
+                .map(p -> WorkbookPattern.builder().pattern(p).workbook(workbook).build())
                 .collect(Collectors.toList());
     }
 
