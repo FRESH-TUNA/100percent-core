@@ -22,6 +22,10 @@ public class Workbook extends BaseTimeModel {
     @Column
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "play_type_id")
+    private PlayType playType;
+
     @OneToMany(mappedBy = "workbook", cascade = CascadeType.ALL)
     private List<WorkbookPattern> patterns = new ArrayList<>();
 
@@ -33,10 +37,13 @@ public class Workbook extends BaseTimeModel {
     }
 
     @Builder
-    public Workbook(Long id, String title, String description, List<WorkbookPattern> patterns) {
+    public Workbook(Long id, String title, String description,
+                    List<WorkbookPattern> patterns,
+                    PlayType playType) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.patterns = patterns;
+        this.playType = playType;
     }
 }

@@ -1,40 +1,28 @@
 package com.main.koko_main_api.assemblers.workbook;
 
 import com.main.koko_main_api.domains.*;
-import com.main.koko_main_api.dtos.RequestDeassembler;
 import com.main.koko_main_api.dtos.workbook.WorkbookRequestDto;
-import com.main.koko_main_api.repositories.pattern.PatternRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class WorkbookDeassembler
-        implements RequestDeassembler<WorkbookRequestDto, Workbook> {
-    @Autowired
-    private PatternRepository patternRepository;
+public class WorkbookDeassembler {
 
-    @Override
-    public Workbook toEntity(WorkbookRequestDto dto) {
+    public Workbook toEntity(WorkbookRequestDto dto, List<Pattern> patterns) {
         String title = dto.getTitle();
         String description = dto.getDescription();
+        PlayType playType = getPlayType(patterns);
 
-        Workbook workbook = Workbook.builder().title(title)
+        Workbook workbook = Workbook.builder().title(title).playType(playType)
                 .description(description).build();
 
-        List<WorkbookPattern> patterns = workbookPatterns(patterns(dto.getPatterns()), workbook);
+        List<WorkbookPattern> workbookPatterns = workbookPatterns(patterns, workbook);
 
-        workbook.add_patterns(patterns);
+        workbook.add_patterns(workbookPatterns);
         return workbook;
-    }
-
-    private List<Pattern> patterns(List<URI> patterns) {
-        return patterns.stream()
-                .map(p -> patternRepository.getById(convertURItoID(p)))
-                .collect(Collectors.toList());
     }
 
     private List<WorkbookPattern> workbookPatterns(List<Pattern> patterns, Workbook workbook) {
@@ -43,8 +31,8 @@ public class WorkbookDeassembler
                 .collect(Collectors.toList());
     }
 
-    private Long convertURItoID(URI uri) {
-        String[] data = uri.toString().split("/");
-        return Long.parseLong(data[data.length - 1]);
+    private PlayType getPlayType(List<Pattern> patterns) {
+        Set<PlayType> playTypes = patterns.stream().map(p -> p.getPlayType()).collect(Collectors.toSet());
+        return (playTypes.size() > 1) ? null : patterns.get(0).getPlayType();
     }
 }

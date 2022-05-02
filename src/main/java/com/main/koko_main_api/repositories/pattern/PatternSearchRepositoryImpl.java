@@ -86,4 +86,16 @@ public class PatternSearchRepositoryImpl
                 .where(levelEq(level), play_type_id_eq(play_type_id))
                 .fetch();
     }
+
+    @Override
+    public List<Pattern> findAllById(Iterable<Long> ids) {
+        QPattern pattern = QPattern.pattern;
+        return queryFactory
+                .select(pattern)
+                .from(pattern)
+                .innerJoin(pattern.difficultyType).fetchJoin()
+                .innerJoin(pattern.playType).fetchJoin()
+                .innerJoin(pattern.music).fetchJoin()
+                .fetch();
+    }
 }

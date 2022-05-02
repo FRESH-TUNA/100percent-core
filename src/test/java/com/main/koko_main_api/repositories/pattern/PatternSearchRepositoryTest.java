@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * test O
  */
 @DataJpaTest
-@Import({PatternSearchRepositoryImpl.class, RepositoryConfig.class})
+@Import(RepositoryConfig.class)
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PatternSearchRepositoryTest {
@@ -171,5 +172,36 @@ public class PatternSearchRepositoryTest {
          * music과 playtype이 모두 설정된 1개만 반환된다.
          */
         assertThat(patterns.size()).isEqualTo(1);
+    }
+
+    @Test
+    void id들로_필터링_테스트() {
+        // music
+        Music music = Music.builder().title("music").album(앨범만들어서반환()).build();
+        musicRepository.save(music);
+
+        PlayType playType1 = PlayType.builder().title("5K").build();
+        PlayType playType2 = PlayType.builder().title("4K").build();
+        playTypesRepository.save(playType1);
+        playTypesRepository.save(playType2);
+
+        DifficultyType difficultyType1 = DifficultyType.builder().name("normal").build();
+        DifficultyType difficultyType2 = DifficultyType.builder().name("hard").build();
+        difficultyTypeRepository.save(difficultyType1);
+        difficultyTypeRepository.save(difficultyType2);
+
+        // pattern
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType2)
+                .difficultyType(difficultyType1).build());
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType1)
+                .difficultyType(difficultyType1).build());
+        patterns.add(Pattern.builder().level(3).music(music).playType(playType1)
+                .difficultyType(difficultyType2).build());
+        patternRepository.saveAllAndFlush(patterns);
+
+
+        patterns = patternRepository.findAllById(patterns.stream().map(x -> x.getId()).collect(Collectors.toList()));
+        assertThat(patterns.size()).isEqualTo(2);
     }
 }
