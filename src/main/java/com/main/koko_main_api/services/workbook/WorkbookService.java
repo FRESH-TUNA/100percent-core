@@ -24,14 +24,21 @@ public class WorkbookService {
     private final WorkbookDeassembler deassembler;
     private final WorkbookAssembler assembler;
 
-    private final WorkbookPatternIdsHelper workbookPatternsHelper;
+    private final WorkbookServiceHelper helper;
 
     // create
     @Transactional
     public WorkbookResponseDto create(WorkbookRequestDto requestDto) {
-        List<Long> pattern_ids = workbookPatternsHelper.call(requestDto.getPatterns());
+        List<Long> pattern_ids = helper.urls_to_ids(requestDto.getPatterns());
         List<Pattern> patterns = patternRepository.findAllById(pattern_ids);
         Workbook workbook = deassembler.toEntity(requestDto, patterns);
+        return assembler.toModel(workbookRepository.save(workbook), patterns);
+    }
+
+    public WorkbookResponseDto findById(Long id) {
+        Workbook workbook = workbookRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + id));
+        List<Pattern> patterns = patternRepository.findAll(helper.patterns(workbook));
         return assembler.toModel(workbookRepository.save(workbook), patterns);
     }
 }

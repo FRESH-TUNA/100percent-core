@@ -98,4 +98,17 @@ public class PatternSearchRepositoryImpl
                 .innerJoin(pattern.music).fetchJoin()
                 .fetch();
     }
+
+    @Override
+    public List<Pattern> findAll(List<Pattern> patterns) {
+        QPattern pattern = QPattern.pattern;
+        return queryFactory
+                .select(pattern)
+                .from(pattern)
+                .innerJoin(pattern.difficultyType).fetchJoin()
+                .innerJoin(pattern.playType).fetchJoin()
+                .innerJoin(pattern.music).fetchJoin()
+                .where(pattern.in(patterns))
+                .fetch();
+    }
 }

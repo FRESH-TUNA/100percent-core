@@ -1,6 +1,6 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.services.workbook.WorkbookPatternIdsHelper;
+import com.main.koko_main_api.services.workbook.WorkbookServiceHelper;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -9,8 +9,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WorkbookPatternIdsHelperTest {
-    private WorkbookPatternIdsHelper helper = new WorkbookPatternIdsHelper();
+public class WorkbookServiceHelperTest {
+    private WorkbookServiceHelper helper = new WorkbookServiceHelper();
 
     @Test
     void test() {

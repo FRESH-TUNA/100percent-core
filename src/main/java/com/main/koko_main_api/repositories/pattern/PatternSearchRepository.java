@@ -13,4 +13,6 @@ public interface PatternSearchRepository<T, ID> {
     List<Pattern> findAllByPlayTypeAndLevel(Long play_type_id, Integer level);
 
     List<Pattern> findAllById(Iterable<Long> ids);
+
+    List<Pattern> findAll(List<Pattern> patterns);
 }

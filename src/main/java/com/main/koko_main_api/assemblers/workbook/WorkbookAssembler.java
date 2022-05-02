@@ -1,15 +1,11 @@
 package com.main.koko_main_api.assemblers.workbook;
 
-import com.main.koko_main_api.controllers.AlbumController;
-import com.main.koko_main_api.controllers.MusicController;
 import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.domains.Workbook;
-import com.main.koko_main_api.dtos.music.MusicResponseDto;
-import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
+
 import com.main.koko_main_api.dtos.workbook.WorkbookPatternsResponseDto;
 import com.main.koko_main_api.dtos.workbook.WorkbookResponseDto;
-import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
