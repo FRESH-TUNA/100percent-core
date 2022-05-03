@@ -13,10 +13,10 @@ public class WorkbookServiceHelperTest {
     private WorkbookServiceHelper helper = new WorkbookServiceHelper();
 
     @Test
-    void test() {
+    void URL_ID_변환_test() {
         List<URI> urls = new ArrayList<>();
         urls.add(URI.create("/patterns/1")); urls.add(URI.create("/patterns/2"));
-        List<Long> patterns = helper.call(urls);
+        List<Long> patterns = helper.urls_to_ids(urls);
 
         assertThat(patterns.get(0).longValue()).isEqualTo(1L);
         assertThat(patterns.get(1).longValue()).isEqualTo(2L);

@@ -6,8 +6,11 @@ import com.main.koko_main_api.controllers.MusicController;
 import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
+import com.main.koko_main_api.domains.Workbook;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
+import com.main.koko_main_api.dtos.workbook.WorkbookResponseDto;
+import com.main.koko_main_api.dtos.workbook.WorkbooksResponseDto;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
@@ -25,27 +28,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @Component
 public class WorkbooksAssembler implements
-        RepresentationModelAssembler<Music, MusicResponseDto> {
+        RepresentationModelAssembler<Workbook, WorkbooksResponseDto> {
 
     @Override
-    public MusicResponseDto toModel(Music m) {
-        MusicResponseDto res = new MusicResponseDto(m, patterns(m.getPatterns()));
+    public WorkbooksResponseDto toModel(Workbook w) {
+        WorkbooksResponseDto res = new WorkbooksResponseDto(w);
 
         // add self link
-        res.add(linkTo(methodOn(MusicController.class).findById(m.getId())).withSelfRel());
-
-        // add album link
-        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withRel("album"));
+//        res.add(linkTo(methodOn(MusicController.class).findById(m.getId())).withSelfRel());
+//
+//        // add album link
+//        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withRel("album"));
 
         return res;
-    }
-
-
-    private List<MusicPatternsResponseDto> patterns(List<Pattern> patterns) {
-        return patterns.stream().map(p -> {
-            MusicPatternsResponseDto dto = new MusicPatternsResponseDto(p);
-            dto.add(linkTo(methodOn(PatternController.class).findById(p.getId())).withSelfRel());
-            return dto;
-        }).collect(Collectors.toList());
     }
 }

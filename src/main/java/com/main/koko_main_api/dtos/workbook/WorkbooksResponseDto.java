@@ -7,6 +7,7 @@ public class WorkbooksResponseDto extends RepresentationModel<WorkbooksResponseD
     private String title;
 
     public WorkbooksResponseDto(Workbook workbook) {
+
         this.title = workbook.getTitle();
     }
 }

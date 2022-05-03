@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
@@ -43,7 +45,6 @@ class WorkbookRepositoryTest {
     @Autowired
     private PatternRepository patternRepository;
 
-
     private final String 기본_작곡가_이름 = "composer_a", 기본_앨범_이름 = "ALBUM_A", 기본_이름 = "title";
     private final int 기본_min_BPM = 100, 기본_max_BPM = 200;
 
@@ -57,8 +58,44 @@ class WorkbookRepositoryTest {
     }
 
     @Test
+    void 페이지로_findAll_테스트() {
+        PlayType playType = 플레이타입_생성();
+        Workbook workbook1 = Workbook.builder().title("title").description("des").playType(playType).build();
+        Workbook workbook2 = Workbook.builder().title("title").description("des").playType(playType).build();
+        Workbook workbook3 = Workbook.builder().title("title").description("des").playType(playType).build();
+
+        workbookRepository.saveAndFlush(workbook1);
+        workbookRepository.saveAndFlush(workbook2);
+        workbookRepository.saveAndFlush(workbook3);
+
+        Page<Workbook> workbooks = workbookRepository.findAll(PageRequest.of(0, 2));
+        assertThat(workbooks.getTotalElements()).isEqualTo(3);
+        assertThat(workbooks.getSize()).isEqualTo(2);
+    }
+
+    @Test
+    void 페이지로_playtype_findAll_테스트() {
+        PlayType playType1 = 플레이타입_생성(), playType2 = 플레이타입_생성();
+
+        Workbook workbook1 = Workbook.builder().title("title").description("des").playType(playType1).build();
+        Workbook workbook2 = Workbook.builder().title("title").description("des").playType(playType1).build();
+        Workbook workbook3 = Workbook.builder().title("title").description("des").playType(playType2).build();
+        Workbook workbook4 = Workbook.builder().title("title").description("des").playType(playType2).build();
+
+        workbookRepository.saveAndFlush(workbook1);
+        workbookRepository.saveAndFlush(workbook2);
+        workbookRepository.saveAndFlush(workbook3);
+        workbookRepository.saveAndFlush(workbook4);
+
+        Page<Workbook> workbooks = workbookRepository.findAll(PageRequest.of(0, 2), playType1.getId());
+        assertThat(workbooks.getTotalElements()).isEqualTo(2);
+        assertThat(workbooks.getSize()).isEqualTo(2);
+    }
+
+    @Test
     void 생성_테스트() {
-        Workbook workbook = Workbook.builder().title("title").description("des").build();
+        PlayType playType = 플레이타입_생성();
+        Workbook workbook = Workbook.builder().title("title").description("des").playType(playType).build();
 
         List<WorkbookPattern> patterns = new ArrayList<>();
         patterns.add(WorkbookPattern.builder().pattern(패턴_생성()).workbook(workbook).build());
@@ -79,7 +116,6 @@ class WorkbookRepositoryTest {
                 .album(albumRepository.getById(ALBUM_A.getId()))
                 .min_bpm(기본_min_BPM).max_bpm(기본_max_BPM)
                 .title("title").build();
-
         //when
         return musicRepository.saveAndFlush(music);
     }

@@ -36,6 +36,13 @@ public class Workbook extends BaseTimeModel {
         this.patterns = patterns;
     }
 
+    public void update(Workbook new_workbook) {
+        this.title = new_workbook.getTitle();
+        this.description = new_workbook.getDescription();
+        this.patterns = new_workbook.getPatterns();
+        this.playType = new_workbook.getPlayType();
+    }
+
     @Builder
     public Workbook(Long id, String title, String description,
                     List<WorkbookPattern> patterns,
