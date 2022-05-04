@@ -14,7 +14,7 @@ public class WorkbookPatternsResponseDto extends RepresentationModel<WorkbookPat
     private String playType;
 
     public WorkbookPatternsResponseDto(Pattern p) {
-        this.music = p.getMusic().getTitle();
+        music = p.getMusic().getTitle();
         level = p.getLevel();
         difficultyType = p.getDifficultyType().getName();
         playType = p.getPlayType().getTitle();

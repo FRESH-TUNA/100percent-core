@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/patterns")
 public class PatternController {
     private final PagedResourcesAssembler<PatternListResponseEntityDto> pageAssembler;
     private final PatternListPayloadAssembler listAssembler;
@@ -24,13 +25,13 @@ public class PatternController {
 
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path="/main_api/v1/playables")
+    @PostMapping
     public PatternDetailPayload save(@RequestBody PatternSavePayload payload) {
         PatternDetailResponseEntityDto response = patternService.save(payload);
         return detailAssembler.toModel(response);
     }
 
-    @GetMapping("/main_api/v1/playables/{id}")
+    @GetMapping("/{id}")
     public PatternDetailPayload findById(@PathVariable Long id) {
         PatternDetailResponseEntityDto response = patternService.findById(id);
         return detailAssembler.toModel(response);

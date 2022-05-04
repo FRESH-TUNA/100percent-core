@@ -1,6 +1,7 @@
 package com.main.koko_main_api.assemblers.workbook;
 
 import com.main.koko_main_api.controllers.PatternController;
+import com.main.koko_main_api.controllers.WorkbookController;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.domains.Workbook;
 
@@ -19,12 +20,8 @@ public class WorkbookAssembler {
     public WorkbookResponseDto toModel(Workbook w, List<Pattern> patterns) {
         WorkbookResponseDto res = new WorkbookResponseDto(w, patterns(patterns));
 
-        // add self link
-//        res.add(linkTo(methodOn(MusicController.class).findById(m.getId())).withSelfRel());
-//
-//        // add album link
-//        res.add(linkTo(methodOn(AlbumController.class).findById(m.getAlbum().getId())).withRel("album"));
-
+        //add self link
+        res.add(linkTo(methodOn(WorkbookController.class).findById(w.getId())).withSelfRel());
         return res;
     }
 

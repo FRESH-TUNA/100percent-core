@@ -35,6 +35,11 @@ public class WorkbookService {
     private final WorkbookServiceHelper helper;
 
 
+    public PagedModel<WorkbooksResponseDto> findAll(Pageable pageable, Long play_type_id) {
+        Page<Workbook> page = workbookRepository.findAll(pageable, play_type_id);
+        return pageAssembler.toModel(page, sassembler);
+    }
+
     public PagedModel<WorkbooksResponseDto> findAll(Pageable pageable) {
         Page<Workbook> page = workbookRepository.findAll(pageable);
         return pageAssembler.toModel(page, sassembler);
