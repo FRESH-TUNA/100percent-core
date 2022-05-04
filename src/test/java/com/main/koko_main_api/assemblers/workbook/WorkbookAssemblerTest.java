@@ -14,10 +14,10 @@ public class WorkbookAssemblerTest {
     @Test
     void test() {
         // datas
-        Workbook w = Workbook.builder().id(1L).description("aaa").title("bbb").build();
         Music music = Music.builder().title("title").build();
         PlayType playType = PlayType.builder().title("playtype").build();
         DifficultyType difficultyType = DifficultyType.builder().name("difficultyType").build();
+        Workbook w = Workbook.builder().id(1L).description("aaa").title("bbb").playType(playType).build();
 
         List<Pattern> patterns = new ArrayList();
         patterns.add(Pattern.builder().id(1L).music(music).playType(playType).difficultyType(difficultyType).build());

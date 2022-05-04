@@ -12,11 +12,13 @@ import java.util.List;
 public class WorkbookResponseDto extends RepresentationModel<WorkbookResponseDto> {
     private String title;
     private String description;
+    private String play_type;
     private List<WorkbookPatternsResponseDto> patterns;
 
     public WorkbookResponseDto(Workbook w, List<WorkbookPatternsResponseDto> patterns) {
         this.title = w.getTitle();
         this.description = w.getDescription();
+        this.play_type = w.getPlayType().getTitle();
         this.patterns = patterns;
     }
 }
