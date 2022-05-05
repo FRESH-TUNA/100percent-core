@@ -3,7 +3,7 @@ package com.main.koko_main_api.controllers;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 
-import com.main.koko_main_api.services.music.MusicService;
+import com.main.koko_main_api.services.MusicService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;

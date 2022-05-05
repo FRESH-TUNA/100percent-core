@@ -6,18 +6,18 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class PatternDetailResponseEntityDto {
+public class PatternsResponseDto {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PatternMusicEntityDto music;
+    private PatternMusicResponseDto music;
 
-    public PatternDetailResponseEntityDto(Pattern p)  {
+    public PatternsResponseDto(Pattern p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();
         modifiedDate = p.getModifiedDate();
-        music = new PatternMusicEntityDto(p.getMusic());
+        music = new PatternMusicResponseDto(p.getMusic());
     }
 }

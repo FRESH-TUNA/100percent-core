@@ -1,4 +1,4 @@
-package com.main.koko_main_api.assemblers.workbook;
+package com.main.koko_main_api.assemblers;
 
 import com.main.koko_main_api.controllers.WorkbookController;
 import com.main.koko_main_api.domains.Workbook;

@@ -1,13 +1,14 @@
-package com.main.koko_main_api.services.music;
+package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.assemblers.music.MusicAssembler;
-import com.main.koko_main_api.assemblers.music.MusicDeassembler;
+import com.main.koko_main_api.assemblers.MusicAssembler;
+import com.main.koko_main_api.deassemblers.MusicDeassembler;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
 
 import com.main.koko_main_api.dtos.music.*;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
+import com.main.koko_main_api.services.music.MusicFindAllHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 

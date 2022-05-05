@@ -1,5 +1,6 @@
 package com.main.koko_main_api.assemblers.album;
 
+import com.main.koko_main_api.assemblers.AlbumsAssembler;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import org.junit.jupiter.api.Test;

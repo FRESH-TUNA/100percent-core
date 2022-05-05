@@ -1,4 +1,4 @@
-package com.main.koko_main_api.assemblers.album;
+package com.main.koko_main_api.assemblers;
 
 import com.main.koko_main_api.controllers.AlbumController;
 import com.main.koko_main_api.domains.Album;

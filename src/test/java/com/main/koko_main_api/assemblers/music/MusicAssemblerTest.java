@@ -1,5 +1,6 @@
 package com.main.koko_main_api.assemblers.music;
 
+import com.main.koko_main_api.assemblers.MusicAssembler;
 import com.main.koko_main_api.domains.Album;
 import com.main.koko_main_api.domains.DifficultyType;
 import com.main.koko_main_api.domains.Music;

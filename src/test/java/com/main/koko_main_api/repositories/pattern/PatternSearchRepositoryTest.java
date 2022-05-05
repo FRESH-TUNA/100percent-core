@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,9 @@ public class PatternSearchRepositoryTest {
 
     @Autowired
     private AlbumRepository albumRepository;
+
+    @Autowired
+    private EntityManager em;
 
 
     private Album 앨범만들어서반환() {
@@ -203,5 +207,30 @@ public class PatternSearchRepositoryTest {
 
         patterns = patternRepository.findAllById(patterns.stream().map(x -> x.getId()).collect(Collectors.toList()));
         assertThat(patterns.size()).isEqualTo(2);
+    }
+
+    @Test
+    void id로_필터링_테스트() {
+        // music
+        Music music = Music.builder().title("music").album(앨범만들어서반환()).build();
+        musicRepository.save(music);
+
+        PlayType playType1 = PlayType.builder().title("5K").build();
+        playTypesRepository.save(playType1);
+
+        DifficultyType difficultyType1 = DifficultyType.builder().name("normal").build();
+        difficultyTypeRepository.save(difficultyType1);
+
+        Pattern p = Pattern.builder().level(3).music(music).playType(playType1)
+                .difficultyType(difficultyType1).build();
+
+
+        // pattern
+        patternRepository.saveAndFlush(p);
+        em.clear();
+        Pattern res = patternRepository.findById(p.getId()).get();
+
+        assertThat(res.getMusic().getTitle()).isEqualTo(p.getMusic().getTitle());
+        assertThat(res.getMusic().getAlbum().getTitle()).isEqualTo(p.getMusic().getAlbum().getTitle());
     }
 }

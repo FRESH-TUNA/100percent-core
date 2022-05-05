@@ -1,8 +1,8 @@
 package com.main.koko_main_api.services.workbook;
 
-import com.main.koko_main_api.assemblers.workbook.WorkbookAssembler;
-import com.main.koko_main_api.assemblers.workbook.WorkbookDeassembler;
-import com.main.koko_main_api.assemblers.workbook.WorkbooksAssembler;
+import com.main.koko_main_api.assemblers.WorkbookAssembler;
+import com.main.koko_main_api.deassemblers.WorkbookDeassembler;
+import com.main.koko_main_api.assemblers.WorkbooksAssembler;
 import com.main.koko_main_api.domains.Pattern;
 import com.main.koko_main_api.domains.Workbook;
 import com.main.koko_main_api.dtos.workbook.WorkbookRequestDto;

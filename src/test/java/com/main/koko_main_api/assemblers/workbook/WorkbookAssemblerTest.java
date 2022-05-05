@@ -1,4 +1,5 @@
 package com.main.koko_main_api.assemblers.workbook;
+import com.main.koko_main_api.assemblers.WorkbookAssembler;
 import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.dtos.workbook.WorkbookResponseDto;
 import org.junit.jupiter.api.Test;

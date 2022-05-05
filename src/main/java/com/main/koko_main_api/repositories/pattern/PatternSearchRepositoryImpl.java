@@ -1,14 +1,14 @@
 package com.main.koko_main_api.repositories.pattern;
 
-import com.main.koko_main_api.domains.Music;
-import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.domains.QPattern;
+import com.main.koko_main_api.domains.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * 참고자료
@@ -110,5 +110,19 @@ public class PatternSearchRepositoryImpl
                 .innerJoin(pattern.music).fetchJoin()
                 .where(pattern.in(patterns))
                 .fetch();
+    }
+
+    @Override
+    public Optional<Pattern> findById(Long id) {
+        QPattern pattern = QPattern.pattern;
+
+        JPAQuery<Pattern> query = queryFactory
+                .select(pattern)
+                .from(pattern)
+                .innerJoin(pattern.music).fetchJoin()
+                .innerJoin(pattern.difficultyType).fetchJoin()
+                .innerJoin(pattern.playType).fetchJoin()
+                .where(pattern.id.eq(id));
+        return Optional.ofNullable(query.fetchOne());
     }
 }

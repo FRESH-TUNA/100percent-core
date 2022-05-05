@@ -1,7 +1,7 @@
 package com.main.koko_main_api.services;
 
-import com.main.koko_main_api.assemblers.album.AlbumAssembler;
-import com.main.koko_main_api.assemblers.album.AlbumsAssembler;
+import com.main.koko_main_api.assemblers.AlbumAssembler;
+import com.main.koko_main_api.assemblers.AlbumsAssembler;
 import com.main.koko_main_api.dtos.album.AlbumResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumsResponseDto;
 import com.main.koko_main_api.dtos.album.AlbumRequestDto;

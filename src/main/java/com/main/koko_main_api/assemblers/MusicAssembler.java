@@ -1,4 +1,4 @@
-package com.main.koko_main_api.assemblers.music;
+package com.main.koko_main_api.assemblers;
 
 
 import com.main.koko_main_api.controllers.AlbumController;
@@ -6,11 +6,8 @@ import com.main.koko_main_api.controllers.MusicController;
 import com.main.koko_main_api.controllers.PatternController;
 import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.dtos.album.AlbumMusicsResponseDto;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.patterns.MusicPatternsResponseDto;
-import com.main.koko_main_api.repositories.album.AlbumRepository;
-import com.main.koko_main_api.repositories.pattern.PatternRepository;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 

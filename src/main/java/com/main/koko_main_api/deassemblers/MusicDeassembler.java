@@ -1,4 +1,4 @@
-package com.main.koko_main_api.assemblers.music;
+package com.main.koko_main_api.deassemblers;
 
 import com.main.koko_main_api.domains.Album;
 

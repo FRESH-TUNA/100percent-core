@@ -4,6 +4,7 @@ import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
+import com.main.koko_main_api.services.MusicService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,6 +1,7 @@
-package com.main.koko_main_api.dtos.pattern;
+package com.main.koko_main_api.assemblers;
 
 import com.main.koko_main_api.controllers.PatternController;
+import com.main.koko_main_api.dtos.pattern.PatternsResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -17,15 +18,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * model메소드를 직접 구현한다?!
  */
 @Component
-public class PatternListPayloadAssembler implements
-        RepresentationModelAssembler<PatternListResponseEntityDto, PatternListPayload> {
+public class PatternsAssembler implements
+        RepresentationModelAssembler<PatternsResponseDto, com.main.koko_main_api.temp.PatternsResponseDto> {
 
     @Autowired
     private RepositoryEntityLinks linkHelper;
 
     @Override
-    public PatternListPayload toModel(PatternListResponseEntityDto p) {
-        PatternListPayload payload = new PatternListPayload(p);
+    public com.main.koko_main_api.temp.PatternsResponseDto toModel(PatternsResponseDto p) {
+        com.main.koko_main_api.temp.PatternsResponseDto payload = new com.main.koko_main_api.temp.PatternsResponseDto(p);
 
         /* add link */
         payload.add(linkTo(methodOn(PatternController.class

@@ -1,5 +1,6 @@
-package com.main.koko_main_api.dtos.pattern;
+package com.main.koko_main_api.temp;
 
+import com.main.koko_main_api.dtos.pattern.PatternMusicResponseDto;
 import lombok.Getter;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -13,14 +14,14 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Relation(collectionRelation = "playables")
-public class PatternListPayload extends RepresentationModel<PatternListPayload> {
+public class PatternsResponseDto extends RepresentationModel<PatternsResponseDto> {
     private Long id;
     private Integer level;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PatternMusicEntityDto music;
+    private PatternMusicResponseDto music;
 
-    public PatternListPayload(PatternListResponseEntityDto p)  {
+    public PatternsResponseDto(com.main.koko_main_api.dtos.pattern.PatternsResponseDto p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();
