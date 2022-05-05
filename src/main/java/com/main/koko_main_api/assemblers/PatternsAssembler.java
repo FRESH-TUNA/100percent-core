@@ -1,7 +1,6 @@
 package com.main.koko_main_api.assemblers;
 
 import com.main.koko_main_api.controllers.PatternController;
-import com.main.koko_main_api.dtos.pattern.PatternsResponseDto;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;

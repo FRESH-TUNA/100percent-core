@@ -1,6 +1,5 @@
 package com.main.koko_main_api.temp;
 
-import com.main.koko_main_api.dtos.pattern.PatternMusicResponseDto;
 import lombok.Getter;
 
 import org.springframework.hateoas.RepresentationModel;

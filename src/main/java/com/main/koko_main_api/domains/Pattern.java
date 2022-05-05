@@ -37,6 +37,16 @@ public class Pattern extends BaseTimeModel  {
 
 
     /*
+     * update
+     */
+    public void update(Pattern new_pattern) {
+        this.music = new_pattern.getMusic();
+        this.difficultyType = new_pattern.getDifficultyType();
+        this.playType = new_pattern.getPlayType();
+        this.level = new_pattern.getLevel();
+    }
+
+    /*
      * for new Playable and Test purpose
      */
     @Builder

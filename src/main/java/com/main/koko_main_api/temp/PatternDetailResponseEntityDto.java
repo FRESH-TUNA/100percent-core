@@ -1,7 +1,6 @@
 package com.main.koko_main_api.temp;
 
 import com.main.koko_main_api.domains.Pattern;
-import com.main.koko_main_api.dtos.pattern.PatternMusicResponseDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

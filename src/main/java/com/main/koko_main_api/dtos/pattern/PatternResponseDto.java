@@ -9,15 +9,19 @@ import java.time.LocalDateTime;
 public class PatternResponseDto extends RepresentationModel<PatternResponseDto> {
     private Long id;
     private Integer level;
+    private String difficulty_type;
+    private String play_type;
+
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PatternMusicResponseDto music;
 
     public PatternResponseDto(Pattern p)  {
         id = p.getId();
         level = p.getLevel();
+        difficulty_type = p.getDifficultyType().getName();
+        play_type = p.getPlayType().getTitle();
+
         createdDate = p.getCreatedDate();
         modifiedDate = p.getModifiedDate();
-        music = new PatternMusicResponseDto(p.getMusic());
     }
 }
