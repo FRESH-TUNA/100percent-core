@@ -26,8 +26,6 @@ public class PatternAssembler implements
 
         /* add link */
         payload.add(linkTo(methodOn(PatternController.class).findById(payload.getId())).withSelfRel());
-        /* music link */
-        payload.add(linkTo(methodOn(MusicController.class).findById(payload.getMusic().getId())).withRel("music"));
         return payload;
     }
 }

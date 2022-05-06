@@ -23,7 +23,7 @@ public class PatternController {
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable Long id, PatternRequestDto dto) { patternService.update(id, dto); }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id) { patternService.delete(id); }
 }

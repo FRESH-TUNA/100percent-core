@@ -6,7 +6,7 @@ import com.main.koko_main_api.domains.Music;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
-import com.main.koko_main_api.services.music.PatternService;
+import com.main.koko_main_api.services.music.MusicPatternService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class PatternServiceTest {
 
     @InjectMocks
-    private PatternService patternService;
+    private MusicPatternService musicPatternService;
 
     @Mock
     private MusicRepository musicRepository;

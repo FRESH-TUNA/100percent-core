@@ -38,7 +38,7 @@ public class MusicDeassembler
         for(URI composer_uri : dto.getComposers())
             composers.add(composerRepository.getById(convertURItoID(composer_uri)));
 
-        return Music.builder().title(title).album(album)
+        return Music.builder().title(title).album(album).composers(composers)
                 .min_bpm(min_bpm).max_bpm(max_bpm).build();
     }
 

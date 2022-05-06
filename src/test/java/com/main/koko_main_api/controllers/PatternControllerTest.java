@@ -1,11 +1,15 @@
 package com.main.koko_main_api.controllers;
 
+import com.main.koko_main_api.domains.*;
+import com.main.koko_main_api.repositories.ComposerRepository;
+import com.main.koko_main_api.repositories.DifficultyTypeRepository;
+import com.main.koko_main_api.repositories.PlayTypesRepository;
+import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +20,13 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,128 +38,107 @@ public class PatternControllerTest {
     private int port;
     @Autowired
     private TestRestTemplate template;
-
     @Autowired
     private MusicRepository musicRepository;
     @Autowired
     private PatternRepository patternRepository;
+    @Autowired
+    private ComposerRepository composerRepository;
+    @Autowired
+    private AlbumRepository albumRepository;
+    @Autowired
+    private DifficultyTypeRepository difficultyTypeRepository;
+    @Autowired
+    private PlayTypesRepository playTypesRepository;
 
-    private static String MUSICS_ENDPOINT="/musics";
-    private static String PLAYABLES_ENDPOINT="/playables";
+    private static String ROOT_ENDPOINT = "http://localhost:";
+    private static String API_ENDPOINT = "/main_api/v1";
+    private static HttpHeaders HEADERS = new HttpHeaders();
 
-    /*
-     * aftereach 를 통해 후처리를 할수 있다.
-     * resttemplate을 이용한 테스트의 경우 @Transactional을
-     * 사용해도 별도의 쓰레드에서 테스트가 실행되어 사용할수 없다.
-     */
     @AfterEach
     public void clear_db() {
-        this.patternRepository.deleteAll();
-        this.musicRepository.deleteAll();
+        patternRepository.deleteAll();
+        difficultyTypeRepository.deleteAll();
+        playTypesRepository.deleteAll();
+        musicRepository.deleteAll();
+        albumRepository.deleteAll();
+        composerRepository.deleteAll();
+    }
+
+    @BeforeAll
+    static void set_ROOT_ENDPOINT() {
+        HEADERS.add("Content-type", "application/json");
     }
 
     @Test
-    public void save_and_findById_test() throws Exception {
-        //endpoints and headers
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
+    public void findById_test() throws Exception {
+         Composer c = 작곡가_생성();
+         Album a = 앨범_생성();
 
-        /*
-         * music 생성
-         */
-        JSONObject music_body = new JSONObject();
-        music_body.put("title", "music example");
-        String music_uri = new JSONObject(template.exchange(
-                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
-                        new HttpEntity<>(music_body.toString(), headers), String.class)
-                .getBody()).getJSONObject("_links")
-                .getJSONObject("self").getString("href");
-        /*
-         * bpm body생성
-         */
-        JSONObject bpm_body_1 = new JSONObject(), bpm_body_2 = new JSONObject();
-        bpm_body_1.put("value", 100); bpm_body_2.put("value", 101);
-        JSONArray new_bpm_bodies = new JSONArray();
-        new_bpm_bodies.put(bpm_body_1); new_bpm_bodies.put(bpm_body_2);
+         Music music = 음악_생성(a, c);
+         DifficultyType dt = 난이도타입_생성();
+         PlayType playType = 게임타입_생성();
 
-        /*
-         * playable 생성
-         */
-        JSONObject playable_body = new JSONObject();
-        playable_body.put("level", 1);
-        playable_body.put("music", music_uri);
-        playable_body.put("bpms", new_bpm_bodies);
+         Pattern p = 패턴_생성(music, dt, playType);
 
-        JSONObject new_playable = new JSONObject(template.exchange(
-                ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(playable_body.toString(), headers),
-                String.class).getBody());
-
-        /*
-         * 생성된 데이터 검증
-         */
-        System.out.println(new_playable);
-        JSONArray new_playable_bpms = new_playable.getJSONArray("bpms");
-        assertThat(new_playable_bpms.getJSONObject(0).getInt("value")).isEqualTo(100);
-        assertThat(new_playable_bpms.getJSONObject(1).getInt("value")).isEqualTo(101);
-
-
-        /*
-         * findbyId 검증
-         */
-        String new_playable_link = new_playable.getJSONObject("_links")
-                .getJSONObject("self").getString("href");
-        new_playable = new JSONObject(template.getForObject(new_playable_link, String.class));
-        new_playable_bpms = new_playable.getJSONArray("bpms");
-        assertThat(new_playable_bpms.getJSONObject(0).getInt("value")).isEqualTo(100);
-        assertThat(new_playable_bpms.getJSONObject(1).getInt("value")).isEqualTo(101);
+         // when
+         String url = ROOT_ENDPOINT + port + API_ENDPOINT + "/patterns/" + p.getId();
+         assertThat(template.getForEntity(url, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-    @Test
-    public void findAll() throws Exception {
-        /*
-         * given
-         */
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
+//    @Test
+//    private void 업데이트_테스트() {
+//        /*
+//         * pattern 생성
+//         */
+////        JSONObject body = new JSONObject();
+////        body.put("music", music_url);
+////        body.put("music", dt_url);
+////        body.put("music", type_url);
+////
+////
+////        String music_uri = new JSONObject(template.exchange(
+////                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
+////                        new HttpEntity<>(music_body.toString(), headers), String.class)
+////                .getBody()).getJSONObject("_links")
+////                .getJSONObject("self").getString("href");
+//    }
 
-        JSONObject music_body = new JSONObject();
-        music_body.put("title", "music example");
-        String music_uri = new JSONObject(template.exchange(
-                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
-                        new HttpEntity<>(music_body.toString(), headers), String.class)
-                .getBody()).getJSONObject("_links")
-                .getJSONObject("self").getString("href");
 
-        JSONObject playable_body = new JSONObject();
-        playable_body.put("level", 1);
-        playable_body.put("music", music_uri);
+    /*
+     * helpers
+     */
+    private Album 앨범_생성() {
+        return albumRepository.saveAndFlush(Album.builder().title("album").build());
+    }
 
-        // 데이터의 갯수는 2
-        int playable_counts = 2;
-        while(playable_counts-- > 0) {
-            template.exchange(
-                    ROOT_ENDPOINT + PLAYABLES_ENDPOINT, HttpMethod.POST,
-                    new HttpEntity<>(playable_body.toString(), headers),
-                    String.class);
-        }
+    private Composer 작곡가_생성() {
+        return composerRepository.saveAndFlush(Composer.builder().name("composer").build());
+    }
 
-        /*
-         * when
-         */
-        JSONObject playables = new JSONObject(
-                template.getForObject(ROOT_ENDPOINT + "/playables", String.class));
+    private Music 음악_생성(Album album, Composer composer) {
+        List<Composer> composers = new ArrayList<>();
+        composers.add(composer);
+        Music music = Music.builder().title("music").album(album).composers(composers).build();
+        return musicRepository.saveAndFlush(music);
+        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/musics/" + music.getId();
+    }
 
-        /*
-         * then
-         */
-        int totalElements = playables.getJSONObject("page").getInt("totalElements");
-        JSONArray _embedded_playables = playables.getJSONObject("_embedded")
-                        .getJSONArray("playables");
-        System.out.println(playables);
-        assertThat(totalElements).isEqualTo(2);
-        assertThat(_embedded_playables.length()).isEqualTo(2);
+    private DifficultyType 난이도타입_생성() {
+        DifficultyType d = DifficultyType.builder().name("dt").build();
+        return difficultyTypeRepository.saveAndFlush(d);
+        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/difficulty_types/" + d.getId();
+    }
+
+    private PlayType 게임타입_생성() {
+        PlayType p = PlayType.builder().title("title").build();
+        return playTypesRepository.saveAndFlush(p);
+        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/play_types/" + p.getId();
+    }
+
+    private Pattern 패턴_생성(Music music, DifficultyType difficultyType, PlayType playType) {
+        return patternRepository.saveAndFlush(
+                Pattern.builder().difficultyType(difficultyType)
+                        .playType(playType).music(music).level(10).build());
     }
 }

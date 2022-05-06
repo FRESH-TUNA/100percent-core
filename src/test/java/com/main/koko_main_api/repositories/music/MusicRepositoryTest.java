@@ -13,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -105,16 +108,15 @@ class MusicRepositoryTest {
         // 추가 쿼리가 안날라가는지 test
         em.clear();
 
+        // 연관관계 설정
+        List<Composer> composers = new ArrayList<>();
+        composers.add(composerRepository.getById(composer.getId()));
+
         // Music
         Music music = Music.builder()
                 .album(albumRepository.getById(ALBUM_A.getId()))
-                .min_bpm(기본_min_BPM).max_bpm(기본_max_BPM)
+                .min_bpm(기본_min_BPM).max_bpm(기본_max_BPM).composers(composers)
                 .title("title").build();
-
-        // 연관관계 설정
-        composer = composerRepository.getById(composer.getId());
-        music.add_composer(composer);
-        composer.add_music(music);
 
         //when
         return musicRepository.saveAndFlush(music);

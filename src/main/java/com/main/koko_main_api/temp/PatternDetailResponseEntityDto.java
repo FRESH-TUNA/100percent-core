@@ -11,13 +11,11 @@ public class PatternDetailResponseEntityDto {
     private Integer level;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PatternMusicResponseDto music;
 
     public PatternDetailResponseEntityDto(Pattern p)  {
         id = p.getId();
         level = p.getLevel();
         createdDate = p.getCreatedDate();
         modifiedDate = p.getModifiedDate();
-        music = new PatternMusicResponseDto(p.getMusic());
     }
 }

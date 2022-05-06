@@ -28,7 +28,8 @@ public class Music extends BaseTimeModel {
     @Column
     private Integer min_bpm, max_bpm;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+//    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "composer_music",
             joinColumns = @JoinColumn(name = "composer_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))

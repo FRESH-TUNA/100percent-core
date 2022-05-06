@@ -18,13 +18,5 @@ public class PatternsResponseDto extends RepresentationModel<PatternsResponseDto
     private Integer level;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private PatternMusicResponseDto music;
 
-    public PatternsResponseDto(com.main.koko_main_api.dtos.pattern.PatternsResponseDto p)  {
-        id = p.getId();
-        level = p.getLevel();
-        createdDate = p.getCreatedDate();
-        modifiedDate = p.getModifiedDate();
-        music = p.getMusic();
-    }
 }

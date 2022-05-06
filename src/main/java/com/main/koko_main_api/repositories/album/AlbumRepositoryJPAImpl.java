@@ -15,12 +15,14 @@ public class AlbumRepositoryJPAImpl implements AlbumRepository{
     public AlbumRepositoryJPAImpl(EntityManager em) { this.em = em; }
 
     @Override
+    @Transactional
     public Album save(Album album) {
         em.persist(album);
         return album;
     }
 
     @Override
+    @Transactional
     public Album saveAndFlush(Album album) {
         album = save(album);
         em.flush();
@@ -42,6 +44,7 @@ public class AlbumRepositoryJPAImpl implements AlbumRepository{
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         em.remove(getById(id));
     }
