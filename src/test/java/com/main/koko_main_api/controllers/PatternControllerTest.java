@@ -8,6 +8,8 @@ import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import com.main.koko_main_api.repositories.pattern.PatternRepository;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,10 +22,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,23 +85,32 @@ public class PatternControllerTest {
          assertThat(template.getForEntity(url, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-//    @Test
-//    private void 업데이트_테스트() {
-//        /*
-//         * pattern 생성
-//         */
-////        JSONObject body = new JSONObject();
-////        body.put("music", music_url);
-////        body.put("music", dt_url);
-////        body.put("music", type_url);
-////
-////
-////        String music_uri = new JSONObject(template.exchange(
-////                        ROOT_ENDPOINT + MUSICS_ENDPOINT, HttpMethod.POST,
-////                        new HttpEntity<>(music_body.toString(), headers), String.class)
-////                .getBody()).getJSONObject("_links")
-////                .getJSONObject("self").getString("href");
-//    }
+    @Test
+    public void 업데이트_테스트() throws JSONException {
+        // given
+        Composer c = 작곡가_생성();
+        Album a = 앨범_생성();
+        Music music = 음악_생성(a, c), music2 = 음악_생성(a, c);
+        DifficultyType dt = 난이도타입_생성(), dt2 = 난이도타입_생성();
+        PlayType playType = 게임타입_생성(), playType2 = 게임타입_생성();
+        Pattern p = 패턴_생성(music, dt, playType);
+
+        String music_url = ROOT_ENDPOINT + port + API_ENDPOINT + "/musics/" + music2.getId();
+        String dt_url = ROOT_ENDPOINT + port + API_ENDPOINT + "/difficulty_types/" + dt2.getId();
+        String play_type_url = ROOT_ENDPOINT + port + API_ENDPOINT + "/play_types/" + playType2.getId();
+        String pattern_url = ROOT_ENDPOINT + port + API_ENDPOINT + "/patterns/" + p.getId();
+
+        // when
+        JSONObject request = new JSONObject();
+        request.put("music", music_url); request.put("difficultyType", dt_url);
+        request.put("playType", play_type_url); request.put("level", 20);
+        HttpEntity<String> updateRequestEntity = new HttpEntity(request.toString(), HEADERS);
+        ResponseEntity<String> updateResponseEntity = template.exchange(
+                pattern_url, HttpMethod.PUT, updateRequestEntity, String.class);
+
+        // then
+        assertThat(updateResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
 
     /*
@@ -121,19 +129,16 @@ public class PatternControllerTest {
         composers.add(composer);
         Music music = Music.builder().title("music").album(album).composers(composers).build();
         return musicRepository.saveAndFlush(music);
-        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/musics/" + music.getId();
     }
 
     private DifficultyType 난이도타입_생성() {
         DifficultyType d = DifficultyType.builder().name("dt").build();
         return difficultyTypeRepository.saveAndFlush(d);
-        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/difficulty_types/" + d.getId();
     }
 
     private PlayType 게임타입_생성() {
         PlayType p = PlayType.builder().title("title").build();
         return playTypesRepository.saveAndFlush(p);
-        //return ROOT_ENDPOINT + port + API_ENDPOINT + "/play_types/" + p.getId();
     }
 
     private Pattern 패턴_생성(Music music, DifficultyType difficultyType, PlayType playType) {

@@ -2,10 +2,12 @@ package com.main.koko_main_api.dtos.pattern;
 
 import com.main.koko_main_api.domains.Pattern;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class PatternResponseDto extends RepresentationModel<PatternResponseDto> {
     private Long id;
     private Integer level;

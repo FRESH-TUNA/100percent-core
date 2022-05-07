@@ -21,7 +21,7 @@ public class PatternController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable Long id, PatternRequestDto dto) { patternService.update(id, dto); }
+    public void update(@PathVariable Long id, @RequestBody PatternRequestDto dto) { patternService.update(id, dto); }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
