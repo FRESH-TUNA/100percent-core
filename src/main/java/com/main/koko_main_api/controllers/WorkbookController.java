@@ -21,11 +21,11 @@ public class WorkbookController implements RepresentationModelProcessor<Reposito
     private final WorkbookService workbookService;
 
     @GetMapping
-    public PagedModel<WorkbooksResponseDto> findAll(Pageable pageable, @RequestParam Long play_type_id) {
-        if(play_type_id != null)
+    public PagedModel<WorkbooksResponseDto> findAll(Pageable pageable, @RequestParam(required = false) Long play_type) {
+        if(play_type == null)
             return workbookService.findAll(pageable);
         else
-            return workbookService.findAll(pageable, play_type_id);
+            return workbookService.findAll(pageable, play_type);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
