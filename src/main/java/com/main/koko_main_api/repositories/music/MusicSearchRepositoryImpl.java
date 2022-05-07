@@ -44,6 +44,7 @@ public class MusicSearchRepositoryImpl
         return a != null ? QMusic.music.album.id.eq(a) : null;
     }
     private BooleanExpression In(List<Music> musics) { return QMusic.music.in(musics); }
+    private BooleanExpression titleEq(String title) { return QMusic.music.title.contains(title); }
 
     /*
      * helpers
@@ -73,6 +74,17 @@ public class MusicSearchRepositoryImpl
     public Page<Music> findAllByAlbum(Pageable pageable, Long album_id) {
         JPAQuery<Music> musics_query = findAll_base_query().where(albumIdEq(album_id));
         JPAQuery<Long> counts_query = counts_base_query().where(albumIdEq(album_id));
+
+        // count query all
+        Long music_counts = counts_query.fetchOne();
+        List<Music> musics = getQuerydsl().applyPagination(pageable, musics_query).fetch();
+        return new PageImpl<>(musics, pageable, music_counts);
+    }
+
+    @Override
+    public Page<Music> findAllByTitle(Pageable pageable, String title) {
+        JPAQuery<Music> musics_query = findAll_base_query().where(titleEq(title));
+        JPAQuery<Long> counts_query = counts_base_query().where(titleEq(title));
 
         // count query all
         Long music_counts = counts_query.fetchOne();

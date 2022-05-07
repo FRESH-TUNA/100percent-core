@@ -51,6 +51,14 @@ public class MusicService {
         return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
     }
 
+    public PagedModel<MusicResponseDto> findAllByTitle(Pageable pageable, Long play_type_id, String title) {
+        Page<Music> music_page = musicRepository.findAllByTitle(pageable, title);
+        List<Pattern> patterns = patternRepository
+                .findAllByPlayTypeAndMusics(music_page.getContent(), play_type_id);
+
+        return pageAssembler.toModel(findAllHelper.create(music_page, patterns), showAssembler);
+    }
+
     /*
      * playable/playtype + difficulty 기준 필터링
      * 1개의 page로 된 response를 반환한다.
@@ -118,6 +126,7 @@ public class MusicService {
     public void destroy(Long id) {
         musicRepository.deleteById(id);
     }
+
 
 
     /*

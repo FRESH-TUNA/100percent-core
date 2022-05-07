@@ -95,6 +95,30 @@ class MusicSearchRepositoryTest {
     }
 
     @Test
+    void 뮤직들의이름으로_필터링_테스트() {
+        /*
+         * given
+         */
+        // Album
+        Album album = Album.builder().title("album").build();
+        albumRepository.save(album);
+        // Music
+        Pageable pageable = PageRequest.of(0, 1);
+        List<Music> musics = new ArrayList<>();
+        musics.add(Music.builder().title("music").album(album).build());
+        musics.add(Music.builder().title("music2").album(album).build());
+        musics.add(Music.builder().title("abc").album(album).build());
+        musicRepository.saveAll(musics);
+
+        /*
+         * when
+         */
+        Page<Music> All_musics = musicRepository.findAllByTitle(pageable, "usi");
+        assertThat(All_musics.getTotalElements()).isEqualTo(2);
+        assertThat(All_musics.getNumberOfElements()).isEqualTo(1);
+    }
+
+    @Test
     void 뮤직들의정보로_필터링_테스트() {
         /*
          * given

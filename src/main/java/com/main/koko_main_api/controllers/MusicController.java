@@ -1,11 +1,14 @@
 package com.main.koko_main_api.controllers;
 
+import com.main.koko_main_api.dtos.music.MusicFindAllRequestParams;
 import com.main.koko_main_api.dtos.music.MusicResponseDto;
 import com.main.koko_main_api.dtos.music.MusicRequestDto;
 
 import com.main.koko_main_api.services.MusicService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,22 +39,24 @@ public class MusicController {
     /*
      * 당분간 안씀
      */
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping
-//    public PagedModel<MusicResponseDto> findAll
-//        (@RequestParam MusicFindAllRequestParams params, Pageable pageable) {
-//
-//        String mode = params.getMode();
-//        Long album_id = params.getAlbum(), play_type_id = params.getPlay_type();
-//        Long d_id = params.getDifficulty_type(); Integer level = params.getLevel();
-//
-//        if(mode == null || mode.equals("db")) {
-//            if(album_id == null) return musicService.findAll(pageable, play_type_id);
-//            else return musicService.findAllByAlbum(pageable, play_type_id, album_id);
-//        }
-//        else if(mode.equals("difficulty"))
-//            return musicService.findAllByDifficulty(play_type_id, d_id);
-//        else
-//            return musicService.findAllByLevel(play_type_id, level);
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public PagedModel<MusicResponseDto> findAll
+        (@RequestParam MusicFindAllRequestParams params, Pageable pageable) {
+        String mode = params.getMode();
+        // play_type 반드시 필요!
+        Long play_type_id = params.getPlay_type();
+
+        if(mode == null || mode.equals("db")) {
+            if(params.getAlbum() != null)
+                return musicService.findAllByAlbum(pageable, play_type_id, params.getAlbum());
+            else if(params.getTitle() != null)
+                return musicService.findAllByTitle(pageable, play_type_id, params.getTitle());
+            else return musicService.findAll(pageable, play_type_id);
+        }
+        else if(mode.equals("difficulty"))
+            return musicService.findAllByDifficulty(play_type_id, params.getDifficulty_type());
+        else
+            return musicService.findAllByLevel(play_type_id, params.getLevel());
+    }
 }
