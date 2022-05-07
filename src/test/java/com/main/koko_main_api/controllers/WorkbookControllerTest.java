@@ -1,5 +1,6 @@
 package com.main.koko_main_api.controllers;
 
+import com.main.koko_main_api.deassemblers.WorkbookDeassembler;
 import com.main.koko_main_api.domains.*;
 import com.main.koko_main_api.dtos.pattern.PatternRequestDto;
 import com.main.koko_main_api.repositories.ComposerRepository;
@@ -26,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -114,6 +116,24 @@ class WorkbookControllerTest {
 
     @Test
     void findById() {
+        Music m = 음악_생성(앨범_생성(), 작곡가_생성());
+        DifficultyType dt = 난이도타입_생성();
+        PlayType pt = 게임타입_생성();
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(패턴_생성(m, dt, pt)); patterns.add(패턴_생성(m, dt, pt));
+
+        // workbook 생성
+        Workbook w = Workbook.builder().title("title").description("des").playType(pt).build();
+        Workbook finalW = w;
+        w.add_patterns(patterns.stream()
+                .map(p -> WorkbookPattern.builder().pattern(p).workbook(finalW).build())
+                .collect(Collectors.toList()));
+        w = workbookRepository.save(w);
+
+        // then
+        String url = ROOT_ENDPOINT + port + API_ENDPOINT + "/workbooks/" + w.getId();
+        ResponseEntity<String> res = template.getForEntity(url, String.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
