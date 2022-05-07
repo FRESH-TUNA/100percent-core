@@ -112,6 +112,22 @@ public class PatternControllerTest {
         assertThat(updateResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    public void 삭제_테스트() {
+        Composer c = 작곡가_생성();
+        Album a = 앨범_생성();
+
+        Music music = 음악_생성(a, c);
+        DifficultyType dt = 난이도타입_생성();
+        PlayType playType = 게임타입_생성();
+
+        Pattern p = 패턴_생성(music, dt, playType);
+
+        // when
+        String url = ROOT_ENDPOINT + port + API_ENDPOINT + "/patterns/" + p.getId();
+        assertThat(template.exchange(url, HttpMethod.DELETE, new HttpEntity(HEADERS), String.class)
+                .getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
     /*
      * helpers
