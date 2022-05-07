@@ -14,7 +14,7 @@ public class MusicPatternController {
 
     @PostMapping("/{music_id}/patterns")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@PathVariable Long music_id, PatternRequestDto dto) {
+    public void create(@PathVariable Long music_id, @RequestBody PatternRequestDto dto) {
         musicPatternService.create(music_id, dto);
     }
 }
