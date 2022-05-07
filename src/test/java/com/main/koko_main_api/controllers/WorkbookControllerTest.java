@@ -24,11 +24,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -165,7 +162,23 @@ class WorkbookControllerTest {
     }
 
     @Test
-    void delete() {
+    void 삭제_테스트() {
+        Music m = 음악_생성(앨범_생성(), 작곡가_생성());
+        DifficultyType dt = 난이도타입_생성();
+        PlayType pt = 게임타입_생성();
+        Pattern p1 = 패턴_생성(m, dt, pt), p2 = 패턴_생성(m, dt, pt);
+
+        // workbook 생성
+        Workbook w = Workbook.builder().title("title").description("des").playType(pt).build();
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(p1); patterns.add(p2);
+        w = workbookRepository.saveAndFlush(w);
+
+        // then
+        String url = ROOT_ENDPOINT + port + API_ENDPOINT + "/workbooks/" + w.getId();
+        ResponseEntity<String> res = template.exchange(
+                url, HttpMethod.DELETE, new HttpEntity(HEADERS), String.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
 
