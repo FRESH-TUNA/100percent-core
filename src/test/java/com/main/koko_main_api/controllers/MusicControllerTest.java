@@ -1,6 +1,11 @@
 package com.main.koko_main_api.controllers;
 
+import com.main.koko_main_api.domains.Album;
+import com.main.koko_main_api.domains.Composer;
+import com.main.koko_main_api.domains.Music;
+import com.main.koko_main_api.domains.PlayType;
 import com.main.koko_main_api.repositories.ComposerRepository;
+import com.main.koko_main_api.repositories.PlayTypesRepository;
 import com.main.koko_main_api.repositories.album.AlbumRepository;
 import com.main.koko_main_api.repositories.music.MusicRepository;
 import org.json.JSONArray;
@@ -15,6 +20,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,6 +46,9 @@ public class MusicControllerTest {
     @Autowired
     private MusicRepository musicRepository;
 
+    @Autowired
+    private PlayTypesRepository playTypesRepository;
+
     /*
      * aftereach 를 통해 후처리를 할수 있다.
      * resttemplate을 이용한 테스트의 경우 @Transactional을
@@ -48,110 +59,6 @@ public class MusicControllerTest {
         this.musicRepository.deleteAll();
         this.composerRepository.deleteAll();
         this.albumRepository.deleteAll();
-    }
-
-    /*
-     * helpers
-     */
-    private String 작곡가_생성(String name) throws JSONException {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
-
-        JSONObject request = new JSONObject();
-        request.put("name", name);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        JSONObject result = new JSONObject(template.exchange(COMPOSER_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(request.toString(), headers), String.class).getBody());
-
-        return result.getJSONObject("_links").getJSONObject("self").getString("href");
-    }
-
-    private String 앨범_생성(String title) throws JSONException {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
-
-        JSONObject request = new JSONObject();
-        request.put("title", title);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        JSONObject result = new JSONObject(template.exchange(ALBUM_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(request.toString(), headers), String.class).getBody());
-
-        return result.getJSONObject("_links").getJSONObject("self").getString("href");
-    }
-
-    @Test
-    public void 생성_테스트() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        //composer 생성
-        String composer1 = 작곡가_생성("composer1");
-        String composer2 = 작곡가_생성("composer2");
-
-        // album 생성
-        String album = 앨범_생성("album");
-
-
-        // music 생성
-        JSONObject request = new JSONObject();
-        request.put("title", "music");
-        request.put("album", album);
-        request.put("min_bpm", 100); request.put("max_bpm", 200);
-
-        JSONArray composer_data = new JSONArray();
-        composer_data.put(composer1); composer_data.put(composer2);
-        request.put("composers", composer_data);
-
-        HttpStatus result = template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(request.toString(), headers), String.class).getStatusCode();
-
-        assertThat(result).isEqualTo(HttpStatus.CREATED);
-    }
-
-    @Test
-    public void findbyid_테스트() throws Exception {
-        //endpoints
-        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
-        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/json");
-
-        //composer 생성
-        String composer1 = 작곡가_생성("composer1");
-        String composer2 = 작곡가_생성("composer2");
-
-        // album 생성
-        String album = 앨범_생성("album");
-
-
-        // music 생성
-        JSONObject request = new JSONObject();
-        request.put("title", "music");
-        request.put("album", album);
-        request.put("min_bpm", 100); request.put("max_bpm", 200);
-
-        JSONArray composer_data = new JSONArray();
-        composer_data.put(composer1); composer_data.put(composer2);
-        request.put("composers", composer_data);
-
-        String music_uri = new JSONObject(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
-                new HttpEntity<>(request.toString(), headers), String.class).getBody())
-                .getJSONObject("_links").getJSONObject("self").getString("href");
-
-
-        // music findbyid
-        assertThat(template.getForEntity(music_uri, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -201,5 +108,166 @@ public class MusicControllerTest {
                 new HttpEntity<>(new_request.toString(), headers), String.class).getStatusCode();
 
         assertThat(result).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void findbyid_테스트() throws Exception {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        //composer 생성
+        String composer1 = 작곡가_생성("composer1");
+        String composer2 = 작곡가_생성("composer2");
+
+        // album 생성
+        String album = 앨범_생성("album");
+
+
+        // music 생성
+        JSONObject request = new JSONObject();
+        request.put("title", "music");
+        request.put("album", album);
+        request.put("min_bpm", 100); request.put("max_bpm", 200);
+
+        JSONArray composer_data = new JSONArray();
+        composer_data.put(composer1); composer_data.put(composer2);
+        request.put("composers", composer_data);
+
+        String music_uri = new JSONObject(template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody())
+                .getJSONObject("_links").getJSONObject("self").getString("href");
+
+
+        // music findbyid
+        assertThat(template.getForEntity(music_uri, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void 생성_테스트() throws Exception {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String MUSIC_ENDPOINT = ROOT_ENDPOINT + "/musics";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        //composer 생성
+        String composer1 = 작곡가_생성("composer1");
+        String composer2 = 작곡가_생성("composer2");
+
+        // album 생성
+        String album = 앨범_생성("album");
+
+
+        // music 생성
+        JSONObject request = new JSONObject();
+        request.put("title", "music");
+        request.put("album", album);
+        request.put("min_bpm", 100); request.put("max_bpm", 200);
+
+        JSONArray composer_data = new JSONArray();
+        composer_data.put(composer1); composer_data.put(composer2);
+        request.put("composers", composer_data);
+
+        HttpStatus result = template.exchange(MUSIC_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getStatusCode();
+
+        assertThat(result).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    public void 리스트_테스트() throws Exception {
+        Album album = 앨범_생성();
+        Composer composer = 작곡가_생성();
+        음악_생성(album, composer, "music");
+        음악_생성(album, composer, "music2");
+        PlayType playType = 게임타입_생성();
+
+        String url = "http://localhost:" + port + "/main_api/v1" + "/musics?play_type=" + playType.getId();
+        assertThat(template.getForEntity(url, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void 리스트_이름_필터링_테스트() throws Exception {
+        Album album = 앨범_생성();
+        Composer composer = 작곡가_생성();
+        음악_생성(album, composer, "music");
+        음악_생성(album, composer, "music2");
+        PlayType playType = 게임타입_생성();
+
+        String url = "http://localhost:" + port + "/main_api/v1" + "/musics?play_type=" + playType.getId() + "&title=music";
+        assertThat(template.getForEntity(url, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void 리스트_앨벙_필터링_테스트() throws Exception {
+        Album album = 앨범_생성();
+        Composer composer = 작곡가_생성();
+        음악_생성(album, composer, "music");
+        음악_생성(album, composer, "music2");
+        PlayType playType = 게임타입_생성();
+
+        String url = "http://localhost:" + port + "/main_api/v1" + "/musics?play_type=" + playType.getId() + "&album=" + album.getId();
+        assertThat(template.getForEntity(url, String.class).getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+
+    /*
+     * helpers
+     */
+    private String 작곡가_생성(String name) throws JSONException {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String COMPOSER_ENDPOINT = ROOT_ENDPOINT + "/composers";
+
+        JSONObject request = new JSONObject();
+        request.put("name", name);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        JSONObject result = new JSONObject(template.exchange(COMPOSER_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody());
+
+        return result.getJSONObject("_links").getJSONObject("self").getString("href");
+    }
+
+    private String 앨범_생성(String title) throws JSONException {
+        //endpoints
+        String ROOT_ENDPOINT = "http://localhost:" + port + "/main_api/v1";
+        String ALBUM_ENDPOINT = ROOT_ENDPOINT + "/albums";
+
+        JSONObject request = new JSONObject();
+        request.put("title", title);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/json");
+
+        JSONObject result = new JSONObject(template.exchange(ALBUM_ENDPOINT, HttpMethod.POST,
+                new HttpEntity<>(request.toString(), headers), String.class).getBody());
+
+        return result.getJSONObject("_links").getJSONObject("self").getString("href");
+    }
+
+    private Album 앨범_생성() {
+        return albumRepository.saveAndFlush(Album.builder().title("album").build());
+    }
+
+    private Composer 작곡가_생성() {
+        return composerRepository.saveAndFlush(Composer.builder().name("composer").build());
+    }
+
+    private Music 음악_생성(Album album, Composer composer, String title) {
+        List<Composer> composers = new ArrayList<>();
+        composers.add(composer);
+        Music music = Music.builder().title(title).album(album).composers(composers).build();
+        return musicRepository.saveAndFlush(music);
+    }
+
+    private PlayType 게임타입_생성() {
+        PlayType p = PlayType.builder().title("title").build();
+        return playTypesRepository.saveAndFlush(p);
     }
 }

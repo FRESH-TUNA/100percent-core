@@ -42,7 +42,7 @@ public class MusicController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<MusicResponseDto> findAll
-        (@RequestParam MusicFindAllRequestParams params, Pageable pageable) {
+        (@ModelAttribute MusicFindAllRequestParams params, Pageable pageable) {
         String mode = params.getMode();
         // play_type 반드시 필요!
         Long play_type_id = params.getPlay_type();
