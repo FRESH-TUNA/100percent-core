@@ -91,7 +91,8 @@ public class MusicService {
 
     @Transactional
     public MusicResponseDto update(Long id, MusicRequestDto dto) {
-        Music music = musicRepository.findById(id).get();
+        Music music =musicRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("해당 음아깅 없습니다."));
 
         Music new_music = deassembler.toEntity(dto);
 

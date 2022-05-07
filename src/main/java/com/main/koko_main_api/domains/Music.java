@@ -48,6 +48,7 @@ public class Music extends BaseTimeModel {
     public void add_pattern(Pattern pattern) {
         this.patterns.add(pattern);
     }
+
     public void update(Music new_music) {
         this.title = new_music.getTitle();
         this.album = new_music.getAlbum();

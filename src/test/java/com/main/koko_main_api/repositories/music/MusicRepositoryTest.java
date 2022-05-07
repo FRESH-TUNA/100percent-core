@@ -61,7 +61,6 @@ class MusicRepositoryTest {
     @Test
     void 뮤직_업데이트_테스트() {
         Music music = 뮤직_생성();
-        System.out.println("---------------------");
 
         // Album
         Album ALBUM_A = Album.builder().title("newalbum").build();
@@ -71,20 +70,20 @@ class MusicRepositoryTest {
         composerRepository.saveAndFlush(composer);
 
         // Music
-        Music new_music = Music.builder().id(music.getId())
+        Music new_music = Music.builder()
                 .album(albumRepository.getById(ALBUM_A.getId()))
-                .min_bpm(250).max_bpm(250)
+                .min_bpm(250).max_bpm(250).composers(new ArrayList<>())
                 .title("title2").build();
-
-        // 추가 쿼리가 안날라가는지 test
-        em.clear();
-
         // 연관관계 설정
         new_music.add_composer(composerRepository.getById(composer.getId()));
-        composer.add_music(new_music);
 
+        music.update(new_music);
+
+
+
+        System.out.println("------------------------");
         //when
-        musicRepository.saveAndFlush(new_music);
+        musicRepository.saveAndFlush(music);
         em.clear();
         music = musicRepository.findById(music.getId()).get();
 
