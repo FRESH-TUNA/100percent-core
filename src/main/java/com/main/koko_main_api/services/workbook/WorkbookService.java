@@ -53,6 +53,7 @@ public class WorkbookService {
         List<Long> pattern_ids = helper.urls_to_ids(requestDto.getPatterns());
         List<Pattern> patterns = patternRepository.findAllById(pattern_ids);
         Workbook workbook = deassembler.toEntity(requestDto, patterns);
+        workbook.add_patterns(patterns);
         return assembler.toModel(workbookRepository.save(workbook), patterns);
     }
 
@@ -80,6 +81,7 @@ public class WorkbookService {
                 () -> new IllegalArgumentException("해당 게시글이 없습니다. id= " + id));
 
         workbook.update(new_workbook);
+        workbook.add_patterns(patterns);
         return assembler.toModel(workbook, patterns);
     }
 

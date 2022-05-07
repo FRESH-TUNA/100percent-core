@@ -16,20 +16,10 @@ public class WorkbookDeassembler {
         String description = dto.getDescription();
         PlayType playType = getPlayType(patterns);
 
-        Workbook workbook = Workbook.builder().title(title).playType(playType)
+        return Workbook.builder().title(title).playType(playType)
                 .description(description).build();
-
-        List<WorkbookPattern> workbookPatterns = workbookPatterns(patterns, workbook);
-
-        workbook.add_patterns(workbookPatterns);
-        return workbook;
     }
 
-    private List<WorkbookPattern> workbookPatterns(List<Pattern> patterns, Workbook workbook) {
-        return patterns.stream()
-                .map(p -> WorkbookPattern.builder().pattern(p).workbook(workbook).build())
-                .collect(Collectors.toList());
-    }
 
     private PlayType getPlayType(List<Pattern> patterns) {
         Set<PlayType> playTypes = patterns.stream().map(p -> p.getPlayType()).collect(Collectors.toSet());

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -32,8 +33,10 @@ public class Workbook extends BaseTimeModel {
     /*
      * methods
      */
-    public void add_patterns(List<WorkbookPattern> patterns) {
-        this.patterns = patterns;
+    public void add_patterns(List<Pattern> patterns) {
+        this.patterns = patterns.stream()
+                .map(p -> WorkbookPattern.builder().pattern(p).workbook(this).build())
+                .collect(Collectors.toList());
     }
 
     public void update(Workbook new_workbook) {

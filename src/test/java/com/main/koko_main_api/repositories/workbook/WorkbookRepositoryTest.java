@@ -97,9 +97,8 @@ class WorkbookRepositoryTest {
         PlayType playType = 플레이타입_생성();
         Workbook workbook = Workbook.builder().title("title").description("des").playType(playType).build();
 
-        List<WorkbookPattern> patterns = new ArrayList<>();
-        patterns.add(WorkbookPattern.builder().pattern(패턴_생성()).workbook(workbook).build());
-        patterns.add(WorkbookPattern.builder().pattern(패턴_생성()).workbook(workbook).build());
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(패턴_생성()); patterns.add(패턴_생성());
         workbook.add_patterns(patterns);
 
         workbook = workbookRepository.saveAndFlush(workbook);

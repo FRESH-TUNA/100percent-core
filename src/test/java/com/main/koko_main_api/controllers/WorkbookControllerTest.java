@@ -82,7 +82,7 @@ class WorkbookControllerTest {
     }
 
     @Test
-    void findAll() {
+    void findAll_테스트() {
         PlayType playType = 게임타입_생성();
         기본_워크북_생성(playType); 기본_워크북_생성(playType);
 
@@ -92,7 +92,7 @@ class WorkbookControllerTest {
     }
 
     @Test
-    void save() throws JSONException {
+    void save_테스트() throws JSONException {
         Music m = 음악_생성(앨범_생성(), 작곡가_생성());
         DifficultyType dt = 난이도타입_생성();
         PlayType pt = 게임타입_생성();
@@ -115,7 +115,7 @@ class WorkbookControllerTest {
     }
 
     @Test
-    void findById() {
+    void findById_테스트() {
         Music m = 음악_생성(앨범_생성(), 작곡가_생성());
         DifficultyType dt = 난이도타입_생성();
         PlayType pt = 게임타입_생성();
@@ -124,10 +124,7 @@ class WorkbookControllerTest {
 
         // workbook 생성
         Workbook w = Workbook.builder().title("title").description("des").playType(pt).build();
-        Workbook finalW = w;
-        w.add_patterns(patterns.stream()
-                .map(p -> WorkbookPattern.builder().pattern(p).workbook(finalW).build())
-                .collect(Collectors.toList()));
+        w.add_patterns(patterns);
         w = workbookRepository.save(w);
 
         // then
@@ -137,7 +134,34 @@ class WorkbookControllerTest {
     }
 
     @Test
-    void update() {
+    void update() throws JSONException {
+        Music m = 음악_생성(앨범_생성(), 작곡가_생성());
+        DifficultyType dt = 난이도타입_생성();
+        PlayType pt = 게임타입_생성();
+        Pattern p1 = 패턴_생성(m, dt, pt), p2 = 패턴_생성(m, dt, pt);
+        Pattern p3 = 패턴_생성(m, dt, pt), p4 = 패턴_생성(m, dt, pt);
+
+        // workbook 생성
+        Workbook w = Workbook.builder().title("title").description("des").playType(pt).build();
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(p1); patterns.add(p2);
+        w = workbookRepository.saveAndFlush(w);
+
+
+        // when
+        JSONObject request = new JSONObject();
+        JSONArray patterns_body = new JSONArray();
+        patterns_body.put(ROOT_ENDPOINT + port + API_ENDPOINT + "/patterns/" + p3.getId());
+        patterns_body.put(ROOT_ENDPOINT + port + API_ENDPOINT + "/patterns/" + p4.getId());
+        request.put("title", "title2"); request.put("description", "description2");
+        request.put("patterns", patterns_body);
+        HttpEntity<String> entity = new HttpEntity(request.toString(), HEADERS);
+
+        // then
+        String url = ROOT_ENDPOINT + port + API_ENDPOINT + "/workbooks/" + w.getId();
+        ResponseEntity<String> res = template.exchange(
+                url, HttpMethod.PUT, entity, String.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
