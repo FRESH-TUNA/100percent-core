@@ -54,7 +54,7 @@ class AlbumRepositoryTest {
     @Test
     void 저장후_검색_테스트() {
         Album album = Album.builder().title("title1").build();
-        repository.saveAndFlush(album);
+        repository.save(album);
         assertThat(repository.findById(album.getId()).get()).isEqualTo(album);
     }
 }

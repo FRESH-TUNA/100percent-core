@@ -26,7 +26,6 @@ public class Album extends BaseTimeModel {
     public void update(Album album) {
         this.title = album.getTitle();
     }
-
     public void add_music(Music music) {
         this.musics.add(music);
     }
